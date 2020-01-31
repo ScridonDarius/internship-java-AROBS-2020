@@ -1,4 +1,4 @@
-package com.arobs.threads;
+package com.arobs.threads.sleep;
 
 public class TestSleepMethod extends Thread {
 
@@ -9,7 +9,7 @@ public class TestSleepMethod extends Thread {
             } catch (Exception e) {
                 System.out.println(e);
             }
-            System.out.println(getName() + " Value :us " + i);
+            System.out.println(getName() + " Value : " + i);
         }
     }
 }
