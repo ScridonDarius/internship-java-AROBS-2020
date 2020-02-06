@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class ShopController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        ItemServiceImpl.instance.getAll();
     }
 
     public ShopController() {
@@ -27,15 +29,11 @@ public class ShopController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-
-        request.setAttribute("products", ItemServiceImpl.instance.getAll());
-        request.getRequestDispatcher("products.jsp");
+        request.getSession();
+        request.setAttribute("items", ItemServiceImpl.instance.getAll());
+        request.getRequestDispatcher("/products.jsp").forward(request,response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
 
 
 }

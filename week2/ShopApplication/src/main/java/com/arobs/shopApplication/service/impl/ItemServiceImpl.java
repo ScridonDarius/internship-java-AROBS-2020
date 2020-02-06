@@ -9,6 +9,7 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
 
     public static ItemServiceImpl instance = new ItemServiceImpl();
+
     @Override
     public List<Item> getAll() {
         return ProductList.instance.createProducts();

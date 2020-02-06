@@ -21,7 +21,6 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
 
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
@@ -30,12 +29,13 @@ public class LoginController extends HttpServlet {
 
 
         if (checkValidation) {
+            String user = request.getParameter("userName");
+            request.getSession().setAttribute("currentSession", user);
 
-            session.setAttribute("login", "true");
-            response.sendRedirect("products.jsp");
+            response.sendRedirect("products");
+
         } else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("invalidLogin.jsp");
         }
 
     }
