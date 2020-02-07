@@ -10,8 +10,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        List<Item> list  = ItemServiceImpl.instance.getAll();
 
-        System.out.println(list);
+        ItemServiceImpl itemService = new ItemServiceImpl();
+
+
     }
 }

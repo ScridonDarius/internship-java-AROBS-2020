@@ -7,4 +7,6 @@ import java.util.List;
 public interface ItemService {
 
     public List<Item> getAll();
+
+    public Item findById(String id);
 }

@@ -1,4 +1,3 @@
-
 <html>
 <head>
 <meta charset="utf-8">
@@ -37,10 +36,10 @@
     }
     .login-form form {
         color: #7a7a7a;
-        border-radius: 3px;
+        border-radius: 30px;
         margin-bottom: 15px;
         background: #fff;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 40px 2px 20px rgba(0, 0, 0, 0.3);
         padding: 30px;
     }
     .login-form .btn {

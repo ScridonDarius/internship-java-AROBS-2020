@@ -50,13 +50,18 @@ public class CartController extends HttpServlet {
     protected void doGet_Buy(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String quantityToOrder =  request.getParameter("quantity");
+       // int quantity = Integer.parseInt(quantityToOrder);
         //hardodat
         Item item = new Item(new Product("1","cake",21),23);
+        item.getProduct().getId();
 
         HttpSession session = request.getSession();
         if (session.getAttribute("cart") == null) {
+
+
             List<Item> cart = new ArrayList<Item>();
-            cart.add(item);
+           cart.add(item);
             session.setAttribute("cart", cart);
         } else {
             List<Item> cart = (List<Item>) session.getAttribute("cart");
@@ -64,7 +69,7 @@ public class CartController extends HttpServlet {
             if (index == -1) {
                 cart.add(item);
             } else {
-                int quantity = cart.get(index).getQuantity() + 1;
+             int   quantity = cart.get(index).getQuantity() + 1;
                 cart.get(index).setQuantity(quantity);
             }
             session.setAttribute("cart", cart);
