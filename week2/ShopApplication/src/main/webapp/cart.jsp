@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<c:if test="${qtyErrorMessage}">
+    <p style="color: red">${qtyErrorMessage}</p>
+</c:if>
+
 <table cellpadding="2" cellspacing="2" border="1">
     <tr>
         <th>Option</th>

@@ -2,6 +2,7 @@ package com.arobs.shopApplication.controller;
 
 import com.arobs.shopApplication.model.Item;
 import com.arobs.shopApplication.model.Product;
+import com.arobs.shopApplication.repository.ProductList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,73 +25,70 @@ public class CartController extends HttpServlet {
         if (action == null) {
             doGet_DisplayCart(request, response);
         } else {
-            if (action.equalsIgnoreCase("buy")) {
-                doGet_Buy(request, response);
-            } else if (action.equalsIgnoreCase("remove")) {
-                doGet_Remove(request, response);
+            } if (action.equalsIgnoreCase("remove")) {
+                doDelete(request, response);
             }
         }
-    }
+
 
     protected void doGet_DisplayCart(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/cart.jsp").forward(request, response);
     }
 
-    protected void doGet_Remove(HttpServletRequest request, HttpServletResponse response)
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        List<Item> cart = (List<Item>) session.getAttribute("cart");
-        int index = isExisting(request.getParameter("id"), cart);
-        cart.remove(index);
-        session.setAttribute("cart", cart);
+
+        List<Item> cartItems = (List<Item>) request.getSession().getAttribute("cart");
+        Item searchedItem = cartItems.stream()
+                .filter(item -> item.getProduct().getId().equals(request.getParameter("id")))
+                .findFirst().get();
+
+        cartItems.remove(searchedItem);
+        request.getSession().setAttribute("cart", cartItems);
         response.sendRedirect("cart.jsp");
     }
 
-    protected void doGet_Buy(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String quantityToOrder =  request.getParameter("quantity");
-
-        // int quantity = Integer.parseInt(quantityToOrder);
-
-        //hardodat
-        Item item = new Item(new Product("1","cake",21),23);
-        item.getProduct().getId();
-
-        HttpSession session = request.getSession();
-        if (session.getAttribute("cart") == null) {
-
-
-            List<Item> cart = new ArrayList<Item>();
-           cart.add(item);
-            session.setAttribute("cart", cart);
-        } else {
-            List<Item> cart = (List<Item>) session.getAttribute("cart");
-            int index = isExisting(request.getParameter("id"), cart);
-            if (index == -1) {
-                cart.add(item);
-            } else {
-             int   quantity = cart.get(index).getQuantity() + 1;
-
-                cart.get(index).setQuantity(quantity);
-            }
-            session.setAttribute("cart", cart);
-        }
-        response.sendRedirect("cart");
-    }
-
-    private int isExisting(String id, List<Item> cart) {
-        for (int i = 0; i < cart.size(); i++) {
-            if (cart.get(i).getProduct().getId().equalsIgnoreCase(id)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
+    //Quantity to much check
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String id = request.getParameter("productId");
+        Integer quantity = Integer.parseInt(request.getParameter("quantity"));
+
+        List<Item> cartItems = (List<Item>) request.getSession().getAttribute("cart");
+        if (cartItems == null) {
+            cartItems = new ArrayList<>();
+        }
+
+        Item searchedItem = cartItems.stream()
+                .filter(item -> item.getProduct().getId().equals(id))
+                .findFirst().orElse(null);
+
+        if (searchedItem == null) {
+            searchedItem = ProductList.instance.getItems().stream()
+                    .filter(item -> item.getProduct().getId().equals(id))
+                    .findFirst().orElse(null);
+
+            if (quantity > searchedItem.getQuantity()) {
+                request.setAttribute("qtyErrorMessage", "The quantity is to high");
+                request.getRequestDispatcher("/cart.jsp").forward(request, response);
+                return;
+            }
+
+            searchedItem.setQuantity(quantity);
+            cartItems.add(searchedItem);
+        } else {
+            if (quantity > searchedItem.getQuantity() + quantity) {
+                request.setAttribute("qtyErrorMessage", "The quantity is to high");
+                request.getRequestDispatcher("/cart.jsp").forward(request, response);
+                return;
+            }
+            searchedItem.setQuantity(searchedItem.getQuantity() + quantity);
+        }
+
+        request.getSession().setAttribute("cart", cartItems);
+        response.sendRedirect("cart");
     }
 
 }

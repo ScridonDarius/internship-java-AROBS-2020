@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<c:if test="${qtyErrorMessage}">
+    <p style="color: red">${qtyErrorMessage}</p>
+</c:if>
+
 <table cellpadding="2" cellspacing="2" border="1">
     <tr>
         <th>Option</th>
@@ -22,7 +26,9 @@
         <c:set var="total" value="${total + item.product.price * item.quantity}"></c:set>
         <tr>
             <td align="center">
-                <a href="${pageContext.request.contextPath }/cart?action=remove&id=${item.product.id}"
+
+                <a href="${pageContext.request.contextPath}/cart?action=remove&id=${item.product.id }"
+
                    onclick="return confirm('Are you sure?')">Remove</a>
             </td>
             <td>${item.product.id}</td>

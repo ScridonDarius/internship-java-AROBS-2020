@@ -11,12 +11,13 @@ public class ProductList {
     public static ProductList instance = new ProductList();
     private List<Item> items = new ArrayList<>();
 
+    public ProductList() {
+        items.add(new Item(new Product("1", "cake", 12), 30));
+        items.add(new Item(new Product("2", "candy", 15), 50));
+        items.add(new Item(new Product("3", "pops", 20), 100));
+    }
 
-    public List<Item>createProducts(){
-        items.add(new Item(new Product("1","cake",12), 30));
-        items.add(new Item(new Product("2","candy",15), 50));
-        items.add(new Item(new Product("3","pops",20), 100));
-
+    public List<Item> getItems() {
         return items;
     }
 }

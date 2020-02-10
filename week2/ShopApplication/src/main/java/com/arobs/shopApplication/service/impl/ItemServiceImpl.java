@@ -12,13 +12,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getAll() {
-        return ProductList.instance.createProducts();
+        return ProductList.instance.getItems();
     }
 
     @Override
     public Item findById(String id) {
 
-        List<Item> items = ProductList.instance.createProducts();
+        List<Item> items = ProductList.instance.getItems();
         Item item = items.stream().filter(itemCheck ->(itemCheck.getProduct().getId().equals(id))).findFirst().orElse(null);
 
         Item element = items.get(Integer.parseInt(id)-1);
