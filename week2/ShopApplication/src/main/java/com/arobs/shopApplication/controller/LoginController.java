@@ -27,17 +27,14 @@ public class LoginController extends HttpServlet {
 
         boolean checkValidation = loginService.instance.findUser(userName, password);
 
-
         if (checkValidation) {
             String user = request.getParameter("userName");
             request.getSession().setAttribute("currentSession", user);
 
             response.sendRedirect("products");
-
         } else {
             response.sendRedirect("invalidLogin.jsp");
         }
-
     }
 }
 
