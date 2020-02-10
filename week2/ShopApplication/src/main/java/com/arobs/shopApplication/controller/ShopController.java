@@ -33,7 +33,4 @@ public class ShopController extends HttpServlet {
         request.setAttribute("items", ItemServiceImpl.instance.getAll());
         request.getRequestDispatcher("/products.jsp").forward(request,response);
     }
-
-
-
 }
