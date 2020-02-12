@@ -71,7 +71,7 @@
 <body>
 
 <div class="login-form">
-    <form action="loginPage" method="POST">
+    <form action="login" method="POST">
         <h2 class="text-center">Login</h2>
         <div class="form-group has-error">
             <input type="text" class="form-control" name="userName" placeholder="Username" required="required">
