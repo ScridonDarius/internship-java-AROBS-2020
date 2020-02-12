@@ -1,6 +1,6 @@
 package com.arobs.shopApplication.service.impl;
 
-import com.arobs.shopApplication.model.Item;
+import com.arobs.shopApplication.model.Stock;
 import com.arobs.shopApplication.repository.ProductList;
 import com.arobs.shopApplication.service.ItemService;
 
@@ -11,18 +11,18 @@ public class ItemServiceImpl implements ItemService {
     public static ItemServiceImpl instance = new ItemServiceImpl();
 
     @Override
-    public List<Item> getAll() {
-        return ProductList.instance.getItems();
+    public List<Stock> getAll() {
+        return ProductList.instance.getStocks();
     }
 
     @Override
-    public Item findById(String id) {
+    public Stock findById(String id) {
 
-        List<Item> items = ProductList.instance.getItems();
-        Item item = items.stream().filter(itemCheck ->(itemCheck.getProduct().getId().equals(id))).findFirst().orElse(null);
+        List<Stock> items = ProductList.instance.getStocks();
+        Stock stock = items.stream().filter(itemCheck ->(itemCheck.getProduct().getId().equals(id))).findFirst().orElse(null);
 
-        Item element = items.get(Integer.parseInt(id)-1);
-        if(item !=null){
+        Stock element = items.get(Integer.parseInt(id)-1);
+        if(stock !=null){
            return element;
         }
         return null;

@@ -1,7 +1,6 @@
 package com.arobs.shopApplication.controller;
 
-import com.arobs.shopApplication.model.Item;
-import com.arobs.shopApplication.model.Product;
+import com.arobs.shopApplication.model.Stock;
 import com.arobs.shopApplication.repository.ProductList;
 
 import javax.servlet.ServletException;
@@ -9,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +37,13 @@ public class CartController extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Item> cartItems = (List<Item>) request.getSession().getAttribute("cart");
-        Item searchedItem = cartItems.stream()
+        List<Stock> cartStocks = (List<Stock>) request.getSession().getAttribute("cart");
+        Stock searchedStock = cartStocks.stream()
                 .filter(item -> item.getProduct().getId().equals(request.getParameter("id")))
                 .findFirst().get();
 
-        cartItems.remove(searchedItem);
-        request.getSession().setAttribute("cart", cartItems);
+        cartStocks.remove(searchedStock);
+        request.getSession().setAttribute("cart", cartStocks);
         response.sendRedirect("cart.jsp");
     }
 
@@ -56,38 +54,38 @@ public class CartController extends HttpServlet {
         String id = request.getParameter("productId");
         Integer quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        List<Item> cartItems = (List<Item>) request.getSession().getAttribute("cart");
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
+        List<Stock> cartStocks = (List<Stock>) request.getSession().getAttribute("cart");
+        if (cartStocks == null) {
+            cartStocks = new ArrayList<>();
         }
 
-        Item searchedItem = cartItems.stream()
+        Stock searchedStock = cartStocks.stream()
                 .filter(item -> item.getProduct().getId().equals(id))
                 .findFirst().orElse(null);
 
-        if (searchedItem == null) {
-            searchedItem = ProductList.instance.getItems().stream()
+        if (searchedStock == null) {
+            searchedStock = ProductList.instance.getStocks().stream()
                     .filter(item -> item.getProduct().getId().equals(id))
                     .findFirst().orElse(null);
 
-            if (quantity > searchedItem.getQuantity()) {
+            if (quantity > searchedStock.getQuantity()) {
                 request.setAttribute("qtyErrorMessage", "The quantity is to high");
                 request.getRequestDispatcher("/cart.jsp").forward(request, response);
                 return;
             }
 
-            searchedItem.setQuantity(quantity);
-            cartItems.add(searchedItem);
+            searchedStock.setQuantity(quantity);
+            cartStocks.add(searchedStock);
         } else {
-            if (quantity > searchedItem.getQuantity() + quantity) {
+            if (quantity > searchedStock.getQuantity() + quantity) {
                 request.setAttribute("qtyErrorMessage", "The quantity is to high");
                 request.getRequestDispatcher("/cart.jsp").forward(request, response);
                 return;
             }
-            searchedItem.setQuantity(searchedItem.getQuantity() + quantity);
+            searchedStock.setQuantity(searchedStock.getQuantity() + quantity);
         }
 
-        request.getSession().setAttribute("cart", cartItems);
+        request.getSession().setAttribute("cart", cartStocks);
         response.sendRedirect("cart");
     }
 

@@ -1,12 +1,12 @@
 package com.arobs.shopApplication.service;
 
-import com.arobs.shopApplication.model.Item;
+import com.arobs.shopApplication.model.Stock;
 
 import java.util.List;
 
 public interface ItemService {
 
-    public List<Item> getAll();
+    public List<Stock> getAll();
 
-    public Item findById(String id);
+    public Stock findById(String id);
 }

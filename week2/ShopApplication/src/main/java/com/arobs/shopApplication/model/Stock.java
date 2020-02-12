@@ -2,15 +2,15 @@ package com.arobs.shopApplication.model;
 
 import java.util.Objects;
 
-public class Item {
+public class Stock {
 
     private Product product;
     private int quantity;
 
-    public Item() {
+    public Stock() {
     }
 
-    public Item(Product product, int quantity) {
+    public Stock(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
@@ -35,9 +35,9 @@ public class Item {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return quantity == item.quantity &&
-                Objects.equals(product, item.product);
+        Stock stock = (Stock) o;
+        return quantity == stock.quantity &&
+                Objects.equals(product, stock.product);
     }
 
     @Override
