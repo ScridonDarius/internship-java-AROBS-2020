@@ -27,7 +27,7 @@
         <tr>
             <td align="center">
 
-                <a href="${pageContext.request.contextPath}/cart?action=remove&id=${item.product.id }"
+                <a href="${pageContext.request.contextPath}/cart?action=remove&id=${item.product.id}"
 
                    onclick="return confirm('Are you sure?')">Remove</a>
             </td>

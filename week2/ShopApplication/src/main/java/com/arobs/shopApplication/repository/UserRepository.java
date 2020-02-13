@@ -1,5 +1,6 @@
 package com.arobs.shopApplication.repository;
 
+import com.arobs.shopApplication.dto.UserDTO;
 import com.arobs.shopApplication.model.User;
 
 import java.sql.SQLException;
@@ -11,9 +12,9 @@ public interface UserRepository {
 
     int insertUser(User user) throws SQLException;
 
-    void updateUser(User user) throws SQLException;
+    void updateUser(int userId, User user) throws SQLException;
 
-    void delete(User user) throws SQLException;
+    void delete(int userId) throws SQLException;
 
-    List<User> findAll() throws SQLException;
+    List<UserDTO> findAll() throws SQLException;
 }

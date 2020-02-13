@@ -6,16 +6,12 @@ import com.arobs.shopApplication.service.impl.UserServiceImpl;
 public class Main {
 
     public static void main(String[] args) {
-
-
         UserServiceImpl userService = new UserServiceImpl();
-        User user = new User("Darius","Darius");
+        User user = new User("Ben", "Darius");
+
         try {
-           // userService.insertUser(user);
-          // User darius = userService.findByUserName("Darius");
-           // System.out.println(darius);
-            System.out.println( userService.authenticate("Darius","Darius"));
-        }catch (Exception e){
+            System.out.println(userService.findAll());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
