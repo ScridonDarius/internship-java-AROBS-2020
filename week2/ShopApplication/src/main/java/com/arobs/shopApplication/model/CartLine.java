@@ -1,18 +1,20 @@
 package com.arobs.shopApplication.model;
 
+import com.arobs.shopApplication.dto.ProductDTO;
+
 import java.util.Objects;
 
 public class CartLine {
 
     private Product product;
-    private int quantity;
+    private int quantityToOrder;
 
     public CartLine() {
     }
 
     public CartLine(Product product, int quantity) {
         this.product = product;
-        this.quantity = quantity;
+        this.quantityToOrder = quantity;
     }
 
     public Product getProduct() {
@@ -23,12 +25,16 @@ public class CartLine {
         this.product = product;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getProductQuantity(){
+        return getProduct().getQuantity();
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public int getQuantityToOrder() {
+        return quantityToOrder;
+    }
+
+    public void setQuantityToOrder(int quantity) {
+        this.quantityToOrder = quantity;
     }
 
     @Override
@@ -36,20 +42,20 @@ public class CartLine {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartLine cartLine = (CartLine) o;
-        return quantity == cartLine.quantity &&
+        return quantityToOrder == cartLine.quantityToOrder &&
                 Objects.equals(product, cartLine.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(product, quantity);
+        return Objects.hash(product, quantityToOrder);
     }
 
     @Override
     public String toString() {
         return "Item{" +
                 "product=" + product +
-                ", quantity=" + quantity +
+                ", quantity=" + quantityToOrder +
                 '}';
     }
 }

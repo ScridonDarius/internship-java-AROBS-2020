@@ -16,13 +16,13 @@
         <th>Buy</th>
     </tr>
 
-    <c:forEach var="item" items="${items}">
+    <c:forEach var="product" items="${products}">
         <form action="cart" method="POST">
             <tr>
-                <input type="hidden" value="${item.product.id}" name="productId">
-                <td>${item.product.id}</td>
-                <td>${item.product.name}</td>
-                <td>${item.product.price}</td>
+                <input type="hidden" value="${product.id}" name="productId">
+                <td>${product.id}</td>
+                <td>${product.name}</td>
+                <td>${product.price}</td>
                 <td><input type="text" placeholder="quantity" name="quantity" required="required"></td>
 
 

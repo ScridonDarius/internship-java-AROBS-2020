@@ -35,8 +35,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int insertUser(User user) throws SQLException {
-        int user_id = -1;
+    public int insertUser(User user) {
+        int userId = -1;
 
         try {
             connection = DataSource.getConnection();
@@ -49,16 +49,16 @@ public class UserRepositoryImpl implements UserRepository {
             resultSet = preparedStatement.getGeneratedKeys();
 
             if (resultSet.next()) {
-                user_id = resultSet.getInt(1);
+                userId = resultSet.getInt(1);
             }
 
-            user.setId(user_id);
+            user.setId(userId);
             connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return user_id;
+        return userId;
     }
 
     @Override
@@ -103,6 +103,8 @@ public class UserRepositoryImpl implements UserRepository {
             UserDTO user = new UserDTO(id, name);
             users.add(user);
         }
+
+        connection.close();
         return users;
     }
 }

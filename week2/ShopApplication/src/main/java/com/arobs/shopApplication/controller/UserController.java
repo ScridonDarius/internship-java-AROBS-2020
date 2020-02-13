@@ -2,8 +2,6 @@ package com.arobs.shopApplication.controller;
 
 import com.arobs.shopApplication.service.UserService;
 import com.arobs.shopApplication.service.impl.UserServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,8 +13,6 @@ import java.io.IOException;
 @WebServlet(name = "login", urlPatterns = "/login")
 public class UserController extends HttpServlet {
 
-    private static Logger logger = LoggerFactory.getLogger(UserController.class);
-    
     private UserService userService;
 
     public UserController() {

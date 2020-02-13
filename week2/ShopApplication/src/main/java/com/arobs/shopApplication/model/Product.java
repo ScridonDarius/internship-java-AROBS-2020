@@ -12,6 +12,12 @@ public class Product {
     public Product() {
     }
 
+    public Product(String name, double price, int quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public Product(int id, String name, double price, int quantity) {
         this.id = id;
         this.name = name;
@@ -65,5 +71,15 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, price, quantity);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }
