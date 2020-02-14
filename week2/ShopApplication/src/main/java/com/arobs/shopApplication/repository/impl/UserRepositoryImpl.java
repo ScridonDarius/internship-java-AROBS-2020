@@ -104,6 +104,7 @@ public class UserRepositoryImpl implements UserRepository {
             users.add(user);
         }
 
+        //finally
         connection.close();
         return users;
     }

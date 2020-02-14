@@ -29,14 +29,4 @@ product_quantity INT NOT NULL
 
 
 
-/*CREATE TABLE stock(
-stock_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-stock_quantity INT NOT NULL,
-product_id INT NOT NULL,
-FOREIGN KEY(product_id) REFERENCES product(product_id)
-);
-*/
-
-
-
 

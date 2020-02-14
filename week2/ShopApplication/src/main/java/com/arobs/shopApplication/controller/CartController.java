@@ -39,14 +39,14 @@ public class CartController extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-//        List<CartLine> cartStocks = (List<CartLine>) request.getSession().getAttribute("cart");
-//        CartLine searchedStock = cartStocks.stream()
-//                .filter(item -> item.getProduct().getId().equals(request.getParameter("id")))
-//                .findFirst().get();
-//
-//        cartStocks.remove(searchedStock);
-//        request.getSession().setAttribute("cart", cartStocks);
-//        response.sendRedirect("cart.jsp");
+        List<Product> cartStocks = (List<Product>) request.getSession().getAttribute("cart");
+        Product searchedStock = cartStocks.stream()
+                .filter(item -> Integer.toString(item.getId()).equals(request.getParameter("id")))
+                .findFirst().get();
+
+        cartStocks.remove(searchedStock);
+        request.getSession().setAttribute("cart", cartStocks);
+        response.sendRedirect("cart.jsp");
     }
 
     //Quantity to much check

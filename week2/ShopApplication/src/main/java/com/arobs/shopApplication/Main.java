@@ -1,5 +1,6 @@
 package com.arobs.shopApplication;
 
+import com.arobs.shopApplication.dto.UserSignUpDTO;
 import com.arobs.shopApplication.model.Product;
 import com.arobs.shopApplication.model.User;
 import com.arobs.shopApplication.service.impl.ProductServiceImpl;
@@ -12,8 +13,12 @@ public class Main {
         ProductServiceImpl productService = new ProductServiceImpl();
 
         User user = new User("Ben", "Darius");
-        Product product = new Product("Banana",9.99,10);
+        UserSignUpDTO user1 = new UserSignUpDTO("Lucian","Lucian");
 
-
+try{
+    //userService.insertUser(user1);
+}catch (Exception e){
+    e.printStackTrace();
+}
     }
 }

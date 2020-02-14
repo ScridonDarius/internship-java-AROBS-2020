@@ -84,7 +84,7 @@
         </div>
         <p><a href="#">Lost your Password?</a></p>
     </form>
-    <p class="text-center small">Don't have an account? <a href="#">Sign up here!</a></p>
+    <p class="text-center small">Don't have an account? <a href="shopApplication/src/main/webapp/signUp.jsp">Sign up here!</a></p>
 </div>
 </body>
 </html>

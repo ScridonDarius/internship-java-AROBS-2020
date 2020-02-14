@@ -4,15 +4,20 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <title>Cart Page</title>
 </head>
 <body>
-
+<div class="container">
 <%--<c:if test="${qtyErrorMessage}">--%>
 <%--    <p style="color: red">${qtyErrorMessage}</p>--%>
 <%--</c:if>--%>
 
-<table cellpadding="2" cellspacing="2" border="1">
+<table class="table table-dark">
+ <thead>
     <tr>
         <th>Option</th>
         <th>Id</th>
@@ -21,6 +26,8 @@
         <th>Quantity</th>
         <th>Sub Total</th>
     </tr>
+    </thread>
+    <tbody>
     <c:set var="total" value="0"></c:set>
     <c:forEach var="product" items="${sessionScope.cart}">
         <c:set var="total" value="${total + product.price * product.quantity}"></c:set>
@@ -43,8 +50,10 @@
         <td>${total}</td>
     </tr>
 </table>
+</tbody>
+
 <br>
 <a href="${pageContext.request.contextPath}/products">Continue Shopping</a>
-
+</div>
 </body>
 </html>

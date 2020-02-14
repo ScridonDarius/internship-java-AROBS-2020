@@ -3,11 +3,17 @@
          pageEncoding="ISO-8859-1" isELIgnored="false" %>
 <html>
 <head>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <title>Product Page</title>
 </head>
 <body>
+<div class="container">
+ <table class="table table-dark">
+ <thead>
 
-<table cellpadding="2" cellspacing="2" border="1">
     <tr>
         <th>Id</th>
         <th>Name</th>
@@ -15,7 +21,8 @@
         <td>Quantity</td>
         <th>Buy</th>
     </tr>
-
+ </thead>
+  <tbody>
     <c:forEach var="product" items="${products}">
         <form action="cart" method="POST">
             <tr>
@@ -23,7 +30,7 @@
                 <td>${product.id}</td>
                 <td>${product.name}</td>
                 <td>${product.price}</td>
-                <td><input type="text" placeholder="quantity" name="quantity" required="required"></td>
+                <td style = width: 50%><input type="text" placeholder="quantity" name="quantity" required="required"></td>
 
 
                 <td align="center">
@@ -34,7 +41,8 @@
             </tr>
         </form>
     </c:forEach>
-
+ </tbody>
 </table>
+</div>
 </body>
 </html>
