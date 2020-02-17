@@ -7,52 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72c2a40b-a88b-44e6-9c55-0e450f101307" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/arobs/shopApplication/controller/SignUpController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/arobs/shopApplication/dto/UserSignUpDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/invalidSignUp.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/singUp.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/arobs/shopApplication/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/arobs/shopApplication/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/arobs/shopApplication/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/arobs/shopApplication/controller/CartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/arobs/shopApplication/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/arobs/shopApplication/repository/impl/UserRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/cart.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/cart.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/products.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/products.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication.war" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication.war" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/config/database/ConnectionManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/config/database/ConnectionManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/controller/CartController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/controller/CartController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/controller/ShopController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/controller/ShopController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/dto/ProductDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/dto/ProductDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/filter/LoginFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/filter/LoginFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/model/CartLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/model/CartLine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/model/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/model/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/repository/impl/ProductRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/repository/impl/ProductRepositoryImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/repository/impl/UserRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/repository/impl/UserRepositoryImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/service/impl/LoginServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/service/impl/LoginServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/WEB-INF/classes/com/arobs/shopApplication/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/cart.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/cart.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/login.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ShopApplication/products.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/ShopApplication/products.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/config/database/ConnectionManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/config/database/ConnectionManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/controller/CartController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/controller/CartController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/controller/ShopController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/controller/ShopController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/dto/ProductDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/dto/ProductDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/filter/LoginFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/filter/LoginFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/model/CartLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/model/CartLine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/model/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/model/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/repository/impl/ProductRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/repository/impl/ProductRepositoryImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/repository/impl/UserRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/repository/impl/UserRepositoryImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/service/impl/LoginServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/service/impl/LoginServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/arobs/shopApplication/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,42 +191,42 @@
     </state>
     <state x="617" y="227" key="FileChooserDialogImpl/0.0.1600.860/1600.0.1920.1040@0.0.1600.860" timestamp="1581506487191" />
     <state x="2340" y="275" key="FileChooserDialogImpl/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581504352558" />
-    <state width="1557" height="75" key="GridCell.Tab.0.bottom" timestamp="1581672164838">
-      <screen x="0" y="0" width="1600" height="860" />
+    <state width="1877" height="348" key="GridCell.Tab.0.bottom" timestamp="1581672974929">
+      <screen x="1600" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="75" key="GridCell.Tab.0.bottom/0.0.1600.860/1600.0.1920.1040@0.0.1600.860" timestamp="1581672164838" />
-    <state width="1877" height="259" key="GridCell.Tab.0.bottom/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581597029162" />
-    <state width="1557" height="75" key="GridCell.Tab.0.center" timestamp="1581672164838">
-      <screen x="0" y="0" width="1600" height="860" />
+    <state width="1877" height="348" key="GridCell.Tab.0.bottom/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581672974929" />
+    <state width="1877" height="348" key="GridCell.Tab.0.center" timestamp="1581672974929">
+      <screen x="1600" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="75" key="GridCell.Tab.0.center/0.0.1600.860/1600.0.1920.1040@0.0.1600.860" timestamp="1581672164838" />
-    <state width="1877" height="259" key="GridCell.Tab.0.center/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581597029161" />
-    <state width="1557" height="75" key="GridCell.Tab.0.left" timestamp="1581672164838">
-      <screen x="0" y="0" width="1600" height="860" />
+    <state width="1877" height="348" key="GridCell.Tab.0.center/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581672974929" />
+    <state width="1877" height="348" key="GridCell.Tab.0.left" timestamp="1581672974929">
+      <screen x="1600" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="75" key="GridCell.Tab.0.left/0.0.1600.860/1600.0.1920.1040@0.0.1600.860" timestamp="1581672164838" />
-    <state width="1877" height="259" key="GridCell.Tab.0.left/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581597029161" />
-    <state width="1557" height="75" key="GridCell.Tab.0.right" timestamp="1581672164838">
-      <screen x="0" y="0" width="1600" height="860" />
+    <state width="1877" height="348" key="GridCell.Tab.0.left/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581672974929" />
+    <state width="1877" height="348" key="GridCell.Tab.0.right" timestamp="1581672974929">
+      <screen x="1600" y="0" width="1920" height="1040" />
     </state>
     <state width="1557" height="75" key="GridCell.Tab.0.right/0.0.1600.860/1600.0.1920.1040@0.0.1600.860" timestamp="1581672164838" />
-    <state width="1877" height="259" key="GridCell.Tab.0.right/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581597029162" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1581590149991">
+    <state width="1877" height="348" key="GridCell.Tab.0.right/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581672974929" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1581672974929">
       <screen x="1600" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581590149991" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1581590149991">
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581672974929" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1581672974929">
       <screen x="1600" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581590149991" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1581590149991">
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581672974929" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1581672974929">
       <screen x="1600" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581590149991" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1581590149991">
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581672974929" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1581672974929">
       <screen x="1600" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581590149991" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1600.860/1600.0.1920.1040@1600.0.1920.1040" timestamp="1581672974929" />
     <state x="512" y="146" key="MultipleFileMergeDialog" timestamp="1581666080048">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
