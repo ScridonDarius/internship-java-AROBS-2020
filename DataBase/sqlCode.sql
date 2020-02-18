@@ -1,0 +1,79 @@
+CREATE DATABASE arobsLibraryApplication;
+
+CREATE TABLE employee(
+employee_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+user_name VARCHAR(50) UNIQUE NOT NULL,
+first_name VARCHAR(20) NOT NULL,
+last_name VARCHAR(20) NOT NULL,
+email VARCHAR(50) UNIQUE NOT NULL,
+password BLOB NOT NULL,
+Role ENUM('EMPLOYEE', 'ADMIN') NOT NULL,
+Status ENUM('ACTIV', 'SUSPENDED', 'DELETED') NOT NULL,
+create_date DATETIME NOT NULL,
+last_login_date DATETIME NOT NULL,
+photo BLOB
+);
+
+CREATE TABLE book(
+book_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+title VARCHAR(50) NOT NULL,
+author VARCHAR(50) NOT NULL,
+description VARCHAR(100)
+);
+
+CREATE TABLE tag(
+tag_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+tag_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE book_tag(
+book_id INT NOT NULL,
+tag_id INT NOT NULL,
+FOREIGN KEY(book_id) REFERENCES book(book_id),
+FOREIGN KEY(tag_id) REFERENCES tag(tag_id),
+PRIMARY KEY(book_id, tag_id)
+);
+
+CREATE TABLE copy(
+copy_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+isbn VARCHAR(20) UNIQUE NOT NULL,
+Status ENUM('GOOD', 'DETERIORATED', 'LOST') NOT NULL,
+book_id INT NOT NULL,
+FOREIGN KEY(book_id) REFERENCES book(book_id)
+);
+
+CREATE TABLE book_rent(
+book_rent_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+rental_date DATETIME NOT NULL,
+return_date DATETIME NOT NULL,
+Status ENUM('ON_GOING', 'LATE', 'RETURNED') NOT NULL,
+rate INT NOT NULL,
+employee_id INT NOT NULL,
+book_id INT NOT NULL,
+copy_id INT NOT NULL,
+FOREIGN KEY(employee_id) REFERENCES employee(employee_id),
+FOREIGN KEY(book_id) REFERENCES book(book_id),
+FOREIGN KEY(copy_id) REFERENCES copy(copy_id)
+);
+
+CREATE TABLE book_request(
+book_request_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+title VARCHAR(50) NOT NULL,
+author VARCHAR(50) NOT NULL,
+publishing_company VARCHAR(50) NOT NULL,
+number_copy INT NOT NULL,
+total_cost DECIMAL NOT NULL,
+Status ENUM('PENDING', 'ACCEPTED', 'ReJECTED'),
+employee_id INT NOT NULL,
+FOREIGN KEY(employee_id) REFERENCES employee(employee_id)
+);
+
+CREATE TABLE rent_request(
+rent_request_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+request_date DATETIME NOT NULL,
+Status ENUM('WAITING_AVAILABLE', 'WAITING_CONFIRMATION', 'DECLINE', 'GRANTED') NOT NULL,
+employee_id INT NOT NULL,
+book_id INT NOT NULL,
+FOREIGN KEY(employee_id) REFERENCES employee(employee_id),
+FOREIGN KEY(book_id) REFERENCES book(book_id)
+);
