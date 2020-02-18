@@ -1,24 +1,31 @@
 package com.arobs.internship.librarymanagement.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Book {
-
     private Long id;
     private String title;
     private String author;
     private String description;
-    private Tag tag;
+    private List<Tag> tags;
 
     public Book() {
     }
 
-    public Book(Long id, String title, String author, String description, Tag tag) {
+    public Book(Long id, String title, String author, String description, List<Tag> tags) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
-        this.tag = tag;
+        this.tags = tags;
+    }
+
+    public Book(String title, String author, String description, List<Tag> tags) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.tags = tags;
     }
 
     public Long getId() {
@@ -53,12 +60,12 @@ public class Book {
         this.description = description;
     }
 
-    public Tag getTag() {
-        return tag;
+    public List<Tag> getTags() {
+        return tags;
     }
 
-    public void setTag(Tag tag) {
-        this.tag = tag;
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override
@@ -70,11 +77,11 @@ public class Book {
                 title.equals(book.title) &&
                 author.equals(book.author) &&
                 Objects.equals(description, book.description) &&
-                tag.equals(book.tag);
+                tags.equals(book.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, description, tag);
+        return Objects.hash(id, title, author, description, tags);
     }
 }

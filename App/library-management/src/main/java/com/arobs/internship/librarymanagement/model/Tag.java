@@ -15,6 +15,10 @@ public class Tag {
         this.tagName = tagName;
     }
 
+    public Tag(String tagName) {
+        this.tagName = tagName;
+    }
+
     public Long getId() {
         return id;
     }
@@ -45,3 +49,5 @@ public class Tag {
         return Objects.hash(id, tagName);
     }
 }
+
+
