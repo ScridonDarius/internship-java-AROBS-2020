@@ -15,6 +15,6 @@ public class main {
 
         TagRepository tagRepository = context.getBean(TagRepository.class);
 
-        System.out.println(tagRepository.createTag(tag));
+
     }
 }

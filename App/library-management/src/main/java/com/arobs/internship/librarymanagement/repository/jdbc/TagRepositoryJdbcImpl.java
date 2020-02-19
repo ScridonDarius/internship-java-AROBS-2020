@@ -8,7 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.awt.print.Pageable;
 import java.sql.SQLException;
+import java.util.List;
 
 @Component
 public class TagRepositoryJdbcImpl implements TagRepository {
@@ -28,5 +30,20 @@ public class TagRepositoryJdbcImpl implements TagRepository {
     @Override
     public int createTag(Tag tag) throws SQLException {
         return jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
+    }
+
+    @Override
+    public boolean updateTag(String tagName, String newTag) {
+        return jdbcTemplate.update("UPDATE tag set tag_name = ? WHERE tag_name =?", newTag, tagName)>0;
+    }
+
+    @Override
+    public boolean deleteTag(String tagName) {
+        return jdbcTemplate.update("DELETE FROM tag WHERE tag_name = ?", tagName)>0;
+    }
+
+    @Override
+    public List<Tag> findAll() {
+        return jdbcTemplate.query("SELECT * FROM tag", new TagMapper());
     }
 }

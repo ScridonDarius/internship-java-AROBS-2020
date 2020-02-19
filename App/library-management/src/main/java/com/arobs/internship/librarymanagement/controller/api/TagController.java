@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.controller.api;
 
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping(
@@ -35,11 +39,32 @@ public class TagController {
     public ResponseEntity<TagResponseDTO> retrieveByUserName(
             @PathVariable("tagName") String tagName) {
 
-        final TagResponseDTO user =
+        final TagResponseDTO tag =
                 this.tagService.retrieveByTagName(tagName);
 
-        return user != null
-                ? new ResponseEntity<>(user, HttpStatus.OK)
+        return tag != null
+                ? new ResponseEntity<>(tag, HttpStatus.OK)
                 : new ResponseEntity<>(new TagResponseDTO(), HttpStatus.NOT_FOUND);
     }
+
+    @RequestMapping(value = "/updateTag/tagName/{tagName}/newTag/{newTag}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<TagUpdateDTO> updateTag(
+            @PathVariable("tagName") String tagName,
+            @PathVariable("newTag") String newTag) {
+
+        TagUpdateDTO tag = this.tagService.updateTag(tagName, newTag);
+        return tag != null
+                ? new ResponseEntity<>(tag, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "deleteTag/tagName/{tagName}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Boolean> deleteTag(@PathVariable("tagName") String tagName) {
+
+        return new ResponseEntity<>(this.tagService.deleteTag(tagName), HttpStatus.OK);
+    }
+
+    //TODO : retreiveALL tags from dataBase
 }

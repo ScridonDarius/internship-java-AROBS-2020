@@ -1,25 +1,31 @@
-package com.arobs.internship.librarymanagement.controller.api.response;
+package com.arobs.internship.librarymanagement.controller.api.request;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
-public class TagResponseDTO {
+@ApiModel
+public class TagUpdateDTO {
 
     @ApiModelProperty
     private Long id;
 
     @ApiModelProperty(required = true)
     @NotNull
-    @Size(max = 50)
+    @Size(max = 150)
     private String tagName;
 
-    public TagResponseDTO() {
+    public TagUpdateDTO(){
     }
 
-    public TagResponseDTO(Long id, @NotNull @Size(max = 50) String tagName) {
+    public TagUpdateDTO(@NotNull @Size(max = 150) String tagName) {
+        this.tagName = tagName;
+    }
+
+    public TagUpdateDTO(Long id, @NotNull @Size(max = 150) String tagName) {
         this.id = id;
         this.tagName = tagName;
     }
@@ -44,8 +50,8 @@ public class TagResponseDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TagResponseDTO that = (TagResponseDTO) o;
-        return id.equals(that.id) &&
+        TagUpdateDTO that = (TagUpdateDTO) o;
+        return Objects.equals(id, that.id) &&
                 tagName.equals(that.tagName);
     }
 
