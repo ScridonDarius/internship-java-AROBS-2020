@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface TagRepository {
 
-    int createTag(Tag tag) throws SQLException;
+    int createTag(Tag tag) ;
 
-    Tag findByTagName(String tagName) throws SQLException;
+    Tag findByTagName(String tagName) ;
 
     boolean updateTag(String tagName, String newTag);
 

@@ -6,13 +6,14 @@ import com.arobs.internship.librarymanagement.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.awt.print.Pageable;
 import java.sql.SQLException;
 import java.util.List;
 
-@Component
+@Repository
 public class TagRepositoryJdbcImpl implements TagRepository {
 
     JdbcTemplate jdbcTemplate;
@@ -23,12 +24,12 @@ public class TagRepositoryJdbcImpl implements TagRepository {
     }
 
     @Override
-    public Tag findByTagName(String tagName) throws SQLException {
+    public Tag findByTagName(String tagName)  {
         return jdbcTemplate.queryForObject("SELECT * FROM tag WHERE tag_name = ?", new Object[] { tagName }, new TagMapper());
     }
 
     @Override
-    public int createTag(Tag tag) throws SQLException {
+    public int createTag(Tag tag) {
         return jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
     }
 

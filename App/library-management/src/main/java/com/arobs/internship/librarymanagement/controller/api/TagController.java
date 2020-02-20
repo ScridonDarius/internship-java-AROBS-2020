@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -67,4 +68,14 @@ public class TagController {
     }
 
     //TODO : retreiveALL tags from dataBase
+
+    @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<TagResponseDTO>> retrieveAll(){
+        List<TagResponseDTO> tags = this.tagService.retrieveAll();
+
+        return tags != null
+                ? new ResponseEntity<>(tags, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

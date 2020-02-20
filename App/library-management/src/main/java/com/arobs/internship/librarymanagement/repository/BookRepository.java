@@ -6,5 +6,5 @@ import java.sql.SQLException;
 
 public interface BookRepository {
 
-    void insertBook(Book book) throws SQLException;
+    Book insertBook(Book book);
 }
