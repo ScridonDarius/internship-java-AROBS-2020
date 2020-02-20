@@ -4,14 +4,11 @@ import com.arobs.internship.librarymanagement.controller.api.request.TagRegistra
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -20,8 +17,11 @@ import java.util.List;
         produces = {MediaType.APPLICATION_JSON_VALUE})
 public class TagController {
 
-    @Autowired
-    protected TagServiceImpl tagService;
+    private final TagServiceImpl tagService;
+
+    public TagController(TagServiceImpl tagService) {
+        this.tagService = tagService;
+    }
 
     @RequestMapping(value = "/createTag", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -48,7 +48,7 @@ public class TagController {
                 : new ResponseEntity<>(new TagResponseDTO(), HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/updateTag/tagName/{tagName}/newTag/{newTag}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateTag/tagName/{tagName}/newTag/{newTag}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TagUpdateDTO> updateTag(
             @PathVariable("tagName") String tagName,
@@ -67,7 +67,6 @@ public class TagController {
         return new ResponseEntity<>(this.tagService.deleteTag(tagName), HttpStatus.OK);
     }
 
-    //TODO : retreiveALL tags from dataBase
 
     @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

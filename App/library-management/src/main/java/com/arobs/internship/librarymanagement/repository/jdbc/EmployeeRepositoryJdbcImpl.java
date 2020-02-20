@@ -1,27 +1,50 @@
 package com.arobs.internship.librarymanagement.repository.jdbc;
 
 import com.arobs.internship.librarymanagement.model.Employee;
+import com.arobs.internship.librarymanagement.model.mapper.EmployeeMapper;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
-@Repository("repo")
+@Repository
 public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
 
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public EmployeeRepositoryJdbcImpl(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public int createEmployee(Employee employee) {
+        return getJdbcTemplate().update("INSERT INTO employee(user_name,first_name,last_name,email,password,Role,Status,create_date) VALUES(?,?,?,?,MD5(?),?,?,?)", employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getPassword(), employee.getEmployeeRole().toString(), employee.getEmployeeStatus().toString(), employee.getCreateDate());
+    }
 
-       return  jdbcTemplate.update("INSERT INTO employee(user_name,first_name,last_name,email,password,Role,Status,create_date) VALUES(?,?,?,?,MD5(?),?,?,?)", employee.getUserName(),employee.getFirstName(),employee.getLastName(),employee.getEmail(),employee.getPassword(),employee.getEmployeeRole().toString(),employee.getEmployeeStatus().toString(),employee.getCreateDate());
+    public JdbcTemplate getJdbcTemplate() {
+        return jdbcTemplate;
+    }
 
+    @Override
+    public Employee findEmployee(String userName) {
+        return getJdbcTemplate().queryForObject("SELECT * FROM employee WHERE user_name = ?", new Object[]{userName}, new EmployeeMapper());
+    }
+
+    @Override
+    public boolean updateEmployee(String userName, Employee employee) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteEmployee(String userName) {
+        return getJdbcTemplate().update("DELETE FROM tag WHERE user_name = ?", userName) > 0;
+    }
+
+    @Override
+    public List<Employee> findAll() {
+        return getJdbcTemplate().query("SELECT * FROM employee", new EmployeeMapper());
     }
 }
+

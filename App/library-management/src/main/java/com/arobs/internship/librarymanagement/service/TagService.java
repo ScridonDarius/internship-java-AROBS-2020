@@ -13,7 +13,7 @@ public interface TagService {
 
     TagResponseDTO retrieveByTagName(String tagName);
 
-    TagUpdateDTO updateTag( String tagName, String newTag) ;
+    TagUpdateDTO updateTag(String tagName, String newTag);
 
     boolean deleteTag(String tagName);
 
