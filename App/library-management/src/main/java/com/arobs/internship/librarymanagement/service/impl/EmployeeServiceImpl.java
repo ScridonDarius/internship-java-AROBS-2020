@@ -6,11 +6,12 @@ import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
 import com.arobs.internship.librarymanagement.service.EmployeeService;
-import com.arobs.internship.librarymanagement.service.builder.EmployeeBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -21,18 +22,32 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-
     @Override
     public EmployeeResponseDTO retrieveByUserName(String userName) {
-        return EmployeeBuilder.generateDTOResponseFromEntity(employeeRepository.findEmployee(userName));
+        return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployee(userName));
     }
 
     @Override
     public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) {
-        LocalDateTime now = LocalDateTime.now();
         request.setEmployeeStatus(EmployeeStatus.ACTIVE);
-        request.setCreateDate(now);
-        employeeRepository.createEmployee(EmployeeBuilder.generateEntityFromDTORegistration(request));
-        return EmployeeBuilder.generateDTOResponseFromEntity(employeeRepository.findEmployee(request.getUserName()));
+        request.setCreateDate(LocalDateTime.now());
+        employeeRepository.createEmployee(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
+        return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployee(request.getUserName()));
+    }
+
+    @Override
+    public boolean deleteEmployee(String userName) {
+        return employeeRepository.deleteEmployee(userName);
+    }
+
+    @Override
+    public List<EmployeeResponseDTO> retrieveAll() {
+        List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
+        List<Employee> employees = this.employeeRepository.findAll();
+
+        for (Employee employeeAux : employees) {
+            employeeResponseDTOS.add(EmployeeMapperConverter.generateDTOResponseFromEntity(employeeAux));
+        }
+        return employeeResponseDTOS;
     }
 }

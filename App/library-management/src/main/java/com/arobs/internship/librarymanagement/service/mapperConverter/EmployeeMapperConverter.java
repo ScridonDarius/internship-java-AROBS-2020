@@ -1,14 +1,12 @@
-package com.arobs.internship.librarymanagement.service.builder;
+package com.arobs.internship.librarymanagement.service.mapperConverter;
 
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.model.Employee;
-import com.arobs.internship.librarymanagement.model.Tag;
 import org.modelmapper.ModelMapper;
 
-public class EmployeeBuilder {
+public class EmployeeMapperConverter {
 
     static ModelMapper modelMapper = new ModelMapper();
 

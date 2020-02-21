@@ -1,6 +1,6 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
-import com.arobs.internship.librarymanagement.service.builder.TagBuilder;
+import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
@@ -14,9 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("service")
+@Service
 public class TagServiceImpl implements TagService {
-
 
     private final TagRepository tagRepository;
 
@@ -28,15 +27,15 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagResponseDTO addTag(TagRegistrationDTO request) {
-        tagRepository.createTag(TagBuilder.generateEntityFromDTORegistration(request));
+        tagRepository.createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
 
-        return TagBuilder.generateDTOResponseFromEntity(tagRepository.findByTagName(request.getTagName()));
+        return TagMapperConverter.generateDTOResponseFromEntity(tagRepository.findByTagName(request.getTagName()));
     }
 
     @Override
     public TagUpdateDTO updateTag(String tagName, String newTag) {
         tagRepository.updateTag(tagName, newTag);
-        return TagBuilder.generateDTOUpdateFromEntity(this.tagRepository.findByTagName(newTag));
+        return TagMapperConverter.generateDTOUpdateFromEntity(this.tagRepository.findByTagName(newTag));
     }
 
     @Override
@@ -46,7 +45,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagResponseDTO retrieveByTagName(String tagName) {
-        return TagBuilder.generateDTOResponseFromEntity(tagRepository.findByTagName(tagName));
+        return TagMapperConverter.generateDTOResponseFromEntity(tagRepository.findByTagName(tagName));
     }
 
     @Override
@@ -55,7 +54,7 @@ public class TagServiceImpl implements TagService {
         List<Tag> tags = this.tagRepository.findAll();
 
         for (Tag tagAux : tags) {
-            tagsResponse.add(TagBuilder.generateDTOResponseFromEntity(tagAux));
+            tagsResponse.add(TagMapperConverter.generateDTOResponseFromEntity(tagAux));
         }
         return tagsResponse;
     }

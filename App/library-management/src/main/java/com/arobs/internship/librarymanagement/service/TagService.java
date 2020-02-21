@@ -4,7 +4,6 @@ import com.arobs.internship.librarymanagement.controller.api.request.TagRegistra
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface TagService {

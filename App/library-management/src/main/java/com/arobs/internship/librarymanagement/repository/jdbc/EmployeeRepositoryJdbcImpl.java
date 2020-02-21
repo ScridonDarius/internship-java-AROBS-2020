@@ -20,16 +20,12 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
 
     @Override
     public int createEmployee(Employee employee) {
-        return getJdbcTemplate().update("INSERT INTO employee(user_name,first_name,last_name,email,password,Role,Status,create_date) VALUES(?,?,?,?,MD5(?),?,?,?)", employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getPassword(), employee.getEmployeeRole().toString(), employee.getEmployeeStatus().toString(), employee.getCreateDate());
-    }
-
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
+        return jdbcTemplate.update("INSERT INTO employee(user_name,first_name,last_name,email,password,Role,Status,create_date) VALUES(?,?,?,?,MD5(?),?,?,?)", employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getPassword(), employee.getEmployeeRole().toString(), employee.getEmployeeStatus().toString(), employee.getCreateDate());
     }
 
     @Override
     public Employee findEmployee(String userName) {
-        return getJdbcTemplate().queryForObject("SELECT * FROM employee WHERE user_name = ?", new Object[]{userName}, new EmployeeMapper());
+        return jdbcTemplate.queryForObject("SELECT * FROM employee WHERE user_name = ?", new Object[]{userName}, new EmployeeMapper());
     }
 
     @Override
@@ -39,12 +35,12 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
 
     @Override
     public boolean deleteEmployee(String userName) {
-        return getJdbcTemplate().update("DELETE FROM tag WHERE user_name = ?", userName) > 0;
+        return jdbcTemplate.update("DELETE FROM tag WHERE user_name = ?", userName) > 0;
     }
 
     @Override
     public List<Employee> findAll() {
-        return getJdbcTemplate().query("SELECT * FROM employee", new EmployeeMapper());
+        return jdbcTemplate.query("SELECT * FROM employee", new EmployeeMapper());
     }
 }
 

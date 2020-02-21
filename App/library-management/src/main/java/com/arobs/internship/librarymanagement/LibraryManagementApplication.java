@@ -22,7 +22,6 @@ public class LibraryManagementApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(LibraryManagementApplication.class, args);
-
 //       ApplicationContext applicationContext = SpringApplication.run(LibraryManagementApplication.class, args);
 //       EmployeeRepository employeeRepository = (EmployeeRepository) applicationContext.getBean("repo");
 //       LocalDateTime now = LocalDateTime.now();

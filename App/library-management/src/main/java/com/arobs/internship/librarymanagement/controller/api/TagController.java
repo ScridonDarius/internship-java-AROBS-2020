@@ -23,7 +23,7 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @RequestMapping(value = "/createTag", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TagResponseDTO> createTag(
             @RequestBody TagRegistrationDTO request) {
@@ -35,10 +35,10 @@ public class TagController {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/tagName/{tagName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/tagName", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<TagResponseDTO> retrieveByUserName(
-            @PathVariable("tagName") String tagName) {
+    public ResponseEntity<TagResponseDTO> retrieveByTagName(
+            @RequestParam String tagName) {
 
         final TagResponseDTO tag =
                 this.tagService.retrieveByTagName(tagName);
@@ -48,11 +48,11 @@ public class TagController {
                 : new ResponseEntity<>(new TagResponseDTO(), HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/updateTag/tagName/{tagName}/newTag/{newTag}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/updateTag", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TagUpdateDTO> updateTag(
-            @PathVariable("tagName") String tagName,
-            @PathVariable("newTag") String newTag) {
+            @RequestParam String tagName,
+            @RequestParam String newTag) {
 
         TagUpdateDTO tag = this.tagService.updateTag(tagName, newTag);
         return tag != null
@@ -60,17 +60,16 @@ public class TagController {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "deleteTag/tagName/{tagName}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "deleteTag", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> deleteTag(@PathVariable("tagName") String tagName) {
+    public ResponseEntity<Boolean> deleteTag(@RequestParam String tagName) {
 
         return new ResponseEntity<>(this.tagService.deleteTag(tagName), HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<TagResponseDTO>> retrieveAll(){
+    public ResponseEntity<List<TagResponseDTO>> retrieveAll() {
         List<TagResponseDTO> tags = this.tagService.retrieveAll();
 
         return tags != null

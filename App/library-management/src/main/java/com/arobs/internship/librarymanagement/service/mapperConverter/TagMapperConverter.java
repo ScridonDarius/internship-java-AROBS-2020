@@ -1,4 +1,4 @@
-package com.arobs.internship.librarymanagement.service.builder;
+package com.arobs.internship.librarymanagement.service.mapperConverter;
 
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
@@ -6,7 +6,7 @@ import com.arobs.internship.librarymanagement.controller.api.response.TagRespons
 import com.arobs.internship.librarymanagement.model.Tag;
 import org.modelmapper.ModelMapper;
 
-public class TagBuilder {
+public class TagMapperConverter {
 
 static ModelMapper  modelMapper = new ModelMapper();
 
