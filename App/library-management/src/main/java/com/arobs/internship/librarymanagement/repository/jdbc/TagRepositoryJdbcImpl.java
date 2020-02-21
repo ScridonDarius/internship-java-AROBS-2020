@@ -18,32 +18,28 @@ public class TagRepositoryJdbcImpl implements TagRepository {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
-
     @Override
     public Tag findByTagName(String tagName) {
-        return getJdbcTemplate().queryForObject("SELECT * FROM tag WHERE tag_name = ?", new Object[]{tagName}, new TagMapper());
+        return jdbcTemplate.queryForObject("SELECT * FROM tag WHERE tag_name = ?", new Object[]{tagName}, new TagMapper());
     }
 
     @Override
     public int createTag(Tag tag) {
-        return getJdbcTemplate().update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
+        return jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
     }
 
     @Override
     public boolean updateTag(String tagName, String newTag) {
-        return getJdbcTemplate().update("UPDATE tag set tag_name = ? WHERE tag_name =?", newTag, tagName) > 0;
+        return jdbcTemplate.update("UPDATE tag set tag_name = ? WHERE tag_name =?", newTag, tagName) > 0;
     }
 
     @Override
     public boolean deleteTag(String tagName) {
-        return getJdbcTemplate().update("DELETE FROM tag WHERE tag_name = ?", tagName) > 0;
+        return jdbcTemplate.update("DELETE FROM tag WHERE tag_name = ?", tagName) > 0;
     }
 
     @Override
     public List<Tag> findAll() {
-        return getJdbcTemplate().query("SELECT * FROM tag", new TagMapper());
+        return jdbcTemplate.query("SELECT * FROM tag", new TagMapper());
     }
 }
