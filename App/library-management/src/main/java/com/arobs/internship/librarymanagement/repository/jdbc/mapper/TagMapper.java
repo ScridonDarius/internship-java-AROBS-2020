@@ -1,4 +1,4 @@
-package com.arobs.internship.librarymanagement.model.mapper;
+package com.arobs.internship.librarymanagement.repository.jdbc.mapper;
 
 import com.arobs.internship.librarymanagement.model.Tag;
 import org.springframework.jdbc.core.RowMapper;

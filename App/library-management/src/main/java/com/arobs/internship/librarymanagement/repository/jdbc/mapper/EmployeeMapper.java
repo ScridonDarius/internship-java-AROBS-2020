@@ -1,4 +1,4 @@
-package com.arobs.internship.librarymanagement.model.mapper;
+package com.arobs.internship.librarymanagement.repository.jdbc.mapper;
 
 import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.model.enums.EmployeeRole;
@@ -12,7 +12,7 @@ public class EmployeeMapper implements RowMapper<Employee> {
     @Override
     public Employee mapRow(ResultSet resultSet, int i) throws SQLException {
         Employee employee = new Employee();
-        employee.setId(resultSet.getLong("employee_id"));
+        employee.setId(resultSet.getInt("employee_id"));
         employee.setUserName(resultSet.getString("user_name"));
         employee.setFirstName(resultSet.getString("first_name"));
         employee.setLastName(resultSet.getString("last_name"));

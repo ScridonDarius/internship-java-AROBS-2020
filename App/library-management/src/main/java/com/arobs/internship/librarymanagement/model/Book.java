@@ -1,8 +1,12 @@
 package com.arobs.internship.librarymanagement.model;
 
+import javax.persistence.*;
+
 import java.util.List;
 import java.util.Objects;
 
+//@Entity
+//@Table(name = "book")
 public class Book {
     private Long id;
     private String title;

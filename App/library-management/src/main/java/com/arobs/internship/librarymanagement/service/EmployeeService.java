@@ -4,6 +4,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.EmployeeReg
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EmployeeService {
 
@@ -13,5 +14,5 @@ public interface EmployeeService {
 
     boolean deleteEmployee(String userName);
 
-    List<EmployeeResponseDTO> retrieveAll();
+    Set<EmployeeResponseDTO> retrieveAll();
 }

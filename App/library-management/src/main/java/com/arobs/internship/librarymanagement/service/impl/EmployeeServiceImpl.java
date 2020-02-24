@@ -5,21 +5,36 @@ import com.arobs.internship.librarymanagement.controller.api.response.EmployeeRe
 import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
+import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.EmployeeService;
+import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    @Autowired
+    private RepositoryFactory repositoryFactory;
+
+//    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+//        this.employeeRepository = employeeRepository;
+//    }
+
+    @PostConstruct
+    public void init() {
+        RepositoryFactory factory = repositoryFactory.getInstance();
+        employeeRepository = factory.getEmployeeRepository();
     }
 
     @Override
@@ -41,13 +56,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeResponseDTO> retrieveAll() {
+    public Set<EmployeeResponseDTO> retrieveAll() {
         List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
         List<Employee> employees = this.employeeRepository.findAll();
 
         for (Employee employeeAux : employees) {
             employeeResponseDTOS.add(EmployeeMapperConverter.generateDTOResponseFromEntity(employeeAux));
         }
-        return employeeResponseDTOS;
+        return ListToSetConverter.convertListToSet(employeeResponseDTOS);
     }
 }

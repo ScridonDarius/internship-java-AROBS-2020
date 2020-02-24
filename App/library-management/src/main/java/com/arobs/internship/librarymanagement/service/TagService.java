@@ -5,6 +5,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDT
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TagService {
 
@@ -16,5 +17,5 @@ public interface TagService {
 
     boolean deleteTag(String tagName);
 
-    List<TagResponseDTO> retrieveAll();
+    Set<TagResponseDTO> retrieveAll();
 }

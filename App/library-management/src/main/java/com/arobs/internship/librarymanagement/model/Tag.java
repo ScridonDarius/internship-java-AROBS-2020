@@ -1,7 +1,11 @@
 package com.arobs.internship.librarymanagement.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
-
+//
+//@Entity
+//@Table(name = "tag")
 public class Tag {
 
     private Long id;

@@ -2,9 +2,13 @@ package com.arobs.internship.librarymanagement.model;
 
 import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Objects;
-
+//
+//@Entity
+//@Table(name = "book_request")
 public class BookRequest {
     private Long id;
     private String title;

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(
@@ -69,8 +70,8 @@ public class TagController {
 
     @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<TagResponseDTO>> retrieveAll() {
-        List<TagResponseDTO> tags = this.tagService.retrieveAll();
+    public ResponseEntity<Set<TagResponseDTO>> retrieveAll() {
+        Set<TagResponseDTO> tags = this.tagService.retrieveAll();
 
         return tags != null
                 ? new ResponseEntity<>(tags, HttpStatus.OK)

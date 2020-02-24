@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/employee", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -71,8 +72,8 @@ public class EmployeeController {
 
     @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<EmployeeResponseDTO>> retrieveAll() {
-        List<EmployeeResponseDTO> employeeResponseDTOS = this.employeeService.retrieveAll();
+    public ResponseEntity<Set<EmployeeResponseDTO>> retrieveAll() {
+        Set<EmployeeResponseDTO> employeeResponseDTOS = this.employeeService.retrieveAll();
 
         return employeeResponseDTOS != null
                 ? new ResponseEntity<>(employeeResponseDTOS, HttpStatus.OK)

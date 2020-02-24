@@ -5,6 +5,7 @@ import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -43,11 +44,13 @@ public class EmployeeResponseDTO {
     @ApiModelProperty(required = true)
     @NotNull
     @Size(max = 10)
+    @Enumerated
     private EmployeeRole employeeRole;
 
     @ApiModelProperty(required = true)
     @NotNull
     @Size(max = 10)
+    @Enumerated
     private EmployeeStatus employeeStatus;
 
     @ApiModelProperty(required = true)

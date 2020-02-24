@@ -1,5 +1,6 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
+import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -49,13 +51,13 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagResponseDTO> retrieveAll() {
+    public Set<TagResponseDTO> retrieveAll() {
         List<TagResponseDTO> tagsResponse = new ArrayList<TagResponseDTO>();
         List<Tag> tags = this.tagRepository.findAll();
 
         for (Tag tagAux : tags) {
             tagsResponse.add(TagMapperConverter.generateDTOResponseFromEntity(tagAux));
         }
-        return tagsResponse;
+        return ListToSetConverter.convertListToSet(tagsResponse);
     }
 }

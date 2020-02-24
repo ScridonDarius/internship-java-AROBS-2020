@@ -3,25 +3,49 @@ package com.arobs.internship.librarymanagement.model;
 import com.arobs.internship.librarymanagement.model.enums.EmployeeRole;
 import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
+@Table(name = "employee")
 public class Employee {
 
-    private Long id;
+    @Id
+    @GeneratedValue
+    @Column(name ="employee_id")
+    private int id;
+
+    @Column(nullable = false, length = 50, unique = true, name = "user_name")
     private String userName;
+
+    @Column(nullable = false, length = 20, name = "first_name")
     private String firstName;
+
+    @Column(nullable = false, length = 20, name = "last_name")
     private String lastName;
+
+    @Column(nullable = false, length = 50, name = "password")
     private String password;
+
+    @Column(nullable = false, length = 50, name = "email")
     private String email;
+
+    @Column(nullable = false, length = 50, name = "Role")
+    @Enumerated(EnumType.STRING)
     private EmployeeRole employeeRole;
+
+    @Column(nullable = false, length = 50, name = "Status")
+    @Enumerated(EnumType.STRING)
     private EmployeeStatus employeeStatus;
+
+    @Column(nullable = false, length = 50, name = "create_date")
     private LocalDateTime createDate;
 
     public Employee() {
     }
 
-    public Employee(Long id, String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate) {
+    public Employee(int id, String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -52,11 +76,11 @@ public class Employee {
         this.createDate = createDate;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -121,7 +145,7 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id.equals(employee.id) &&
+        return id == employee.id &&
                 userName.equals(employee.userName) &&
                 firstName.equals(employee.firstName) &&
                 lastName.equals(employee.lastName) &&

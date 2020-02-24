@@ -1,7 +1,7 @@
 package com.arobs.internship.librarymanagement.repository.jdbc;
 
 import com.arobs.internship.librarymanagement.model.Tag;
-import com.arobs.internship.librarymanagement.model.mapper.TagMapper;
+import com.arobs.internship.librarymanagement.repository.jdbc.mapper.TagMapper;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
