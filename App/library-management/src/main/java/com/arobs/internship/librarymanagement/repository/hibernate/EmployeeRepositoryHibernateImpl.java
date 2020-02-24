@@ -7,6 +7,7 @@ import org.hibernate.Session;
 
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
+
 
 @Repository
 public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
@@ -30,7 +32,6 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     }
 
     @Override
-    @Transactional
     public Employee findEmployee(String userName) {
         Session session = this.entityManager.unwrap(Session.class);
         TypedQuery<Employee> query = session.createQuery("FROM Employee WHERE user_name = :userName");
@@ -39,16 +40,31 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
 
     @Override
     public boolean updateEmployee(String userName, Employee employee) {
-        return false;
+        Employee oldEmployee = findEmployee(userName);
+        Session session = this.entityManager.unwrap(Session.class);
+        session.update(employee);
+        Employee newEmployee = findEmployee(userName);
+
+        if (oldEmployee.equals(newEmployee)) {
+            return false;
+        } else
+            return true;
     }
 
     @Override
+    @Modifying
     public boolean deleteEmployee(String userName) {
-        return false;
+        Session session = this.entityManager.unwrap(Session.class);
+        TypedQuery<Boolean> query = session.createQuery("DELETE FROM Employee WHERE user_name = :userName");
+
+        return query.setParameter("userName", userName).getSingleResult();
     }
 
     @Override
     public List<Employee> findAll() {
-        return null;
+        Session session = this.entityManager.unwrap(Session.class);
+
+        Query query = session.createQuery("FROM Employee");
+        return query.getResultList();
     }
 }

@@ -5,12 +5,15 @@ import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDT
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
+import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -51,17 +54,17 @@ public class EmployeeController {
 
     //TODO : UpdateEmployee Create method in repository and service (for some fields)
 
-//    @RequestMapping(value = "/updateEmployee", method = RequestMethod.PATCH)
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<EmployeeUpdateDTO> updateTag(
-//            @RequestParam String tagName,
-//            @RequestParam String newTag) {
-//
-//        EmployeeUpdateDTO employeeUpdateDTO = this.employeeService.update();
-//        return employeeUpdateDTO != null
-//                ? new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK)
-//                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+    @RequestMapping(value = "/updateEmployee/{userName}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<EmployeeUpdateDTO> updateEmployee(
+           @PathVariable("userName") String userName,
+           @RequestBody @Valid EmployeeUpdateDTO request) {
+
+        EmployeeUpdateDTO employeeUpdateDTO = this.employeeService.employeeUpdate(request,userName);
+        return employeeUpdateDTO != null
+                ? new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     @RequestMapping(value = "deleteEmployee", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
