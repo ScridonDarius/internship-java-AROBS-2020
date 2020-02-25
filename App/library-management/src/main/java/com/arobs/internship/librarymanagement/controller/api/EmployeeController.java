@@ -1,26 +1,20 @@
 package com.arobs.internship.librarymanagement.controller.api;
 
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
-import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
-import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/employee", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class EmployeeController {
-
     private final EmployeeServiceImpl employeeService;
 
     public EmployeeController(EmployeeServiceImpl employeeService) {
@@ -31,7 +25,6 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> createEmployee(
             @RequestBody EmployeeRegistrationDTO request) {
-
         EmployeeResponseDTO employeeResponse = this.employeeService.addEmployee(request);
 
         return employeeResponse != null
@@ -43,7 +36,6 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> retrieveByUserName(
             @RequestParam String userName) {
-
         EmployeeResponseDTO employeeResponseDTO =
                 this.employeeService.retrieveByUserName(userName);
 
@@ -54,13 +46,13 @@ public class EmployeeController {
 
     //TODO : UpdateEmployee Create method in repository and service (for some fields)
 
-    @RequestMapping(value = "/updateEmployee/{userName}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/updateEmployee", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeUpdateDTO> updateEmployee(
-           @PathVariable("userName") String userName,
-           @RequestBody @Valid EmployeeUpdateDTO request) {
+            @RequestParam String userName,
+            @RequestBody @Valid EmployeeUpdateDTO request) {
+        EmployeeUpdateDTO employeeUpdateDTO = this.employeeService.employeeUpdate(request, userName);
 
-        EmployeeUpdateDTO employeeUpdateDTO = this.employeeService.employeeUpdate(request,userName);
         return employeeUpdateDTO != null
                 ? new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -1,14 +1,18 @@
 package com.arobs.internship.librarymanagement.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
-//
-//@Entity
-//@Table(name = "tag")
+
+@Entity
+@Table(name = "tag")
 public class Tag {
 
+    @Id
+    @GeneratedValue
+    @Column(name ="tag_id")
     private Long id;
+
+    @Column(name = "tag_name", nullable = false, length = 50, unique = true)
     private String tagName;
 
     public Tag() {

@@ -2,19 +2,14 @@ package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
-
 import org.hibernate.Session;
-
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-
-
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -35,6 +30,7 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     public Employee findEmployee(String userName) {
         Session session = this.entityManager.unwrap(Session.class);
         TypedQuery<Employee> query = session.createQuery("FROM Employee WHERE user_name = :userName");
+
         return query.setParameter("userName", userName).getSingleResult();
     }
 
@@ -45,10 +41,7 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
         session.update(employee);
         Employee newEmployee = findEmployee(userName);
 
-        if (oldEmployee.equals(newEmployee)) {
-            return false;
-        } else
-            return true;
+        return !oldEmployee.equals(newEmployee);
     }
 
     @Override
@@ -63,8 +56,8 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     @Override
     public List<Employee> findAll() {
         Session session = this.entityManager.unwrap(Session.class);
-
         Query query = session.createQuery("FROM Employee");
+
         return query.getResultList();
     }
 }

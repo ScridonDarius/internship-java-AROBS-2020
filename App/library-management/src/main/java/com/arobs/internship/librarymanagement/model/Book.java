@@ -2,22 +2,39 @@ package com.arobs.internship.librarymanagement.model;
 
 import javax.persistence.*;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
-//@Entity
-//@Table(name = "book")
+@Entity
+@Table(name = "book")
 public class Book {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "book_id")
     private Long id;
+
+    @Column(nullable = false, length = 50)
     private String title;
+
+    @Column(nullable = false, length = 50)
     private String author;
+
+    @Column(nullable = false, length = 100)
     private String description;
-    private List<Tag> tags;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "book_tag",
+            joinColumns = {@JoinColumn(name = "book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
+    )
+    private Set<Tag> tags;
 
     public Book() {
     }
 
-    public Book(Long id, String title, String author, String description, List<Tag> tags) {
+    public Book(Long id, String title, String author, String description, Set<Tag> tags) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -25,7 +42,7 @@ public class Book {
         this.tags = tags;
     }
 
-    public Book(String title, String author, String description, List<Tag> tags) {
+    public Book(String title, String author, String description, Set<Tag> tags) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -64,11 +81,11 @@ public class Book {
         this.description = description;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
@@ -77,11 +94,11 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return id.equals(book.id) &&
+        return Objects.equals(id, book.id) &&
                 title.equals(book.title) &&
                 author.equals(book.author) &&
-                Objects.equals(description, book.description) &&
-                tags.equals(book.tags);
+                description.equals(book.description) &&
+                Objects.equals(tags, book.tags);
     }
 
     @Override
