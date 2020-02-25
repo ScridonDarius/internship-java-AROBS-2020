@@ -41,17 +41,17 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
 
     @Override
     public boolean updateEmployee(String userName, Employee employee) {
-        Employee oldEmployee = findEmployee(userName);
+//        Employee oldEmployee = findEmployee(userName);
 //        Session session = this.entityManager.unwrap(Session.class);
 //        session.update(employee);
 //        Employee newEmployee = findEmployee(userName);
 //
 //        return !oldEmployee.equals(newEmployee);
 
-        Session session = sessionFactory.openSession();
+        Employee oldEmployee = findEmployee(userName);
         Transaction transaction = null;
 
-        try {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.update(employee);
             Employee newEmployee = findEmployee(userName);
@@ -68,7 +68,6 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
 
         return false;
     }
-
 
     @Override
     @Modifying

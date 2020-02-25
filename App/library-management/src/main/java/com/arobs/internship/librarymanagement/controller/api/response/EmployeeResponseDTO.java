@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @ApiModel
 public class EmployeeResponseDTO {
@@ -141,5 +142,26 @@ public class EmployeeResponseDTO {
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeResponseDTO that = (EmployeeResponseDTO) o;
+        return Objects.equals(id, that.id) &&
+                userName.equals(that.userName) &&
+                firstName.equals(that.firstName) &&
+                lastName.equals(that.lastName) &&
+                password.equals(that.password) &&
+                email.equals(that.email) &&
+                employeeRole == that.employeeRole &&
+                employeeStatus == that.employeeStatus &&
+                createDate.equals(that.createDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userName, firstName, lastName, password, email, employeeRole, employeeStatus, createDate);
     }
 }

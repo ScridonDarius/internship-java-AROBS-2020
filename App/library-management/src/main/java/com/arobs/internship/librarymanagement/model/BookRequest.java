@@ -2,40 +2,60 @@ package com.arobs.internship.librarymanagement.model;
 
 import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
-//
-//@Entity
-//@Table(name = "book_request")
+
+@Entity
+@Table(name = "book_request")
 public class BookRequest {
-    private Long id;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "book_request_id")
+    private int id;
+
+    @Column(nullable = false, length = 50)
     private String title;
+
+    @Column(nullable = false, length = 50)
     private String author;
+
+    @Column(nullable = false, length = 50, name = "publishing_company")
     private String publishingCompany;
+
+    @Column(nullable = false, name = "number_copy")
     private int copyNumber;
+
+    @Column(nullable = false, name = "total_cost")
     private BigDecimal totalCost;
+
+    @Column(nullable = false, length = 50, name = "Status")
+    @Enumerated(EnumType.STRING)
     private BookRentStatus bookRentStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
     public BookRequest() {
     }
 
-    public BookRequest(Long id, String title, String author, String publishingCompany, int copyNumber, BigDecimal totalCost, BookRentStatus bookRentStatus) {
-        this.id = id;
+    public BookRequest(String title, String author, String publishingCompany, int copyNumber, BigDecimal totalCost, BookRentStatus bookRentStatus, Employee employee) {
         this.title = title;
         this.author = author;
         this.publishingCompany = publishingCompany;
         this.copyNumber = copyNumber;
         this.totalCost = totalCost;
         this.bookRentStatus = bookRentStatus;
+        this.employee = employee;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -87,22 +107,31 @@ public class BookRequest {
         this.bookRentStatus = bookRentStatus;
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookRequest that = (BookRequest) o;
-        return copyNumber == that.copyNumber &&
-                id.equals(that.id) &&
+        return id == that.id &&
+                copyNumber == that.copyNumber &&
                 title.equals(that.title) &&
                 author.equals(that.author) &&
                 publishingCompany.equals(that.publishingCompany) &&
                 totalCost.equals(that.totalCost) &&
-                bookRentStatus == that.bookRentStatus;
+                bookRentStatus == that.bookRentStatus &&
+                employee.equals(that.employee);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, publishingCompany, copyNumber, totalCost, bookRentStatus);
+        return Objects.hash(id, title, author, publishingCompany, copyNumber, totalCost, bookRentStatus, employee);
     }
 }

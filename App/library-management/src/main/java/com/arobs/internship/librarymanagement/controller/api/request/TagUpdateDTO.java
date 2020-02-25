@@ -18,7 +18,7 @@ public class TagUpdateDTO {
     @Size(max = 150)
     private String tagName;
 
-    public TagUpdateDTO(){
+    public TagUpdateDTO() {
     }
 
     public TagUpdateDTO(@NotNull @Size(max = 150) String tagName) {

@@ -1,7 +1,6 @@
 package com.arobs.internship.librarymanagement.model;
 
 import javax.persistence.*;
-
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,22 +30,39 @@ public class Book {
     )
     private Set<Tag> tags;
 
+    @OneToMany(mappedBy = "book",
+            cascade = CascadeType.ALL
+    )
+    private Set<Copy> copies;
+
+
+    @OneToMany(mappedBy = "book",
+            cascade = CascadeType.ALL
+    )
+    private Set<BookRent> bookRents;
+
+    @OneToMany(mappedBy = "book",
+            cascade = CascadeType.ALL
+    )
+    private Set<RentRequest> rentRequests;
+
     public Book() {
     }
 
-    public Book(Long id, String title, String author, String description, Set<Tag> tags) {
-        this.id = id;
+    public Book(String title, String author, String description, Set<Tag> tags, Set<Copy> copies, Set<BookRent> bookRents, Set<RentRequest> rentRequests) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.tags = tags;
+        this.copies = copies;
+        this.bookRents = bookRents;
+        this.rentRequests = rentRequests;
     }
 
-    public Book(String title, String author, String description, Set<Tag> tags) {
+    public Book(String title, String author, String description) {
         this.title = title;
         this.author = author;
         this.description = description;
-        this.tags = tags;
     }
 
     public Long getId() {
@@ -89,20 +105,47 @@ public class Book {
         this.tags = tags;
     }
 
+    public Set<Copy> getCopies() {
+        return copies;
+    }
+
+    public void setCopies(Set<Copy> copies) {
+        this.copies = copies;
+    }
+
+    public Set<BookRent> getBookRents() {
+        return bookRents;
+    }
+
+    public void setBookRents(Set<BookRent> bookRents) {
+        this.bookRents = bookRents;
+    }
+
+    public Set<RentRequest> getRentRequests() {
+        return rentRequests;
+    }
+
+    public void setRentRequests(Set<RentRequest> rentRequests) {
+        this.rentRequests = rentRequests;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id) &&
+        return id.equals(book.id) &&
                 title.equals(book.title) &&
                 author.equals(book.author) &&
                 description.equals(book.description) &&
-                Objects.equals(tags, book.tags);
+                tags.equals(book.tags) &&
+                Objects.equals(copies, book.copies) &&
+                Objects.equals(bookRents, book.bookRents) &&
+                Objects.equals(rentRequests, book.rentRequests);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, description, tags);
+        return Objects.hash(id, title, author, description, tags, copies, bookRents, rentRequests);
     }
 }

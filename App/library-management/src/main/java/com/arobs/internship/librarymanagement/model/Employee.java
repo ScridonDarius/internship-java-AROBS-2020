@@ -6,6 +6,7 @@ import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee")
@@ -13,7 +14,7 @@ public class Employee {
 
     @Id
     @GeneratedValue
-    @Column(name ="employee_id")
+    @Column(name = "employee_id")
     private int id;
 
     @Column(nullable = false, length = 50, unique = true, name = "user_name")
@@ -42,6 +43,15 @@ public class Employee {
     @Column(nullable = false, length = 50, name = "create_date")
     private LocalDateTime createDate;
 
+    @OneToMany(mappedBy = "employee")
+    private Set<RentRequest> rentRequestSet;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<BookRent> bookRents;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<BookRequest> bookRequests;
+
     public Employee() {
     }
 
@@ -68,12 +78,18 @@ public class Employee {
         this.createDate = createDate;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
+    public Employee(String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate, Set<RentRequest> rentRequestSet, Set<BookRent> bookRents, Set<BookRequest> bookRequests) {
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.employeeRole = employeeRole;
+        this.employeeStatus = employeeStatus;
         this.createDate = createDate;
+        this.rentRequestSet = rentRequestSet;
+        this.bookRents = bookRents;
+        this.bookRequests = bookRequests;
     }
 
     public int getId() {
@@ -140,6 +156,38 @@ public class Employee {
         this.employeeStatus = employeeStatus;
     }
 
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public Set<RentRequest> getRentRequestSet() {
+        return rentRequestSet;
+    }
+
+    public void setRentRequestSet(Set<RentRequest> rentRequestSet) {
+        this.rentRequestSet = rentRequestSet;
+    }
+
+    public Set<BookRent> getBookRents() {
+        return bookRents;
+    }
+
+    public void setBookRents(Set<BookRent> bookRents) {
+        this.bookRents = bookRents;
+    }
+
+    public Set<BookRequest> getBookRequests() {
+        return bookRequests;
+    }
+
+    public void setBookRequests(Set<BookRequest> bookRequests) {
+        this.bookRequests = bookRequests;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -153,11 +201,14 @@ public class Employee {
                 email.equals(employee.email) &&
                 employeeRole == employee.employeeRole &&
                 employeeStatus == employee.employeeStatus &&
-                createDate.equals(employee.createDate);
+                createDate.equals(employee.createDate) &&
+                Objects.equals(rentRequestSet, employee.rentRequestSet) &&
+                Objects.equals(bookRents, employee.bookRents) &&
+                Objects.equals(bookRequests, employee.bookRequests);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, firstName, lastName, password, email, employeeRole, employeeStatus, createDate);
+        return Objects.hash(id, userName, firstName, lastName, password, email, employeeRole, employeeStatus, createDate, rentRequestSet, bookRents, bookRequests);
     }
 }

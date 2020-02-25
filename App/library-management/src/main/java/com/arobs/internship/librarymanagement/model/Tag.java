@@ -9,7 +9,7 @@ public class Tag {
 
     @Id
     @GeneratedValue
-    @Column(name ="tag_id")
+    @Column(name = "tag_id")
     private Long id;
 
     @Column(name = "tag_name", nullable = false, length = 50, unique = true)
