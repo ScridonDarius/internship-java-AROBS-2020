@@ -34,7 +34,7 @@ public class AppConfig {
     private final String DRIVER = "driver";
     private final String PASSWORD = "dbpassword";
 
-    @Bean
+    //@Bean
     public DataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
         driverManagerDataSource.setUrl(environment.getProperty(URL));

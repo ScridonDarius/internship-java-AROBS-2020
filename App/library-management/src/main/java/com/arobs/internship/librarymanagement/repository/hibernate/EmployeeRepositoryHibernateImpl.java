@@ -3,6 +3,8 @@ package com.arobs.internship.librarymanagement.repository.hibernate;
 import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,6 +20,9 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
 
     @Autowired
     EntityManager entityManager;
+
+    @Autowired
+    SessionFactory sessionFactory;
 
     @Override
     public int createEmployee(Employee employee) {
@@ -37,12 +42,33 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     @Override
     public boolean updateEmployee(String userName, Employee employee) {
         Employee oldEmployee = findEmployee(userName);
-        Session session = this.entityManager.unwrap(Session.class);
-        session.update(employee);
-        Employee newEmployee = findEmployee(userName);
+//        Session session = this.entityManager.unwrap(Session.class);
+//        session.update(employee);
+//        Employee newEmployee = findEmployee(userName);
+//
+//        return !oldEmployee.equals(newEmployee);
 
-        return !oldEmployee.equals(newEmployee);
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            session.update(employee);
+            Employee newEmployee = findEmployee(userName);
+            transaction.commit();
+
+            return !oldEmployee.equals(newEmployee);
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+
+        return false;
     }
+
 
     @Override
     @Modifying

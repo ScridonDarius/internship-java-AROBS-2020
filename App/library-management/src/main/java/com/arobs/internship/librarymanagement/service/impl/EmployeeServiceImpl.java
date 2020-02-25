@@ -85,7 +85,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         if (!StringUtils.isEmpty(request.getFirstName()) && !request.getFirstName().equals(employee.getFirstName()) && !request.getFirstName().equals("string")) {
-            employee.setEmail(request.getFirstName().trim());
+            employee.setFirstName(request.getFirstName().trim());
         }
 
         if (!StringUtils.isEmpty(request.getLastName()) && !request.getLastName().equals(employee.getLastName()) && !request.getLastName().equals("string")) {

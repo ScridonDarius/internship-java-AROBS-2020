@@ -10,14 +10,6 @@ import javax.validation.constraints.Size;
 @ApiModel
 public class EmployeeUpdateDTO {
 
-    @ApiModelProperty
-    private Long id;
-
-    @ApiModelProperty(required = true)
-    @NotNull
-    @Size(max = 20)
-    private String userName;
-
     @ApiModelProperty(required = true)
     @NotNull
     @Size(max = 20)
@@ -30,39 +22,16 @@ public class EmployeeUpdateDTO {
 
     @ApiModelProperty(required = true)
     @NotNull
-    @Size(max = 20)
-    private String password;
-
-    @ApiModelProperty(required = true)
-    @NotNull
     @Size(max = 50)
     private String email;
 
     public EmployeeUpdateDTO() {
     }
 
-    public EmployeeUpdateDTO(@NotNull @Size(max = 20) String userName, @NotNull @Size(max = 20) String firstName, @NotNull @Size(max = 20) String lastName, @NotNull @Size(max = 20) String password, @NotNull @Size(max = 50) String email) {
-        this.userName = userName;
+    public EmployeeUpdateDTO(@NotNull @Size(max = 20) String firstName, @NotNull @Size(max = 20) String lastName, @NotNull @Size(max = 50) String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.password = password;
         this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getFirstName() {
@@ -79,14 +48,6 @@ public class EmployeeUpdateDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {

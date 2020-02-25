@@ -12,12 +12,13 @@ import com.arobs.internship.librarymanagement.repository.jdbc.EmployeeRepository
 import com.arobs.internship.librarymanagement.repository.jdbc.TagRepositoryJdbcImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.time.LocalDateTime;
 
-@SpringBootApplication
+@SpringBootApplication(exclude= HibernateJpaAutoConfiguration.class)
 public class LibraryManagementApplication {
 
     public static void main(String[] args) {
