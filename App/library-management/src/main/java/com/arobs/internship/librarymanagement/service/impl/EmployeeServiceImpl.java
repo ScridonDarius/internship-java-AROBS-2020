@@ -10,6 +10,7 @@ import com.arobs.internship.librarymanagement.repository.factory.RepositoryFacto
 import com.arobs.internship.librarymanagement.service.EmployeeService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
+import com.arobs.internship.librarymanagement.validation.util.EmployeeValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -51,6 +52,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) {
         request.setEmployeeStatus(EmployeeStatus.ACTIVE);
         request.setCreateDate(LocalDateTime.now());
+
+        if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
+            throw new ValidationException("Email is not correct");
+        }
+
         employeeRepository.createEmployee(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
         return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployee(request.getUserName()));
     }
@@ -100,7 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public EmployeeUpdateDTO employeeUpdate(EmployeeUpdateDTO request, String userName) {
         return updateAllEmployee(request, userName);
     }
