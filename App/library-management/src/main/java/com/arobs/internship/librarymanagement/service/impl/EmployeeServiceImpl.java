@@ -32,10 +32,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private RepositoryFactory repositoryFactory;
 
-//    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-//        this.employeeRepository = employeeRepository;
-//    }
-
     @PostConstruct
     public void init() {
         RepositoryFactory factory = repositoryFactory.getInstance();
@@ -48,7 +44,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    @Transactional
     public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) {
         request.setEmployeeStatus(EmployeeStatus.ACTIVE);
         request.setCreateDate(LocalDateTime.now());
@@ -63,11 +58,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean deleteEmployee(String userName) {
-        return employeeRepository.deleteEmployee(userName);
+        return (employeeRepository.deleteEmployee(userName)) ? true : false;
     }
 
     @Override
-    @Transactional
     public Set<EmployeeResponseDTO> retrieveAll() {
         List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
         List<Employee> employees = this.employeeRepository.findAll();
@@ -86,19 +80,19 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new ValidationException("Please introduce a valid userName");
         }
 
-        if (!StringUtils.isEmpty(request.getEmail()) && !request.getEmail().equals(employee.getEmail()) && !request.getEmail().equals("string")) {
+        if (!StringUtils.isEmpty(request.getEmail()) && !request.getEmail().equals(employee.getEmail())) {
             employee.setEmail(request.getEmail().trim());
         }
 
-        if (!StringUtils.isEmpty(request.getFirstName()) && !request.getFirstName().equals(employee.getFirstName()) && !request.getFirstName().equals("string")) {
+        if (!StringUtils.isEmpty(request.getFirstName()) && !request.getFirstName().equals(employee.getFirstName())) {
             employee.setFirstName(request.getFirstName().trim());
         }
 
-        if (!StringUtils.isEmpty(request.getLastName()) && !request.getLastName().equals(employee.getLastName()) && !request.getLastName().equals("string")) {
+        if (!StringUtils.isEmpty(request.getLastName()) && !request.getLastName().equals(employee.getLastName())) {
             employee.setLastName(request.getLastName().trim());
         }
 
-        if (!oldEmployee.equals(employee)) {
+        if (!oldEmployee.equals(employee) && EmployeeValidationUtil.isValidEmailAddress(employee.getEmail())) {
             employeeRepository.updateEmployee(userName, employee);
         }
 
@@ -106,7 +100,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    //@Transactional
     public EmployeeUpdateDTO employeeUpdate(EmployeeUpdateDTO request, String userName) {
         return updateAllEmployee(request, userName);
     }

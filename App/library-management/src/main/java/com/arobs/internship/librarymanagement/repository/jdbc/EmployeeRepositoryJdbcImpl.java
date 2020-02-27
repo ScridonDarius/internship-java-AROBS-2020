@@ -35,7 +35,7 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
 
     @Override
     public boolean deleteEmployee(String userName) {
-        return jdbcTemplate.update("DELETE FROM tag WHERE user_name = ?", userName) > 0;
+      return  jdbcTemplate.update("DELETE FROM tag WHERE user_name = ?", userName)> 0;
     }
 
     @Override
