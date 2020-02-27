@@ -1,14 +1,19 @@
 package com.arobs.internship.librarymanagement.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableSwagger2
@@ -24,7 +29,7 @@ public class AppConfig {
 //    private final String DRIVER = "driver";
 //    private final String PASSWORD = "dbpassword";
 //
-//    //@Bean
+//    @Bean
 //    public DataSource dataSource() {
 //        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 //        driverManagerDataSource.setUrl(environment.getProperty(URL));

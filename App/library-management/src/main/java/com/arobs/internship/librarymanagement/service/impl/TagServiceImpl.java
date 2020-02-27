@@ -1,5 +1,6 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
+import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
@@ -10,8 +11,10 @@ import com.arobs.internship.librarymanagement.repository.TagRepository;
 import com.arobs.internship.librarymanagement.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,12 +22,17 @@ import java.util.Set;
 @Service
 public class TagServiceImpl implements TagService {
 
-    private final TagRepository tagRepository;
+    private  TagRepository tagRepository;
 
     private final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
 
-    public TagServiceImpl(TagRepository tagRepository) {
-        this.tagRepository = tagRepository;
+    @Autowired
+    private RepositoryFactory repositoryFactory;
+
+    @PostConstruct
+    public void init() {
+        RepositoryFactory factory = repositoryFactory.getInstance();
+        tagRepository = factory.getTagRepository();
     }
 
     @Override

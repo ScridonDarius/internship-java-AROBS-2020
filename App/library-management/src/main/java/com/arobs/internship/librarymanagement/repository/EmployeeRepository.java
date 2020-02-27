@@ -15,4 +15,8 @@ public interface EmployeeRepository {
     boolean deleteEmployee(String userName);
 
     List<Employee> findAll();
+
+    Employee findEmployeeByEmail(String email);
+
+    Employee updatePassword(String userName, String password);
 }

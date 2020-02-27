@@ -1,6 +1,8 @@
 package com.arobs.internship.librarymanagement.repository.factory;
 
+import com.arobs.internship.librarymanagement.repository.BookRepository;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
+import com.arobs.internship.librarymanagement.repository.TagRepository;
 import com.arobs.internship.librarymanagement.repository.factory.hibernate.HibernateRepositoryFactory;
 import com.arobs.internship.librarymanagement.repository.factory.jdbc.JdbcRepositoryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +41,8 @@ public abstract class RepositoryFactory {
         }
     }
     public abstract EmployeeRepository getEmployeeRepository();
+
+    public abstract BookRepository getBookRepository();
+
+    public abstract TagRepository getTagRepository();
 }

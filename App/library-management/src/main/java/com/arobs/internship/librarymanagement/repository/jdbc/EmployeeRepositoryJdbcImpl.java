@@ -42,5 +42,15 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     public List<Employee> findAll() {
         return jdbcTemplate.query("SELECT * FROM employee", new EmployeeMapper());
     }
+
+    @Override
+    public Employee findEmployeeByEmail(String email) {
+        return jdbcTemplate.queryForObject("SELECT * FROM employee WHERE email = ?", new Object[]{email}, new EmployeeMapper());
+    }
+
+    @Override
+    public Employee updatePassword(String userName, String password) {
+        return null;
+    }
 }
 

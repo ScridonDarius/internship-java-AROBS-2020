@@ -11,7 +11,7 @@ import java.util.Objects;
 public class BookRent {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_rent_id")
     private int id;
 

@@ -6,5 +6,7 @@ import java.sql.SQLException;
 
 public interface BookRepository {
 
-    Book insertBook(Book book);
+    int save(Book book);
+
+    Book findBook(String author, String title);
 }

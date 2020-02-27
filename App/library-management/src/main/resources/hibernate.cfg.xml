@@ -3,32 +3,33 @@
         "-//Hibernate/Hibernate Configuration DTD//EN"
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
-<hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/arobslibraryapplication</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">1234</property> <property name="connection.pool_size">1</property>
-        <!-- Select our SQL dialect -->
-        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
-        <!-- Echo the SQL to stdout -->
-        <property name="show_sql">true</property>
-        <!-- Set the current session context -->
-        <property name="current_session_context_class">thread</property>
-        <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">update</property>
-        <!-- dbcp connection pool configuration -->
-        <property name="hibernate.dbcp.initialSize">5</property>
-        <property name="hibernate.dbcp.maxTotal">20</property>
-        <property name="hibernate.dbcp.maxIdle">10</property>
-        <property name="hibernate.dbcp.minIdle">5</property>
-        <property name="hibernate.dbcp.maxWaitMillis">-1</property>
-        <mapping class="com.arobs.internship.librarymanagement.model.Employee" />
-        <mapping class="com.arobs.internship.librarymanagement.model.Book" />
-        <mapping class="com.arobs.internship.librarymanagement.model.Tag" />
-        <mapping class="com.arobs.internship.librarymanagement.model.RentRequest" />
-        <mapping class="com.arobs.internship.librarymanagement.model.BookRent" />
-        <mapping class="com.arobs.internship.librarymanagement.model.BookRequest" />
-        <mapping class="com.arobs.internship.librarymanagement.model.Copy" />
-    </session-factory>
-</hibernate-configuration>
+<!--<hibernate-configuration>-->
+<!--    <session-factory>-->
+<!--        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>-->
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/arobslibraryapplication</property>-->
+<!--        <property name="hibernate.connection.username">root</property>-->
+<!--        <property name="hibernate.connection.password">1234</property>-->
+<!--        <property name="connection.pool_size">1</property>-->
+<!--        &lt;!&ndash; Select our SQL dialect &ndash;&gt;-->
+<!--        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>-->
+<!--        &lt;!&ndash; Echo the SQL to stdout &ndash;&gt;-->
+<!--        <property name="show_sql">true</property>-->
+<!--        &lt;!&ndash; Set the current session context &ndash;&gt;-->
+<!--        <property name="current_session_context_class">thread</property>-->
+<!--        &lt;!&ndash; Drop and re-create the database schema on startup &ndash;&gt;-->
+<!--        <property name="hbm2ddl.auto">update</property>-->
+<!--        &lt;!&ndash; dbcp connection pool configuration &ndash;&gt;-->
+<!--        <property name="hibernate.dbcp.initialSize">5</property>-->
+<!--        <property name="hibernate.dbcp.maxTotal">20</property>-->
+<!--        <property name="hibernate.dbcp.maxIdle">10</property>-->
+<!--        <property name="hibernate.dbcp.minIdle">5</property>-->
+<!--        <property name="hibernate.dbcp.maxWaitMillis">-1</property>-->
+<!--        <mapping class="com.arobs.internship.librarymanagement.model.Employee" />-->
+<!--        <mapping class="com.arobs.internship.librarymanagement.model.Book" />-->
+<!--        <mapping class="com.arobs.internship.librarymanagement.model.Tag" />-->
+<!--        <mapping class="com.arobs.internship.librarymanagement.model.RentRequest" />-->
+<!--        <mapping class="com.arobs.internship.librarymanagement.model.BookRent" />-->
+<!--        <mapping class="com.arobs.internship.librarymanagement.model.BookRequest" />-->
+<!--        <mapping class="com.arobs.internship.librarymanagement.model.Copy" />-->
+<!--    </session-factory>-->
+<!--</hibernate-configuration>-->

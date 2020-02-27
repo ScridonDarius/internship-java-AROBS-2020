@@ -1,60 +1,122 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
+import com.arobs.internship.librarymanagement.config.HibernateUtil;
 import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 
+@Repository
 public class TagRepositoryHibernateImpl implements TagRepository {
 
     @Autowired
-    EntityManager entityManager;
+    SessionFactory sessionFactory;
+
+    //TODO: cast to Long not int
 
     @Override
     public int createTag(Tag tag) {
-        Session session = this.entityManager.unwrap(Session.class);
+        Transaction transaction = null;
 
-        return (int) session.save(tag);
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Long id = (Long) session.save(tag);
+            transaction.commit();
+
+            return id.intValue();
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
     public Tag findByTagName(String tagName) {
-        Session session = this.entityManager.unwrap(Session.class);
-        TypedQuery<Tag> query = session.createQuery("FROM Tag WHERE tag_name = :tagName");
+        Transaction transaction = null;
 
-        return query.setParameter("tagName", tagName).getSingleResult();
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            TypedQuery<Tag> query = session.createQuery("FROM Tag WHERE tag_name = :tagName").setParameter("tagName", tagName);
+            transaction.commit();
+
+            return query.getSingleResult();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    @Transactional
     public boolean updateTag(String tagName, String newTag) {
-        Session session = this.entityManager.unwrap(Session.class);
-        session.update(newTag);
+        Transaction transaction = null;
 
-        return !findByTagName(tagName).getTagName().equals(newTag);
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.update(newTag);
+            transaction.commit();
+
+            return true;
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
-    @Transactional
     public boolean deleteTag(String tagName) {
-        Session session = this.entityManager.unwrap(Session.class);
-        session.delete(findByTagName(tagName).getTagName());
+        Transaction transaction = null;
 
-        return findByTagName(tagName).getTagName().isEmpty();
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.createQuery("DELETE FROM Tag WHERE tag_name = :tagName").setParameter("tagName", tagName);
+            transaction.commit();
+
+            return true;
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public List<Tag> findAll() {
-        Session session = this.entityManager.unwrap(Session.class);
-        Query query = session.createQuery("FROM Tag");
+        Transaction transaction = null;
 
-        return query.getResultList();
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("FROM Tag");
+            transaction.commit();
+
+            return query.getResultList();
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -44,9 +44,33 @@ public class EmployeeController {
                 : new ResponseEntity<>(new EmployeeResponseDTO(), HttpStatus.NOT_FOUND);
     }
 
-    //TODO : UpdateEmployee Create method in repository and service (for some fields)
+    @RequestMapping(value = "/findEmployeeByEmail", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<EmployeeResponseDTO> retrieveByEmail(
+            @RequestParam String email) {
+
+        EmployeeResponseDTO employeeResponseDTO =
+                this.employeeService.retrieveByEmail(email);
+
+        return employeeResponseDTO != null
+                ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
+                : new ResponseEntity<>(new EmployeeResponseDTO(), HttpStatus.NOT_FOUND);
+    }
 
     @RequestMapping(value = "/updateEmployee", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<EmployeeResponseDTO> updatePassword(
+            @RequestParam String userName,
+            @RequestParam String password) {
+        this.employeeService.changePassword(password, userName);
+        EmployeeResponseDTO employeeResponseDTO = this.employeeService.retrieveByUserName(userName);
+
+        return employeeResponseDTO != null
+                ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeUpdateDTO> updateEmployee(
             @RequestParam String userName,
@@ -57,6 +81,7 @@ public class EmployeeController {
                 ? new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
     @RequestMapping(value = "deleteEmployee", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)

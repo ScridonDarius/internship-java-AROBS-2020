@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(
         value = "/book",
         produces = {MediaType.APPLICATION_JSON_VALUE})
-public class BookController {
+public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

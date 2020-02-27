@@ -13,9 +13,13 @@ public interface EmployeeService {
 
     EmployeeResponseDTO retrieveByUserName(String userName);
 
+    EmployeeResponseDTO retrieveByEmail(String email);
+
     boolean deleteEmployee(String userName);
 
     Set<EmployeeResponseDTO> retrieveAll();
 
     EmployeeUpdateDTO employeeUpdate(EmployeeUpdateDTO request, String userName);
+
+    EmployeeResponseDTO changePassword(String password,String userName);
 }

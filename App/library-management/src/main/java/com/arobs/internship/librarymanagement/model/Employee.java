@@ -13,7 +13,7 @@ import java.util.Set;
 public class Employee {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
     private int id;
 
@@ -32,11 +32,11 @@ public class Employee {
     @Column(nullable = false, length = 50, name = "email")
     private String email;
 
-    @Column(nullable = false, length = 50, name = "Role")
+    @Column(nullable = false, name = "Role")
     @Enumerated(EnumType.STRING)
     private EmployeeRole employeeRole;
 
-    @Column(nullable = false, length = 50, name = "Status")
+    @Column(nullable = false, name = "Status")
     @Enumerated(EnumType.STRING)
     private EmployeeStatus employeeStatus;
 

@@ -16,11 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +42,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public EmployeeResponseDTO retrieveByEmail(String email) {
+        if (EmployeeValidationUtil.isValidEmailAddress(email)) {
+            return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployeeByEmail(email));
+        } else
+            throw new ValidationException("Invalid format email input");
+    }
+
+    @Override
     public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) {
         request.setEmployeeStatus(EmployeeStatus.ACTIVE);
         request.setCreateDate(LocalDateTime.now());
@@ -62,6 +68,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public EmployeeResponseDTO changePassword(String password, String userName) {
+        if (!retrieveByUserName(userName).getPassword().equals(password)) {
+            return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.updatePassword(userName, password));
+        } else {
+            throw new ValidationException("This passowrd was recently used");
+        }
+    }
+
+    @Override
     public Set<EmployeeResponseDTO> retrieveAll() {
         List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
         List<Employee> employees = this.employeeRepository.findAll();
@@ -70,6 +85,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeResponseDTOS.add(EmployeeMapperConverter.generateDTOResponseFromEntity(employeeAux));
         }
         return ListToSetConverter.convertListToSet(employeeResponseDTOS);
+    }
+
+    @Override
+    public EmployeeUpdateDTO employeeUpdate(EmployeeUpdateDTO request, String userName) {
+        return updateAllEmployee(request, userName);
     }
 
     private EmployeeUpdateDTO updateAllEmployee(EmployeeUpdateDTO request, String userName) {
@@ -97,10 +117,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         return EmployeeMapperConverter.generateDTOUpdateFromEntity(employee);
-    }
-
-    @Override
-    public EmployeeUpdateDTO employeeUpdate(EmployeeUpdateDTO request, String userName) {
-        return updateAllEmployee(request, userName);
     }
 }

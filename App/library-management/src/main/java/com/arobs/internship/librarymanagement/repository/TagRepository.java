@@ -17,5 +17,4 @@ public interface TagRepository {
     boolean deleteTag(String tagName);
 
     List<Tag> findAll();
-
 }
