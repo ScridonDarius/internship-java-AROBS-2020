@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -35,6 +37,7 @@ public class TagServiceImpl implements TagService {
         tagRepository = factory.getTagRepository();
     }
 
+    @Transactional
     @Override
     public TagResponseDTO addTag(TagRegistrationDTO request) {
         tagRepository.createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
@@ -42,22 +45,37 @@ public class TagServiceImpl implements TagService {
         return TagMapperConverter.generateDTOResponseFromEntity(tagRepository.findByTagName(request.getTagName()));
     }
 
+    @Transactional
     @Override
     public TagUpdateDTO updateTag(String tagName, String newTag) {
-        tagRepository.updateTag(tagName, newTag);
-        return TagMapperConverter.generateDTOUpdateFromEntity(this.tagRepository.findByTagName(newTag));
-    }
+        final Tag tag = getTagRepository().findByTagName(tagName);
+        if (Objects.isNull(tag)) {
+            //TODO: throw an exception?
+        }
 
+        tag.setTagName(newTag);
+        getTagRepository().updateTag(tag);
+
+        return TagMapperConverter.generateDTOUpdateFromEntity(tag);
+    }
+    @Transactional
     @Override
-    public boolean deleteTag(String tagName) {
-        return this.tagRepository.deleteTag(tagName);
+    public void deleteTag(String tagName) {
+        final Tag tag = getTagRepository().findByTagName(tagName);
+        if (Objects.isNull(tag)) {
+            //TODO: throw an exception?? or return false?
+        }
+
+        getTagRepository().deleteTag(tag);
     }
 
+    @Transactional
     @Override
     public TagResponseDTO retrieveByTagName(String tagName) {
         return TagMapperConverter.generateDTOResponseFromEntity(tagRepository.findByTagName(tagName));
     }
 
+    @Transactional
     @Override
     public Set<TagResponseDTO> retrieveAll() {
         List<TagResponseDTO> tagsResponse = new ArrayList<TagResponseDTO>();
@@ -67,5 +85,9 @@ public class TagServiceImpl implements TagService {
             tagsResponse.add(TagMapperConverter.generateDTOResponseFromEntity(tagAux));
         }
         return ListToSetConverter.convertListToSet(tagsResponse);
+    }
+
+    public TagRepository getTagRepository() {
+        return tagRepository;
     }
 }

@@ -3,6 +3,8 @@ package com.arobs.internship.librarymanagement.service.impl;
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
+import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
+import com.arobs.internship.librarymanagement.exception.NullObjectException;
 import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
@@ -11,15 +13,21 @@ import com.arobs.internship.librarymanagement.service.EmployeeService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import com.arobs.internship.librarymanagement.validation.util.EmployeeValidationUtil;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.NoResultException;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -42,12 +50,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponseDTO retrieveByEmail(String email) {
-        if (EmployeeValidationUtil.isValidEmailAddress(email)) {
+    public EmployeeResponseDTO retrieveByEmail(String email) throws InvalidEmailException {
+        // TODO : Exception in service or controller
+
+//        if (employeeRepository.findEmployeeByEmail(email) == null) {
+//            throw new EmptyResultDataAccessException(0);
+//        }
+
+        if (!EmployeeValidationUtil.isValidEmailAddress(email)) {
+            throw new InvalidEmailException();
+        }
+
+        try {
             return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployeeByEmail(email));
-        } else
-            throw new ValidationException("Invalid format email input");
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+        }
     }
+
 
     @Override
     public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) {

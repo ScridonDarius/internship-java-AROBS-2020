@@ -3,6 +3,8 @@ package com.arobs.internship.librarymanagement.service;
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
+import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
+import com.arobs.internship.librarymanagement.exception.NullObjectException;
 
 import java.util.List;
 import java.util.Set;
@@ -13,7 +15,7 @@ public interface EmployeeService {
 
     EmployeeResponseDTO retrieveByUserName(String userName);
 
-    EmployeeResponseDTO retrieveByEmail(String email);
+    EmployeeResponseDTO retrieveByEmail(String email) throws InvalidEmailException, NullObjectException;
 
     boolean deleteEmployee(String userName);
 

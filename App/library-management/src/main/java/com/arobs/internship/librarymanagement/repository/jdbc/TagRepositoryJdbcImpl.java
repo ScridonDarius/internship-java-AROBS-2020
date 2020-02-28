@@ -29,13 +29,13 @@ public class TagRepositoryJdbcImpl implements TagRepository {
     }
 
     @Override
-    public boolean updateTag(String tagName, String newTag) {
-        return jdbcTemplate.update("UPDATE tag set tag_name = ? WHERE tag_name =?", newTag, tagName) > 0;
+    public void updateTag(Tag tag) {
+        jdbcTemplate.update("UPDATE tag set tag_name = ? WHERE id =?", tag.getTagName(), tag.getId());
     }
 
     @Override
-    public boolean deleteTag(String tagName) {
-        return jdbcTemplate.update("DELETE FROM tag WHERE tag_name = ?", tagName) > 0;
+    public void deleteTag(Tag tag) {
+        jdbcTemplate.update("DELETE FROM tag WHERE tag_name = ?", tag.getTagName());
     }
 
     @Override

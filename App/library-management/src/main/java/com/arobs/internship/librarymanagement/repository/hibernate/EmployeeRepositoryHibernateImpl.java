@@ -11,13 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
 
-    @Autowired
-    SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
+
+    public EmployeeRepositoryHibernateImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
 
     @Override
     public int createEmployee(Employee employee) {
@@ -121,25 +126,12 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     }
 
     @Override
+    @Transactional
     public Employee findEmployeeByEmail(String email) {
-        Transaction transaction = null;
-
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-
-            transaction = session.beginTransaction();
+            Session session = this.getSessionFactory().getCurrentSession();
             TypedQuery<Employee> query = session.createQuery("FROM Employee WHERE email = :email").setParameter("email", email);
-            transaction.commit();
 
             return query.getSingleResult();
-
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override
@@ -161,5 +153,9 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 }

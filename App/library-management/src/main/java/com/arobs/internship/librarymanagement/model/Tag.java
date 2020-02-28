@@ -10,7 +10,7 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
-    private Long id;
+    private int id;
 
     @Column(name = "tag_name", nullable = false, length = 50, unique = true)
     private String tagName;
@@ -18,7 +18,7 @@ public class Tag {
     public Tag() {
     }
 
-    public Tag(Long id, String tagName) {
+    public Tag(int id, String tagName) {
         this.id = id;
         this.tagName = tagName;
     }
@@ -27,11 +27,11 @@ public class Tag {
         this.tagName = tagName;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -48,7 +48,7 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
-        return id.equals(tag.id) &&
+        return id == tag.id &&
                 tagName.equals(tag.tagName);
     }
 

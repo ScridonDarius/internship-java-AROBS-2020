@@ -3,12 +3,17 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
+import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
+import com.arobs.internship.librarymanagement.exception.NullObjectException;
 import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 import java.util.Set;
 
@@ -36,8 +41,9 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> retrieveByUserName(
             @RequestParam String userName) {
-        EmployeeResponseDTO employeeResponseDTO =
-                this.employeeService.retrieveByUserName(userName);
+
+        EmployeeResponseDTO employeeResponseDTO = null;
+        this.employeeService.retrieveByUserName(userName);
 
         return employeeResponseDTO != null
                 ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
@@ -48,9 +54,17 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> retrieveByEmail(
             @RequestParam String email) {
+        EmployeeResponseDTO employeeResponseDTO = null;
 
-        EmployeeResponseDTO employeeResponseDTO =
-                this.employeeService.retrieveByEmail(email);
+        try {
+            employeeResponseDTO = this.employeeService.retrieveByEmail(email);
+
+        } catch (InvalidEmailException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
+        }
+//        }catch (EmptyResultDataAccessException e){
+//            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+//        }
 
         return employeeResponseDTO != null
                 ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
@@ -75,6 +89,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeUpdateDTO> updateEmployee(
             @RequestParam String userName,
             @RequestBody @Valid EmployeeUpdateDTO request) {
+
         EmployeeUpdateDTO employeeUpdateDTO = this.employeeService.employeeUpdate(request, userName);
 
         return employeeUpdateDTO != null
