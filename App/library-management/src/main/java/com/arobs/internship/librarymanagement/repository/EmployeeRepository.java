@@ -10,9 +10,9 @@ public interface EmployeeRepository {
 
     Employee findEmployee(String userName);
 
-    boolean updateEmployee(String userName, Employee employee);
+    void updateEmployee(String userName, Employee employee);
 
-    boolean deleteEmployee(String userName);
+    void deleteEmployee(String userName);
 
     List<Employee> findAll();
 

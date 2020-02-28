@@ -4,7 +4,6 @@ import com.arobs.internship.librarymanagement.controller.api.request.EmployeeReg
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
-import com.arobs.internship.librarymanagement.exception.NullObjectException;
 import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
@@ -13,16 +12,12 @@ import com.arobs.internship.librarymanagement.service.EmployeeService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import com.arobs.internship.librarymanagement.validation.util.EmployeeValidationUtil;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,49 +40,54 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public EmployeeResponseDTO retrieveByUserName(String userName) {
         return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployee(userName));
     }
 
     @Override
+    @Transactional
     public EmployeeResponseDTO retrieveByEmail(String email) throws InvalidEmailException {
-        // TODO : Exception in service or controller
-
-//        if (employeeRepository.findEmployeeByEmail(email) == null) {
-//            throw new EmptyResultDataAccessException(0);
-//        }
-
-        if (!EmployeeValidationUtil.isValidEmailAddress(email)) {
+        if (EmployeeValidationUtil.isValidEmailAddress(email) == false) {
             throw new InvalidEmailException();
         }
-
-        try {
-            return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployeeByEmail(email));
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
-        }
+        return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployeeByEmail(email));
     }
 
 
     @Override
+    @Transactional
     public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) {
         request.setEmployeeStatus(EmployeeStatus.ACTIVE);
         request.setCreateDate(LocalDateTime.now());
 
         if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
-            throw new ValidationException("Email is not correct");
-        }
 
+            try {
+                throw new InvalidEmailException();
+
+            } catch (InvalidEmailException e) {
+                e.printStackTrace();
+            }
+        }
         employeeRepository.createEmployee(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
         return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployee(request.getUserName()));
     }
 
     @Override
+    @Transactional
     public boolean deleteEmployee(String userName) {
-        return (employeeRepository.deleteEmployee(userName)) ? true : false;
+
+        final Employee employee = getEmployeeRepository().findEmployee(userName);
+        if (Objects.isNull(employee)) {
+            //TODO: throw an exception?? or return false?
+        }
+        employeeRepository.deleteEmployee(userName);
+        return true;
     }
 
     @Override
+    @Transactional
     public EmployeeResponseDTO changePassword(String password, String userName) {
         if (!retrieveByUserName(userName).getPassword().equals(password)) {
             return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.updatePassword(userName, password));
@@ -97,6 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public Set<EmployeeResponseDTO> retrieveAll() {
         List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
         List<Employee> employees = this.employeeRepository.findAll();
@@ -108,6 +109,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public EmployeeUpdateDTO employeeUpdate(EmployeeUpdateDTO request, String userName) {
         return updateAllEmployee(request, userName);
     }
@@ -116,8 +118,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = this.employeeRepository.findEmployee(userName);
         Employee oldEmployee = this.employeeRepository.findEmployee(userName);
 
-        if (employee == null) {
-            throw new ValidationException("Please introduce a valid userName");
+        if (Objects.isNull(request)) {
+            throw new NullPointerException("Null object");
+        }
+
+        if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
+
+            try {
+                throw new InvalidEmailException();
+
+            } catch (InvalidEmailException e) {
+                e.printStackTrace();
+            }
         }
 
         if (!StringUtils.isEmpty(request.getEmail()) && !request.getEmail().equals(employee.getEmail())) {
@@ -137,5 +149,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         return EmployeeMapperConverter.generateDTOUpdateFromEntity(employee);
+    }
+
+    public EmployeeRepository getEmployeeRepository() {
+        return employeeRepository;
     }
 }

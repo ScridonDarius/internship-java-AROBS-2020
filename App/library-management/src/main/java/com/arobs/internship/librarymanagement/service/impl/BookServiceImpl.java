@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -26,6 +27,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookResponseDTO insertBook(BookRegistrationDTO request) {
         bookRepository.save(BookMapperConvertor.generateEntityFromDTORegistration(request));
 
@@ -33,6 +35,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookResponseDTO retrieveBookByAuthorAndTitle(String author, String title) {
         return BookMapperConvertor.generateDTOResponseFromEntity(bookRepository.findBook(author, title));
     }

@@ -11,7 +11,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
-    private Long id;
+    private int id;
 
     @Column(nullable = false, length = 50)
     private String title;
@@ -65,11 +65,11 @@ public class Book {
         this.description = description;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -134,14 +134,14 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return id.equals(book.id) &&
+        return id == book.id &&
                 title.equals(book.title) &&
                 author.equals(book.author) &&
                 description.equals(book.description) &&
                 tags.equals(book.tags) &&
-                Objects.equals(copies, book.copies) &&
-                Objects.equals(bookRents, book.bookRents) &&
-                Objects.equals(rentRequests, book.rentRequests);
+                copies.equals(book.copies) &&
+                bookRents.equals(book.bookRents) &&
+                rentRequests.equals(book.rentRequests);
     }
 
     @Override

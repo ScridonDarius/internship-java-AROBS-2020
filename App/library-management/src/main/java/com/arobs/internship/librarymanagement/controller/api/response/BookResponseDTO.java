@@ -12,9 +12,6 @@ import java.util.Set;
 @ApiModel
 public class BookResponseDTO {
 
-    @ApiModelProperty
-    private Long id;
-
     @ApiModelProperty(required = true)
     @NotNull
     @Size(max = 50)
@@ -42,14 +39,6 @@ public class BookResponseDTO {
         this.author = author;
         this.description = description;
         this.tags = tags;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -89,8 +78,7 @@ public class BookResponseDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookResponseDTO that = (BookResponseDTO) o;
-        return id.equals(that.id) &&
-                title.equals(that.title) &&
+        return title.equals(that.title) &&
                 author.equals(that.author) &&
                 description.equals(that.description) &&
                 tags.equals(that.tags);
@@ -98,6 +86,6 @@ public class BookResponseDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, description, tags);
+        return Objects.hash(title, author, description, tags);
     }
 }

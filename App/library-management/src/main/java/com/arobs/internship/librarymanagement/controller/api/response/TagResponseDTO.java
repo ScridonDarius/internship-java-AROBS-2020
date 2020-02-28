@@ -10,9 +10,6 @@ import java.util.Objects;
 @ApiModel
 public class TagResponseDTO {
 
-    @ApiModelProperty
-    private Long id;
-
     @ApiModelProperty(required = true)
     @NotNull
     @Size(max = 50)
@@ -21,17 +18,8 @@ public class TagResponseDTO {
     public TagResponseDTO() {
     }
 
-    public TagResponseDTO(Long id, @NotNull @Size(max = 50) String tagName) {
-        this.id = id;
+    public TagResponseDTO(@NotNull @Size(max = 50) String tagName) {
         this.tagName = tagName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTagName() {
@@ -47,12 +35,11 @@ public class TagResponseDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TagResponseDTO that = (TagResponseDTO) o;
-        return id.equals(that.id) &&
-                tagName.equals(that.tagName);
+        return tagName.equals(that.tagName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tagName);
+        return Objects.hash(tagName);
     }
 }

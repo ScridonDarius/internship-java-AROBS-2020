@@ -60,13 +60,14 @@ public class TagServiceImpl implements TagService {
     }
     @Transactional
     @Override
-    public void deleteTag(String tagName) {
+    public boolean deleteTag(String tagName) {
         final Tag tag = getTagRepository().findByTagName(tagName);
         if (Objects.isNull(tag)) {
             //TODO: throw an exception?? or return false?
         }
 
         getTagRepository().deleteTag(tag);
+        return true;
     }
 
     @Transactional

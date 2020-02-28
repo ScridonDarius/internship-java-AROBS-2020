@@ -4,7 +4,6 @@ import com.arobs.internship.librarymanagement.controller.api.request.EmployeeReg
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
-import com.arobs.internship.librarymanagement.exception.NullObjectException;
 import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.NoResultException;
 import javax.validation.Valid;
+import java.util.Objects;
 import java.util.Set;
 
 @RestController
@@ -58,20 +57,16 @@ public class EmployeeController {
 
         try {
             employeeResponseDTO = this.employeeService.retrieveByEmail(email);
-
         } catch (InvalidEmailException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
         }
-//        }catch (EmptyResultDataAccessException e){
-//            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
-//        }
 
-        return employeeResponseDTO != null
-                ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
-                : new ResponseEntity<>(new EmployeeResponseDTO(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/updateEmployee", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> updatePassword(
             @RequestParam String userName,
@@ -84,12 +79,19 @@ public class EmployeeController {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/updatePassword", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/updateEmployee", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeUpdateDTO> updateEmployee(
             @RequestParam String userName,
             @RequestBody @Valid EmployeeUpdateDTO request) {
 
+        if (Objects.isNull(request)) {
+            try {
+                throw new ResponseStatusException(HttpStatus.NO_CONTENT, " Object is null");
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
         EmployeeUpdateDTO employeeUpdateDTO = this.employeeService.employeeUpdate(request, userName);
 
         return employeeUpdateDTO != null

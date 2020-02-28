@@ -1,5 +1,6 @@
 package com.arobs.internship.librarymanagement.controller.api.request;
 
+import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.model.Tag;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,9 +13,6 @@ import java.util.Set;
 
 @ApiModel
 public class BookRegistrationDTO {
-
-    @ApiModelProperty
-    private Long id;
 
     @ApiModelProperty(required = true)
     @NotNull
@@ -33,24 +31,16 @@ public class BookRegistrationDTO {
 
     @ApiModelProperty(required = true)
     @NotNull
-    private Set<Tag> tags;
+    private Set<TagResponseDTO> tags;
 
     public BookRegistrationDTO() {
     }
 
-    public BookRegistrationDTO(@NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<Tag> tags) {
+    public BookRegistrationDTO(@NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<TagResponseDTO> tags) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.tags = tags;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -77,11 +67,11 @@ public class BookRegistrationDTO {
         this.description = description;
     }
 
-    public Set<Tag> getTags() {
+    public Set<TagResponseDTO> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(Set<TagResponseDTO> tags) {
         this.tags = tags;
     }
 
@@ -90,8 +80,7 @@ public class BookRegistrationDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookRegistrationDTO that = (BookRegistrationDTO) o;
-        return id.equals(that.id) &&
-                title.equals(that.title) &&
+        return title.equals(that.title) &&
                 author.equals(that.author) &&
                 description.equals(that.description) &&
                 tags.equals(that.tags);
@@ -99,6 +88,6 @@ public class BookRegistrationDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, description, tags);
+        return Objects.hash(title, author, description, tags);
     }
 }

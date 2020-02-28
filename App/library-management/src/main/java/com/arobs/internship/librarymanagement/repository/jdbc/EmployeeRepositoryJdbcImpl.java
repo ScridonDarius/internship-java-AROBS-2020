@@ -29,13 +29,12 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
-    public boolean updateEmployee(String userName, Employee employee) {
-        return false;
+    public void updateEmployee(String userName, Employee employee) {
     }
 
     @Override
-    public boolean deleteEmployee(String userName) {
-      return  jdbcTemplate.update("DELETE FROM tag WHERE user_name = ?", userName)> 0;
+    public void deleteEmployee(String userName) {
+        jdbcTemplate.update("DELETE FROM tag WHERE user_name = ?", userName);
     }
 
     @Override
