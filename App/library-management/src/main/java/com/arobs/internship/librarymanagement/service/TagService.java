@@ -3,6 +3,7 @@ package com.arobs.internship.librarymanagement.service;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
+import com.arobs.internship.librarymanagement.exception.NullObjectException;
 
 import java.util.List;
 import java.util.Set;
@@ -13,7 +14,7 @@ public interface TagService {
 
     TagResponseDTO retrieveByTagName(String tagName);
 
-    TagUpdateDTO updateTag(String tagName, String newTag);
+    TagUpdateDTO updateTag(String tagName, String newTag) throws NullObjectException;
 
     boolean deleteTag(String tagName);
 

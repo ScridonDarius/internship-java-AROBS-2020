@@ -22,7 +22,11 @@ static ModelMapper  modelMapper = new ModelMapper();
         return modelMapper.map(tagRegistrationDTO,Tag.class);
     }
 
-    public static TagRegistrationDTO generateDTORequestFromEntity(Tag tag){
+    public static TagRegistrationDTO generateRegistrationFromResponse(TagResponseDTO tagResponseDTO){
+        return modelMapper.map(tagResponseDTO,TagRegistrationDTO.class);
+    }
+
+    public static TagRegistrationDTO generateDTORegistrationFromEntity(Tag tag){
         return modelMapper.map(tag,TagRegistrationDTO.class);
     }
 

@@ -1,5 +1,6 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
+import com.arobs.internship.librarymanagement.exception.NullObjectException;
 import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
@@ -24,7 +25,7 @@ import java.util.Set;
 @Service
 public class TagServiceImpl implements TagService {
 
-    private  TagRepository tagRepository;
+    private TagRepository tagRepository;
 
     private final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
 
@@ -49,23 +50,16 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagUpdateDTO updateTag(String tagName, String newTag) {
         final Tag tag = getTagRepository().findByTagName(tagName);
-        if (Objects.isNull(tag)) {
-            //TODO: throw an exception?
-        }
-
         tag.setTagName(newTag);
         getTagRepository().updateTag(tag);
 
         return TagMapperConverter.generateDTOUpdateFromEntity(tag);
     }
+
     @Transactional
     @Override
     public boolean deleteTag(String tagName) {
         final Tag tag = getTagRepository().findByTagName(tagName);
-        if (Objects.isNull(tag)) {
-            //TODO: throw an exception?? or return false?
-        }
-
         getTagRepository().deleteTag(tag);
         return true;
     }
@@ -73,7 +67,10 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public TagResponseDTO retrieveByTagName(String tagName) {
-        return TagMapperConverter.generateDTOResponseFromEntity(tagRepository.findByTagName(tagName));
+        if (this.tagRepository.findByTagName(tagName) != null) {
+            return TagMapperConverter.generateDTOResponseFromEntity(tagRepository.findByTagName(tagName));
+        }
+        return null;
     }
 
     @Transactional

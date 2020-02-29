@@ -3,11 +3,15 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
+import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
+import com.arobs.internship.librarymanagement.exception.NullObjectException;
 import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
@@ -39,13 +43,14 @@ public class TagController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TagResponseDTO> retrieveByTagName(
             @RequestParam String tagName) {
+        TagResponseDTO tag = null;
 
-        final TagResponseDTO tag =
-                this.tagService.retrieveByTagName(tagName);
-
-        return tag != null
-                ? new ResponseEntity<>(tag, HttpStatus.OK)
-                : new ResponseEntity<>(new TagResponseDTO(), HttpStatus.NOT_FOUND);
+        try {
+            tag = this.tagService.retrieveByTagName(tagName);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+        }
+        return new ResponseEntity<>(tag, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/updateTag", method = RequestMethod.PATCH)
@@ -53,18 +58,28 @@ public class TagController {
     public ResponseEntity<TagUpdateDTO> updateTag(
             @RequestParam String tagName,
             @RequestParam String newTag) {
+        TagUpdateDTO tag = null;
 
-        TagUpdateDTO tag = this.tagService.updateTag(tagName, newTag);
-        return tag != null
-                ? new ResponseEntity<>(tag, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            tag = this.tagService.updateTag(tagName, newTag);
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+        }
+        return new ResponseEntity<>(tag, HttpStatus.OK);
     }
 
     @RequestMapping(value = "deleteTag", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteTag(@RequestParam String tagName) {
 
-        return new ResponseEntity<>(this.tagService.deleteTag(tagName), HttpStatus.OK);
+        try {
+            this.tagService.deleteTag(tagName);
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+        }
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
