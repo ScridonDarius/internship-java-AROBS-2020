@@ -44,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public EmployeeResponseDTO retrieveByUserName(String userName) {
-        return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployee(userName));
+        return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().findEmployee(userName));
     }
 
     @Override
@@ -53,27 +53,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!EmployeeValidationUtil.isValidEmailAddress(email)) {
             throw new InvalidEmailException();
         }
-        return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployeeByEmail(email));
+        return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().findEmployeeByEmail(email));
     }
-
 
     @Override
     @Transactional
-    public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) {
+    public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) throws InvalidEmailException {
         request.setEmployeeStatus(EmployeeStatus.ACTIVE);
         request.setCreateDate(LocalDateTime.now());
 
         if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
-
-            try {
                 throw new InvalidEmailException();
-
-            } catch (InvalidEmailException e) {
-                e.printStackTrace();
-            }
         }
-        employeeRepository.createEmployee(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
-        return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployee(request.getUserName()));
+        getEmployeeRepository().createEmployee(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
+        return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().findEmployee(request.getUserName()));
     }
 
     @Override
@@ -82,7 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         final Employee employee = getEmployeeRepository().findEmployee(userName);
         if (!Objects.isNull(employee)) {
-            employeeRepository.deleteEmployee(userName);
+            getEmployeeRepository().deleteEmployee(userName);
             return true;
         }
        return false;
@@ -92,7 +85,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public EmployeeResponseDTO changePassword(String password, String userName) {
         if (!retrieveByUserName(userName).getPassword().equals(password)) {
-            return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.updatePassword(userName, password));
+            return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().updatePassword(userName, password));
         } else {
             throw new ValidationException("This passowrd was recently used");
         }
@@ -102,7 +95,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public Set<EmployeeResponseDTO> retrieveAll() {
         List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
-        List<Employee> employees = this.employeeRepository.findAll();
+        List<Employee> employees = getEmployeeRepository().findAll();
 
         for (Employee employeeAux : employees) {
             employeeResponseDTOS.add(EmployeeMapperConverter.generateDTOResponseFromEntity(employeeAux));
@@ -117,8 +110,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private EmployeeUpdateDTO updateAllEmployee(EmployeeUpdateDTO request, String userName) {
-        Employee employee = this.employeeRepository.findEmployee(userName);
-        Employee oldEmployee = this.employeeRepository.findEmployee(userName);
+        Employee employee = getEmployeeRepository().findEmployee(userName);
+        Employee oldEmployee = getEmployeeRepository().findEmployee(userName);
 
         if (Objects.isNull(request)) {
             throw new NullPointerException("Null object");
@@ -146,7 +139,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         if (!oldEmployee.equals(employee) && EmployeeValidationUtil.isValidEmailAddress(employee.getEmail())) {
-            employeeRepository.updateEmployee(userName, employee);
+            getEmployeeRepository().updateEmployee(userName, employee);
         }
 
         return EmployeeMapperConverter.generateDTOUpdateFromEntity(employee);

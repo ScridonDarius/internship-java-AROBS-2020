@@ -18,7 +18,7 @@ public class TagRepositoryHibernateImpl implements TagRepository {
 
     @Override
     public Tag createTag(Tag tag) {
-        return findById((Integer) this.getSessionFactory().getCurrentSession().save(tag));
+        return findById((Integer) getSessionFactory().getCurrentSession().save(tag));
     }
 
     @Override
@@ -28,11 +28,11 @@ public class TagRepositoryHibernateImpl implements TagRepository {
 
     @Override
     public Tag findByTagName(String tagName) {
-        return (Tag) this.getSessionFactory().getCurrentSession().createQuery("FROM Tag WHERE tag_name = :tagName").setParameter("tagName", tagName).getSingleResult();
+        return (Tag) getSessionFactory().getCurrentSession().createQuery("FROM Tag WHERE tag_name = :tagName").setParameter("tagName", tagName).getSingleResult();
     }
 
     public Tag findById(int tagId) {
-        return this.getSessionFactory().getCurrentSession().get(Tag.class, tagId);
+        return getSessionFactory().getCurrentSession().get(Tag.class, tagId);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TagRepositoryHibernateImpl implements TagRepository {
 
     @Override
     public List<Tag> findAll() {
-        return this.getSessionFactory().getCurrentSession().createQuery("FROM Tag", Tag.class).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM Tag", Tag.class).getResultList();
     }
 
     protected SessionFactory getSessionFactory() {

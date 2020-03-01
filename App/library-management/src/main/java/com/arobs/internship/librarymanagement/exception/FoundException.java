@@ -10,4 +10,6 @@ public class FoundException extends Exception {
         super(message);
     }
 
+    public FoundException() {
+    }
 }

@@ -29,50 +29,55 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> createEmployee(
             @RequestBody EmployeeRegistrationDTO request) {
-        EmployeeResponseDTO employeeResponse = this.employeeService.addEmployee(request);
+        EmployeeResponseDTO employeeResponse;
+
+        try {
+           employeeResponse = getEmployeeService().addEmployee(request);
+        } catch (InvalidEmailException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
+        }
 
         return employeeResponse != null
                 ? new ResponseEntity<>(employeeResponse, HttpStatus.CREATED)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/findEmployee", method = RequestMethod.GET)
+    @RequestMapping(value = "retrieveByUserName", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> retrieveByUserName(
             @RequestParam String userName) {
 
-        EmployeeResponseDTO employeeResponseDTO = null;
-        this.employeeService.retrieveByUserName(userName);
+        EmployeeResponseDTO employeeResponseDTO = getEmployeeService().retrieveByUserName(userName);
 
         return employeeResponseDTO != null
                 ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
                 : new ResponseEntity<>(new EmployeeResponseDTO(), HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/findEmployeeByEmail", method = RequestMethod.GET)
+    @RequestMapping(value = "retrieveByEmail", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> retrieveByEmail(
             @RequestParam String email) {
         EmployeeResponseDTO employeeResponseDTO;
 
         try {
-            employeeResponseDTO = this.employeeService.retrieveByEmail(email);
+            employeeResponseDTO = getEmployeeService().retrieveByEmail(email);
         } catch (InvalidEmailException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This email doesn't exist!");
         }
 
         return new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/updatePassword", method = RequestMethod.PATCH)
+    @RequestMapping(value = "updatePassword", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> updatePassword(
             @RequestParam String userName,
             @RequestParam String password) {
         this.employeeService.changePassword(password, userName);
-        EmployeeResponseDTO employeeResponseDTO = this.employeeService.retrieveByUserName(userName);
+        EmployeeResponseDTO employeeResponseDTO = getEmployeeService().retrieveByUserName(userName);
 
         return employeeResponseDTO != null
                 ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
@@ -87,12 +92,12 @@ public class EmployeeController {
 
         if (Objects.isNull(request)) {
             try {
-                throw new ResponseStatusException(HttpStatus.NO_CONTENT, " Object is null");
+                throw new ResponseStatusException(HttpStatus.NO_CONTENT, " Inexistent Employee");
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
         }
-        EmployeeUpdateDTO employeeUpdateDTO = this.employeeService.employeeUpdate(request, userName);
+        EmployeeUpdateDTO employeeUpdateDTO = getEmployeeService().employeeUpdate(request, userName);
 
         return employeeUpdateDTO != null
                 ? new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK)
@@ -100,20 +105,24 @@ public class EmployeeController {
     }
 
 
-    @RequestMapping(value = "deleteEmployee", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteEmployee", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteEmloyee(@RequestParam String userName) {
 
         return new ResponseEntity<>(this.employeeService.deleteEmployee(userName), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveEmployees", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<EmployeeResponseDTO>> retrieveAll() {
-        Set<EmployeeResponseDTO> employeeResponseDTOS = this.employeeService.retrieveAll();
+        Set<EmployeeResponseDTO> employeeResponseDTOS = getEmployeeService().retrieveAll();
 
         return employeeResponseDTOS != null
                 ? new ResponseEntity<>(employeeResponseDTOS, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    public EmployeeServiceImpl getEmployeeService() {
+        return employeeService;
     }
 }

@@ -18,18 +18,23 @@ public class BookRepositoryHibernateImpl implements BookRepository {
 
     @Override
     public Book save(Book book) {
-        this.getSessionFactory().getCurrentSession().save(book);
-        return this.getSessionFactory().getCurrentSession().get(Book.class, book.getId());
+        getSessionFactory().getCurrentSession().save(book);
+        return getSessionFactory().getCurrentSession().get(Book.class, book.getId());
     }
 
     @Override
     public Book findBook(String author, String title) {
-        return (Book) this.getSessionFactory().getCurrentSession().createQuery("FROM Book WHERE author = :author AND title = :title",Book.class).setParameter("author", author).setParameter("title", title).getSingleResult();
+        return (Book) getSessionFactory().getCurrentSession().createQuery("FROM Book WHERE author = :author AND title = :title", Book.class).setParameter("author", author).setParameter("title", title).getSingleResult();
     }
 
     @Override
     public Book findBookById(int id) {
         return getSessionFactory().getCurrentSession().get(Book.class, id);
+    }
+
+    @Override
+    public void delete(Book book) {
+        getSessionFactory().getCurrentSession().delete(book);
     }
 
     @Override

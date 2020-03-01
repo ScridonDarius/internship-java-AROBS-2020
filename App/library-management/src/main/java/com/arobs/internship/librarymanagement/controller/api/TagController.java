@@ -30,23 +30,23 @@ public class TagController {
     public ResponseEntity<TagResponseDTO> createTag(
             @RequestBody TagRegistrationDTO request) {
 
-        TagResponseDTO tagResponse = this.tagService.addTag(request);
+        TagResponseDTO tagResponse = getTagService().addTag(request);
 
         return tagResponse != null
                 ? new ResponseEntity<>(tagResponse, HttpStatus.CREATED)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/tagName", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveTagByName", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TagResponseDTO> retrieveByTagName(
             @RequestParam String tagName) {
         TagResponseDTO tag;
 
         try {
-            tag = this.tagService.retrieveByTagName(tagName);
+            tag = getTagService().retrieveByTagName(tagName);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
         }
         return new ResponseEntity<>(tag, HttpStatus.OK);
     }
@@ -59,34 +59,38 @@ public class TagController {
         TagUpdateDTO tag;
 
         try {
-            tag = this.tagService.updateTag(tagName, newTag);
+            tag = getTagService().updateTag(tagName, newTag);
 
         } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
         }
         return new ResponseEntity<>(tag, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "deleteTag", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteTag", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteTag(@RequestParam String tagName) {
 
         try {
-            this.tagService.deleteTag(tagName);
+            getTagService().deleteTag(tagName);
 
         } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. Got a null response");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
         }
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
+    @RequestMapping(value = "retrieveTags", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<TagResponseDTO>> retrieveAll() {
-        Set<TagResponseDTO> tags = this.tagService.getAll();
+        Set<TagResponseDTO> tags = getTagService().getAll();
 
         return tags != null
                 ? new ResponseEntity<>(tags, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    public TagServiceImpl getTagService() {
+        return tagService;
     }
 }

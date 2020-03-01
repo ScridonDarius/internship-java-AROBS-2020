@@ -9,17 +9,14 @@ import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.BookRepository;
 import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.BookService;
-import com.arobs.internship.librarymanagement.service.ValidationService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConvertor;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import javax.validation.ValidationException;
 import java.util.*;
 
 @Service
@@ -27,11 +24,14 @@ public class BookServiceImpl implements BookService {
 
     private BookRepository bookRepository;
 
-    @Autowired
-    private RepositoryFactory repositoryFactory;
+    private final RepositoryFactory repositoryFactory;
 
-    @Autowired
-    private TagServiceImpl tagService;
+    private final TagServiceImpl tagService;
+
+    public BookServiceImpl(RepositoryFactory repositoryFactory, TagServiceImpl tagService) {
+        this.repositoryFactory = repositoryFactory;
+        this.tagService = tagService;
+    }
 
     @PostConstruct
     public void init() {
@@ -47,15 +47,24 @@ public class BookServiceImpl implements BookService {
             book.setTags(addTags(bookRegistrationDTO.getTags()));
         }
 
-        if (Objects.isNull(retrieveBookByAuthorAndTitle(bookRegistrationDTO.getAuthor(), bookRegistrationDTO.getTitle()))) {
-            book = bookRepository.save(book);
-        } else {
-            throw new FoundException("Book already exist in DataBase");
+        // TODO : change list with querry to DataBase (If we have a long list with books, affect our performance)
+
+//        if (retrieveBookByAuthorAndTitle(bookRegistrationDTO.getAuthor(), bookRegistrationDTO.getTitle()) == null) {
+//            book = getBookRepository().save(book);
+//        } else {
+//            throw new FoundException();
+//        }
+
+        Set<BookResponseDTO> books = getAll();
+        for (BookResponseDTO bookDTO : books) {
+            if (bookDTO.getAuthor().equals(bookRegistrationDTO.getAuthor()) && bookDTO.getTitle().equals(bookRegistrationDTO.getTitle())) {
+                throw new FoundException();
+            }
         }
 
+        book = getBookRepository().save(book);
         return BookMapperConvertor.generateDTOResponseFromEntity(book);
     }
-
 
     private Set<Tag> addTags(Set<TagResponseDTO> tags) {
         final Set<Tag> results = new HashSet<>();
@@ -68,33 +77,46 @@ public class BookServiceImpl implements BookService {
                 results.add(tagService.getTagRepository().findByTagName(tag.getTagName()));
             }
         }
-
         return results;
     }
 
     @Override
     @Transactional
     public BookResponseDTO retrieveBookByAuthorAndTitle(String author, String title) {
-        return BookMapperConvertor.generateDTOResponseFromEntity(bookRepository.findBook(author, title));
-
+        return BookMapperConvertor.generateDTOResponseFromEntity(getBookRepository().findBook(author, title));
     }
 
     @Override
     @Transactional
     public BookResponseDTO retrieveBookById(int id) {
-        return BookMapperConvertor.generateDTOResponseFromEntity(bookRepository.findBookById(id));
+        return BookMapperConvertor.generateDTOResponseFromEntity(getBookRepository().findBookById(id));
     }
 
-    @Transactional
     @Override
+    @Transactional
+    public boolean deleteBook(int id) {
+        final Book book = getBookRepository().findBookById(id);
+        if (!Objects.isNull(book)) {
+            getBookRepository().delete(book);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional
     public Set<BookResponseDTO> getAll() {
-        List<BookResponseDTO> bookResponseDTO = new ArrayList<BookResponseDTO>();
-        List<Book> books = this.bookRepository.getAll();
+        List<BookResponseDTO> bookResponseDTO = new ArrayList<>();
+        List<Book> books = getBookRepository().getAll();
 
         for (Book bookAux : books) {
             bookResponseDTO.add(BookMapperConvertor.generateDTOResponseFromEntity(bookAux));
         }
         return ListToSetConverter.convertListToSet(bookResponseDTO);
+    }
+
+    protected BookRepository getBookRepository() {
+        return bookRepository;
     }
 
 }

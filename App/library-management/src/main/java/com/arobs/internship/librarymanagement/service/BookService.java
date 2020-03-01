@@ -13,9 +13,9 @@ public interface BookService {
 
     BookResponseDTO retrieveBookByAuthorAndTitle(String author, String title);
 
-    @Transactional
     BookResponseDTO retrieveBookById(int id);
 
-    @Transactional
     Set<BookResponseDTO> getAll();
+
+    boolean deleteBook(int id);
 }

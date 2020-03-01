@@ -1,4 +1,4 @@
-package com.arobs.internship.librarymanagement.service;
+package com.arobs.internship.librarymanagement.validation;
 
 import javax.persistence.PersistenceException;
 import java.util.List;

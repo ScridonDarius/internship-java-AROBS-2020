@@ -41,9 +41,9 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public TagResponseDTO addTag(TagRegistrationDTO request) {
-        tagRepository.createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
+        getTagRepository().createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
 
-        return TagMapperConverter.generateDTOResponseFromEntity(tagRepository.findByTagName(request.getTagName()));
+        return TagMapperConverter.generateDTOResponseFromEntity(getTagRepository().findByTagName(request.getTagName()));
     }
 
     @Transactional
@@ -67,8 +67,8 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public TagResponseDTO retrieveByTagName(String tagName) {
-        if (this.tagRepository.findByTagName(tagName) != null) {
-            return TagMapperConverter.generateDTOResponseFromEntity(tagRepository.findByTagName(tagName));
+        if (getTagRepository().findByTagName(tagName) != null) {
+            return TagMapperConverter.generateDTOResponseFromEntity(getTagRepository().findByTagName(tagName));
         }
         return null;
     }
@@ -77,7 +77,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Set<TagResponseDTO> getAll() {
         List<TagResponseDTO> tagsResponse = new ArrayList<>();
-        List<Tag> tags = this.tagRepository.findAll();
+        List<Tag> tags = getTagRepository().findAll();
 
         for (Tag tagAux : tags) {
             tagsResponse.add(TagMapperConverter.generateDTOResponseFromEntity(tagAux));

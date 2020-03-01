@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface EmployeeService {
 
-    EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request);
+    EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) throws InvalidEmailException;
 
     EmployeeResponseDTO retrieveByUserName(String userName);
 
