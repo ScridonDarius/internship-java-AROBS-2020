@@ -24,8 +24,10 @@ public class TagRepositoryJdbcImpl implements TagRepository {
     }
 
     @Override
-    public int createTag(Tag tag) {
-        return jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
+    public Tag createTag(Tag tag) {
+        int id  = jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
+
+        return null;
     }
 
     @Override

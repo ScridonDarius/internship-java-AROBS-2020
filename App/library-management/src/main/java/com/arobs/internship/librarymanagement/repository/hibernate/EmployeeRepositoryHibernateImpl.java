@@ -54,7 +54,7 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
         return findEmployee(userName);
     }
 
-    public SessionFactory getSessionFactory() {
+    protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }

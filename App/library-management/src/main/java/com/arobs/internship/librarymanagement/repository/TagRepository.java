@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TagRepository {
 
-    int createTag(Tag tag);
+    Tag createTag(Tag tag);
 
     Tag findByTagName(String tagName);
 

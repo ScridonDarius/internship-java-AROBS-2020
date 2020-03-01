@@ -12,7 +12,6 @@ import com.arobs.internship.librarymanagement.service.EmployeeService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import com.arobs.internship.librarymanagement.validation.util.EmployeeValidationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -30,8 +29,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
 
-    @Autowired
-    private RepositoryFactory repositoryFactory;
+    private final RepositoryFactory repositoryFactory;
+
+    public EmployeeServiceImpl(RepositoryFactory repositoryFactory) {
+        this.repositoryFactory = repositoryFactory;
+    }
 
     @PostConstruct
     public void init() {
@@ -48,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public EmployeeResponseDTO retrieveByEmail(String email) throws InvalidEmailException {
-        if (EmployeeValidationUtil.isValidEmailAddress(email) == false) {
+        if (!EmployeeValidationUtil.isValidEmailAddress(email)) {
             throw new InvalidEmailException();
         }
         return EmployeeMapperConverter.generateDTOResponseFromEntity(employeeRepository.findEmployeeByEmail(email));
@@ -79,11 +81,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean deleteEmployee(String userName) {
 
         final Employee employee = getEmployeeRepository().findEmployee(userName);
-        if (Objects.isNull(employee)) {
-            //TODO: throw an exception?? or return false?
+        if (!Objects.isNull(employee)) {
+            employeeRepository.deleteEmployee(userName);
+            return true;
         }
-        employeeRepository.deleteEmployee(userName);
-        return true;
+       return false;
     }
 
     @Override
@@ -123,7 +125,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
-
             try {
                 throw new InvalidEmailException();
 
@@ -151,7 +152,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return EmployeeMapperConverter.generateDTOUpdateFromEntity(employee);
     }
 
-    public EmployeeRepository getEmployeeRepository() {
+    protected EmployeeRepository getEmployeeRepository() {
         return employeeRepository;
     }
 }

@@ -22,7 +22,7 @@ public class Book {
     @Column(nullable = false, length = 100)
     private String description;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "book_tag",
             joinColumns = {@JoinColumn(name = "book_id")},

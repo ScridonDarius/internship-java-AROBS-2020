@@ -1,25 +1,22 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
-import com.arobs.internship.librarymanagement.exception.NullObjectException;
-import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
-import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
-import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
+import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.TagService;
+import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
+import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -29,8 +26,11 @@ public class TagServiceImpl implements TagService {
 
     private final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
 
-    @Autowired
-    private RepositoryFactory repositoryFactory;
+    private final RepositoryFactory repositoryFactory;
+
+    public TagServiceImpl(RepositoryFactory repositoryFactory) {
+        this.repositoryFactory = repositoryFactory;
+    }
 
     @PostConstruct
     public void init() {
@@ -75,8 +75,8 @@ public class TagServiceImpl implements TagService {
 
     @Transactional
     @Override
-    public Set<TagResponseDTO> retrieveAll() {
-        List<TagResponseDTO> tagsResponse = new ArrayList<TagResponseDTO>();
+    public Set<TagResponseDTO> getAll() {
+        List<TagResponseDTO> tagsResponse = new ArrayList<>();
         List<Tag> tags = this.tagRepository.findAll();
 
         for (Tag tagAux : tags) {
@@ -85,7 +85,7 @@ public class TagServiceImpl implements TagService {
         return ListToSetConverter.convertListToSet(tagsResponse);
     }
 
-    public TagRepository getTagRepository() {
+    protected TagRepository getTagRepository() {
         return tagRepository;
     }
 }

@@ -53,7 +53,7 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> retrieveByEmail(
             @RequestParam String email) {
-        EmployeeResponseDTO employeeResponseDTO = null;
+        EmployeeResponseDTO employeeResponseDTO;
 
         try {
             employeeResponseDTO = this.employeeService.retrieveByEmail(email);

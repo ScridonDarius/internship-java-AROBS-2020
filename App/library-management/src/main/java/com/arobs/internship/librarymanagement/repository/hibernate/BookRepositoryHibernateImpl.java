@@ -5,6 +5,8 @@ import com.arobs.internship.librarymanagement.repository.BookRepository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class BookRepositoryHibernateImpl implements BookRepository {
 
@@ -16,16 +18,26 @@ public class BookRepositoryHibernateImpl implements BookRepository {
 
     @Override
     public Book save(Book book) {
-       int id = (int) this.getSessionFactory().getCurrentSession().save(book);
-        return this.getSessionFactory().getCurrentSession().get(Book.class,id);
+        this.getSessionFactory().getCurrentSession().save(book);
+        return this.getSessionFactory().getCurrentSession().get(Book.class, book.getId());
     }
 
     @Override
     public Book findBook(String author, String title) {
-            return (Book) this.getSessionFactory().getCurrentSession().createQuery("FROM Book WHERE author = :author AND title = :title").setParameter("author", author).setParameter("title", title).getSingleResult();
+        return (Book) this.getSessionFactory().getCurrentSession().createQuery("FROM Book WHERE author = :author AND title = :title",Book.class).setParameter("author", author).setParameter("title", title).getSingleResult();
     }
 
-    public SessionFactory getSessionFactory() {
+    @Override
+    public Book findBookById(int id) {
+        return getSessionFactory().getCurrentSession().get(Book.class, id);
+    }
+
+    @Override
+    public List<Book> getAll() {
+        return getSessionFactory().getCurrentSession().createQuery("FROM Book", Book.class).getResultList();
+    }
+
+    protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }

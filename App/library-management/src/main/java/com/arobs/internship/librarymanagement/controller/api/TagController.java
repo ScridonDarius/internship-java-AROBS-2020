@@ -3,8 +3,6 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
-import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
-import com.arobs.internship.librarymanagement.exception.NullObjectException;
 import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -43,7 +41,7 @@ public class TagController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TagResponseDTO> retrieveByTagName(
             @RequestParam String tagName) {
-        TagResponseDTO tag = null;
+        TagResponseDTO tag;
 
         try {
             tag = this.tagService.retrieveByTagName(tagName);
@@ -58,7 +56,7 @@ public class TagController {
     public ResponseEntity<TagUpdateDTO> updateTag(
             @RequestParam String tagName,
             @RequestParam String newTag) {
-        TagUpdateDTO tag = null;
+        TagUpdateDTO tag;
 
         try {
             tag = this.tagService.updateTag(tagName, newTag);
@@ -85,7 +83,7 @@ public class TagController {
     @RequestMapping(value = "retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<TagResponseDTO>> retrieveAll() {
-        Set<TagResponseDTO> tags = this.tagService.retrieveAll();
+        Set<TagResponseDTO> tags = this.tagService.getAll();
 
         return tags != null
                 ? new ResponseEntity<>(tags, HttpStatus.OK)
