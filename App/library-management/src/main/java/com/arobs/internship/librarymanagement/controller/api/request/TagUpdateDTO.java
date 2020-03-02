@@ -1,5 +1,6 @@
 package com.arobs.internship.librarymanagement.controller.api.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -8,7 +9,11 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @ApiModel
+@JsonIgnoreProperties(value = "id", allowGetters = true)
 public class TagUpdateDTO {
+
+    @ApiModelProperty
+    private int id;
 
     @ApiModelProperty(required = true)
     @NotNull
@@ -20,6 +25,19 @@ public class TagUpdateDTO {
 
     public TagUpdateDTO(@NotNull @Size(max = 150) String tagName) {
         this.tagName = tagName;
+    }
+
+    public TagUpdateDTO(int id, @NotNull @Size(max = 150) String tagName) {
+        this.id = id;
+        this.tagName = tagName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTagName() {
@@ -35,11 +53,12 @@ public class TagUpdateDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TagUpdateDTO that = (TagUpdateDTO) o;
-        return tagName.equals(that.tagName);
+        return id == that.id &&
+                tagName.equals(that.tagName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tagName);
+        return Objects.hash(id, tagName);
     }
 }

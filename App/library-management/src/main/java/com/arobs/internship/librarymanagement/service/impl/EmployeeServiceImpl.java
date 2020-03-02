@@ -63,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         request.setCreateDate(LocalDateTime.now());
 
         if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
-                throw new InvalidEmailException();
+            throw new InvalidEmailException();
         }
         getEmployeeRepository().createEmployee(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
         return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().findEmployee(request.getUserName()));
@@ -78,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             getEmployeeRepository().deleteEmployee(userName);
             return true;
         }
-       return false;
+        return false;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeUpdateDTO updateAllEmployee(EmployeeUpdateDTO request, String userName) {
         Employee employee = getEmployeeRepository().findEmployee(userName);
-        Employee oldEmployee = getEmployeeRepository().findEmployee(userName);
+        Employee oldEmployee = employee;
 
         if (Objects.isNull(request)) {
             throw new NullPointerException("Null object");

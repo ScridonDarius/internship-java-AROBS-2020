@@ -62,17 +62,18 @@ public class BookServiceImpl implements BookService {
     }
 
     private Set<Tag> addTags(Set<TagResponseDTO> tags) {
-        final Set<Tag> results = new HashSet<>();
-        final Set<TagResponseDTO> tagsResponseDTO = tagService.getAll();
-
-        for (TagResponseDTO tag : tags) {
-            if (!tagsResponseDTO.contains(tag)) {
-                results.add(tagService.getTagRepository().createTag(TagMapperConverter.generateEntityFromDTOResponse(tag)));
-            } else {
-                results.add(tagService.getTagRepository().findByTagName(tag.getTagName()));
-            }
-        }
-        return results;
+//        final Set<Tag> results = new HashSet<>();
+//        final Set<TagResponseDTO> tagsResponseDTO = tagService.getAll();
+//
+//        for (TagResponseDTO tag : tags) {
+//            if (!tagsResponseDTO.contains(tag)) {
+//                results.add(tagService.getTagRepository().createTag(TagMapperConverter.generateEntityFromDTOResponse(tag)));
+//            } else {
+//                results.add(tagService.getTagRepository().findByTagName(tag.getTagName()));
+//            }
+//        }
+//        return results;
+        return null;
     }
 
     @Override

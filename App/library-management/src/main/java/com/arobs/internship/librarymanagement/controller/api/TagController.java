@@ -3,7 +3,9 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
+import com.arobs.internship.librarymanagement.repository.jdbc.mapper.TagMapper;
 import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
+import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(
@@ -30,7 +33,7 @@ public class TagController {
     public ResponseEntity<TagResponseDTO> createTag(
             @RequestBody TagRegistrationDTO request) {
 
-        TagResponseDTO tagResponse = getTagService().addTag(request);
+        TagResponseDTO tagResponse = TagMapperConverter.generateDTOResponseFromEntity(getTagService().addTag(request));
 
         return tagResponse != null
                 ? new ResponseEntity<>(tagResponse, HttpStatus.CREATED)
@@ -44,11 +47,12 @@ public class TagController {
         TagResponseDTO tag;
 
         try {
-            tag = getTagService().retrieveByTagName(tagName);
+            tag = TagMapperConverter.generateDTOResponseFromEntity(getTagService().retrieveByTagName(tagName));
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
         }
         return new ResponseEntity<>(tag, HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/updateTag", method = RequestMethod.PATCH)
@@ -59,7 +63,7 @@ public class TagController {
         TagUpdateDTO tag;
 
         try {
-            tag = getTagService().updateTag(tagName, newTag);
+            tag = TagMapperConverter.generateDTOUpdateFromEntity(getTagService().updateTag(tagName, newTag));
 
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
@@ -83,7 +87,7 @@ public class TagController {
     @RequestMapping(value = "retrieveTags", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<TagResponseDTO>> retrieveAll() {
-        Set<TagResponseDTO> tags = getTagService().getAll();
+        Set<TagResponseDTO> tags = getTagService().getAll().stream().map(tag -> new TagResponseDTO(tag.getId(), tag.getTagName())).collect(Collectors.toSet());
 
         return tags != null
                 ? new ResponseEntity<>(tags, HttpStatus.OK)

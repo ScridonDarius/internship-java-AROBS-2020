@@ -8,7 +8,7 @@ public interface TagRepository {
 
     Tag createTag(Tag tag);
 
-    Tag findByTagName(String tagName);
+    List<Tag> findByTagName(String tagName);
 
     void updateTag(Tag tag);
 

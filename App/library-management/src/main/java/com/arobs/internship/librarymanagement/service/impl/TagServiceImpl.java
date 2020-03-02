@@ -1,21 +1,19 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
-import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
 import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.TagService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
+import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -40,49 +38,41 @@ public class TagServiceImpl implements TagService {
 
     @Transactional
     @Override
-    public TagResponseDTO addTag(TagRegistrationDTO request) {
-        getTagRepository().createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
-
-        return TagMapperConverter.generateDTOResponseFromEntity(getTagRepository().findByTagName(request.getTagName()));
+    public Tag addTag(TagRegistrationDTO request) {
+        Tag tag = getTagRepository().createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
+        return tag;
     }
 
     @Transactional
     @Override
-    public TagUpdateDTO updateTag(String tagName, String newTag) {
-        final Tag tag = getTagRepository().findByTagName(tagName);
+    public Tag updateTag(String tagName, String newTag) {
+        final Tag tag = retrieveByTagName(tagName);
         tag.setTagName(newTag);
         getTagRepository().updateTag(tag);
 
-        return TagMapperConverter.generateDTOUpdateFromEntity(tag);
+       return tag;
     }
 
     @Transactional
     @Override
     public boolean deleteTag(String tagName) {
-        final Tag tag = getTagRepository().findByTagName(tagName);
+        final Tag tag = retrieveByTagName(tagName);
         getTagRepository().deleteTag(tag);
         return true;
     }
 
     @Transactional
     @Override
-    public TagResponseDTO retrieveByTagName(String tagName) {
-        if (getTagRepository().findByTagName(tagName) != null) {
-            return TagMapperConverter.generateDTOResponseFromEntity(getTagRepository().findByTagName(tagName));
-        }
-        return null;
+    public Tag retrieveByTagName(String tagName) {
+        List<Tag> tags = getTagRepository().findByTagName(tagName);
+        Tag tag = ValidationService.safeGetUniqueResult(tags);
+        return tag;
     }
 
     @Transactional
     @Override
-    public Set<TagResponseDTO> getAll() {
-        List<TagResponseDTO> tagsResponse = new ArrayList<>();
-        List<Tag> tags = getTagRepository().findAll();
-
-        for (Tag tagAux : tags) {
-            tagsResponse.add(TagMapperConverter.generateDTOResponseFromEntity(tagAux));
-        }
-        return ListToSetConverter.convertListToSet(tagsResponse);
+    public Set<Tag> getAll() {
+        return ListToSetConverter.convertListToSet(getTagRepository().findAll());
     }
 
     protected TagRepository getTagRepository() {
