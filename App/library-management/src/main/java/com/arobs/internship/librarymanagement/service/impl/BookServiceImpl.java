@@ -8,15 +8,19 @@ import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.BookRepository;
 import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
+import com.arobs.internship.librarymanagement.repository.hibernate.BookRepositoryHibernateImpl;
+import com.arobs.internship.librarymanagement.repository.jdbc.mapper.BookMapper;
 import com.arobs.internship.librarymanagement.service.BookService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConvertor;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.*;
 
 @Service
@@ -49,20 +53,11 @@ public class BookServiceImpl implements BookService {
 
         // TODO : change list with querry to DataBase (If we have a long list with books, affect our performance)
 
-//        if (retrieveBookByAuthorAndTitle(bookRegistrationDTO.getAuthor(), bookRegistrationDTO.getTitle()) == null) {
-//            book = getBookRepository().save(book);
-//        } else {
-//            throw new FoundException();
-//        }
-
-        Set<BookResponseDTO> books = getAll();
-        for (BookResponseDTO bookDTO : books) {
-            if (bookDTO.getAuthor().equals(bookRegistrationDTO.getAuthor()) && bookDTO.getTitle().equals(bookRegistrationDTO.getTitle())) {
-                throw new FoundException();
-            }
+        if (retrieveBookByAuthorAndTitle(bookRegistrationDTO.getAuthor(), bookRegistrationDTO.getTitle()) == null) {
+            book = getBookRepository().save(book);
+        } else {
+            throw new FoundException();
         }
-
-        book = getBookRepository().save(book);
         return BookMapperConvertor.generateDTOResponseFromEntity(book);
     }
 
@@ -83,7 +78,13 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookResponseDTO retrieveBookByAuthorAndTitle(String author, String title) {
-        return BookMapperConvertor.generateDTOResponseFromEntity(getBookRepository().findBook(author, title));
+        List<Book> book = getBookRepository().findBook(author, title);
+
+        if (book.isEmpty() || book == null) {
+            return null;
+        } else {
+            return BookMapperConvertor.generateDTOResponseFromEntity(book.get(0));
+        }
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface BookRepository {
 
     Book save(Book book);
 
-    Book findBook(String author, String title);
+    List<Book> findBook(String author, String title);
 
     Book findBookById(int id);
 
