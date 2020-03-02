@@ -12,6 +12,8 @@ import com.arobs.internship.librarymanagement.service.BookService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
+import com.arobs.internship.librarymanagement.validation.ValidationService;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -79,12 +81,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book retrieveBookByAuthorAndTitle(String author, String title) {
-        List<Book> books = getBookRepository().findBook(author, title);
-        if (books.isEmpty() || books == null) {
-            return null;
-        } else {
-            return books.get(0);
-        }
+        return ValidationService.safeGetUniqueResult(getBookRepository().findBook(author, title));
     }
 
     @Override

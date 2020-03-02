@@ -1,7 +1,10 @@
 package com.arobs.internship.librarymanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
@@ -27,6 +30,7 @@ public class Book {
     private String description;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "book_tag",
             joinColumns = {@JoinColumn(name = "book_id")},

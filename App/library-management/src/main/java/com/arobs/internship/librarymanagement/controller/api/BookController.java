@@ -38,13 +38,13 @@ public class BookController {
 
     @RequestMapping(value = "/findBook", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Book> retrieveByAuthorAndTitle(
+    public ResponseEntity<BookResponseDTO> retrieveByAuthorAndTitle(
             @RequestParam String author,
             @RequestParam String title) {
-        Book bookResponseDTO;
+        BookResponseDTO bookResponseDTO;
 
         try {
-            bookResponseDTO = getBookService().retrieveBookByAuthorAndTitle(author, title);
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(getBookService().retrieveBookByAuthorAndTitle(author,title));
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
         }

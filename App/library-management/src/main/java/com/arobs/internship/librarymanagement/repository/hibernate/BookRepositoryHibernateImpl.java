@@ -24,8 +24,8 @@ public class BookRepositoryHibernateImpl implements BookRepository {
 
     @Override
     public List<Book> findBook(String author, String title) {
-       List<Book> books =  getSessionFactory().getCurrentSession().createQuery("FROM Book WHERE author = :author AND title = :title").setParameter("author", author).setParameter("title", title).getResultList();
-   return books;
+        return getSessionFactory().getCurrentSession().createQuery("FROM Book WHERE author = :author AND title = :title", Book.class).setParameter("author", author).setParameter("title", title).getResultList();
+
     }
 
     @Override
