@@ -1,16 +1,22 @@
 package com.arobs.internship.librarymanagement.controller.api.response;
 
 import com.arobs.internship.librarymanagement.model.Tag;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 import java.util.Set;
 
 @ApiModel
+@JsonIgnoreProperties(value = "id", allowGetters = true)
 public class BookResponseDTO {
+
+    @ApiModelProperty
+    private int id;
 
     @ApiModelProperty(required = true)
     @NotNull
@@ -29,16 +35,25 @@ public class BookResponseDTO {
 
     @ApiModelProperty(required = true)
     @NotNull
-    private Set<Tag> tags;
+    private Set<TagResponseDTO> tags;
 
     public BookResponseDTO() {
     }
 
-    public BookResponseDTO(@NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<Tag> tags) {
+    public BookResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<TagResponseDTO> tags) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
         this.tags = tags;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -65,27 +80,11 @@ public class BookResponseDTO {
         this.description = description;
     }
 
-    public Set<Tag> getTags() {
+    public Set<TagResponseDTO> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(Set<TagResponseDTO> tags) {
         this.tags = tags;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BookResponseDTO that = (BookResponseDTO) o;
-        return title.equals(that.title) &&
-                author.equals(that.author) &&
-                description.equals(that.description) &&
-                tags.equals(that.tags);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, author, description, tags);
     }
 }

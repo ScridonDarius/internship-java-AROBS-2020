@@ -1,7 +1,6 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
 import com.arobs.internship.librarymanagement.model.Employee;
@@ -11,6 +10,7 @@ import com.arobs.internship.librarymanagement.repository.factory.RepositoryFacto
 import com.arobs.internship.librarymanagement.service.EmployeeService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
+import com.arobs.internship.librarymanagement.validation.ValidationService;
 import com.arobs.internship.librarymanagement.validation.util.EmployeeValidationUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,8 +19,6 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -43,22 +41,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public EmployeeResponseDTO retrieveByUserName(String userName) {
-        return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().findEmployee(userName));
+    public Employee retrieveByUserName(String userName) {
+        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployee(userName));
     }
 
     @Override
     @Transactional
-    public EmployeeResponseDTO retrieveByEmail(String email) throws InvalidEmailException {
+    public Employee retrieveByEmail(String email) throws InvalidEmailException {
         if (!EmployeeValidationUtil.isValidEmailAddress(email)) {
             throw new InvalidEmailException();
         }
-        return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().findEmployeeByEmail(email));
+        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployeeByEmail(email));
     }
 
     @Override
     @Transactional
-    public EmployeeResponseDTO addEmployee(EmployeeRegistrationDTO request) throws InvalidEmailException {
+    public Employee addEmployee(EmployeeRegistrationDTO request) throws InvalidEmailException {
         request.setEmployeeStatus(EmployeeStatus.ACTIVE);
         request.setCreateDate(LocalDateTime.now());
 
@@ -66,14 +64,14 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new InvalidEmailException();
         }
         getEmployeeRepository().createEmployee(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
-        return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().findEmployee(request.getUserName()));
+        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployee(request.getUserName()));
     }
 
     @Override
     @Transactional
     public boolean deleteEmployee(String userName) {
 
-        final Employee employee = getEmployeeRepository().findEmployee(userName);
+        final Employee employee = ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployee(userName));
         if (!Objects.isNull(employee)) {
             getEmployeeRepository().deleteEmployee(userName);
             return true;
@@ -83,9 +81,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public EmployeeResponseDTO changePassword(String password, String userName) {
+    public Employee changePassword(String password, String userName) {
         if (!retrieveByUserName(userName).getPassword().equals(password)) {
-            return EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeRepository().updatePassword(userName, password));
+            return getEmployeeRepository().updatePassword(userName, password);
         } else {
             throw new ValidationException("This passowrd was recently used");
         }
@@ -93,24 +91,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public Set<EmployeeResponseDTO> retrieveAll() {
-        List<EmployeeResponseDTO> employeeResponseDTOS = new ArrayList<>();
-        List<Employee> employees = getEmployeeRepository().findAll();
-
-        for (Employee employeeAux : employees) {
-            employeeResponseDTOS.add(EmployeeMapperConverter.generateDTOResponseFromEntity(employeeAux));
-        }
-        return ListToSetConverter.convertListToSet(employeeResponseDTOS);
+    public Set<Employee> retrieveAll() {
+        return ListToSetConverter.convertListToSet(getEmployeeRepository().getAll());
     }
 
     @Override
     @Transactional
-    public EmployeeUpdateDTO employeeUpdate(EmployeeUpdateDTO request, String userName) {
+    public Employee employeeUpdate(EmployeeUpdateDTO request, String userName) {
         return updateAllEmployee(request, userName);
     }
 
-    private EmployeeUpdateDTO updateAllEmployee(EmployeeUpdateDTO request, String userName) {
-        Employee employee = getEmployeeRepository().findEmployee(userName);
+    private Employee updateAllEmployee(EmployeeUpdateDTO request, String userName) {
+        Employee employee = ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployee(userName));
         Employee oldEmployee = employee;
 
         if (Objects.isNull(request)) {
@@ -142,7 +134,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             getEmployeeRepository().updateEmployee(userName, employee);
         }
 
-        return EmployeeMapperConverter.generateDTOUpdateFromEntity(employee);
+        return employee;
     }
 
     protected EmployeeRepository getEmployeeRepository() {

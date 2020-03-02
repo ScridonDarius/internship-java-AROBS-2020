@@ -15,7 +15,7 @@ import java.util.Objects;
 public class EmployeeResponseDTO {
 
     @ApiModelProperty
-    private Long id;
+    private int id;
 
     @ApiModelProperty(required = true)
     @NotNull
@@ -70,11 +70,22 @@ public class EmployeeResponseDTO {
         this.createDate = createDate;
     }
 
-    public Long getId() {
+    public EmployeeResponseDTO(int id, @NotNull @Size(max = 20) String userName, @NotNull @Size(max = 20) String firstName, @NotNull @Size(max = 20) String lastName, @NotNull @Size(max = 50) String email, @NotNull EmployeeRole employeeRole, @NotNull EmployeeStatus employeeStatus, @NotNull LocalDateTime createDate) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.employeeRole = employeeRole;
+        this.employeeStatus = employeeStatus;
+        this.createDate = createDate;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

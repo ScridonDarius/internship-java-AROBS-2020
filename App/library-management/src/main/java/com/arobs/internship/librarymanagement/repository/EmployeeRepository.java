@@ -8,15 +8,15 @@ public interface EmployeeRepository {
 
     int createEmployee(Employee employee);
 
-    Employee findEmployee(String userName);
+    List<Employee> findEmployee(String userName);
 
     void updateEmployee(String userName, Employee employee);
 
     void deleteEmployee(String userName);
 
-    List<Employee> findAll();
+    List<Employee> getAll();
 
-    Employee findEmployeeByEmail(String email);
+    List<Employee> findEmployeeByEmail(String email);
 
     Employee updatePassword(String userName, String password);
 }

@@ -2,6 +2,7 @@ package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
+import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -22,8 +23,8 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     }
 
     @Override
-    public Employee findEmployee(String userName) {
-        return (Employee) getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE user_name = :userName").setParameter("userName", userName).getSingleResult();
+    public List<Employee> findEmployee(String userName) {
+        return (List<Employee>) getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE user_name = :userName").setParameter("userName", userName).list();
     }
 
     @Override
@@ -37,20 +38,20 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     }
 
     @Override
-    public List<Employee> findAll() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Employee", Employee.class).getResultList();
+    public List<Employee> getAll() {
+        return getSessionFactory().getCurrentSession().createQuery("FROM Employee", Employee.class).list();
     }
 
     @Override
-    public Employee findEmployeeByEmail(String email) {
-        return (Employee) getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE email = :email").setParameter("email", email).getSingleResult();
+    public List<Employee> findEmployeeByEmail(String email) {
+        return (List<Employee>) getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE email = :email").setParameter("email", email).list();
     }
 
     @Override
     public Employee updatePassword(String userName, String password) {
         getSessionFactory().getCurrentSession().createQuery("UPDATE Employee SET password = :password WHERE user_name = :userName").setParameter("password", password).setParameter("userName", userName).executeUpdate();
 
-        return findEmployee(userName);
+        return ValidationService.safeGetUniqueResult(findEmployee(userName));
     }
 
     protected SessionFactory getSessionFactory() {

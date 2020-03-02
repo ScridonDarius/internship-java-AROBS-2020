@@ -24,8 +24,9 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
-    public Employee findEmployee(String userName) {
-        return jdbcTemplate.queryForObject("SELECT * FROM employee WHERE user_name = ?", new Object[]{userName}, new EmployeeMapper());
+    public List<Employee> findEmployee(String userName) {
+        jdbcTemplate.queryForObject("SELECT * FROM employee WHERE user_name = ?", new Object[]{userName}, new EmployeeMapper());
+        return null;
     }
 
     @Override
@@ -38,13 +39,14 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
-    public List<Employee> findAll() {
+    public List<Employee> getAll() {
         return jdbcTemplate.query("SELECT * FROM employee", new EmployeeMapper());
     }
 
     @Override
-    public Employee findEmployeeByEmail(String email) {
-        return jdbcTemplate.queryForObject("SELECT * FROM employee WHERE email = ?", new Object[]{email}, new EmployeeMapper());
+    public List<Employee> findEmployeeByEmail(String email) {
+        jdbcTemplate.queryForObject("SELECT * FROM employee WHERE email = ?", new Object[]{email}, new EmployeeMapper());
+        return null;
     }
 
     @Override

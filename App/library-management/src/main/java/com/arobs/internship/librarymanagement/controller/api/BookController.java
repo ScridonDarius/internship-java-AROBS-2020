@@ -2,16 +2,15 @@ package com.arobs.internship.librarymanagement.controller.api;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.service.impl.BookServiceImpl;
+import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/book", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -28,7 +27,7 @@ public class BookController {
     public ResponseEntity<BookResponseDTO> createBook(@RequestBody BookRegistrationDTO request) {
         BookResponseDTO bookResponseDTO;
         try {
-            bookResponseDTO = getBookService().addBook(request);
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(getBookService().addBook(request));
         } catch (FoundException e) {
             throw new ResponseStatusException(HttpStatus.FOUND, "Book already exist in DataBase", e);
         }
@@ -41,18 +40,23 @@ public class BookController {
     public ResponseEntity<BookResponseDTO> retrieveByAuthorAndTitle(
             @RequestParam String author,
             @RequestParam String title) {
-        BookResponseDTO bookResponseDTO = this.bookService.retrieveBookByAuthorAndTitle(author, title);
+        BookResponseDTO bookResponseDTO;
 
-        return bookResponseDTO != null
-                ? new ResponseEntity<>(bookResponseDTO, HttpStatus.OK)
-                : new ResponseEntity<>(new BookResponseDTO(), HttpStatus.NO_CONTENT);
+        try {
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(bookService.retrieveBookByAuthorAndTitle(author, title));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
+        }
+        return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
+
     }
+
 
     @RequestMapping(value = "/deleteBoook/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteBook(
             @PathVariable("id") int id) {
-       getBookService().deleteBook(id);
+        getBookService().deleteBook(id);
 
         return new ResponseEntity<>(getBookService().deleteBook(id), HttpStatus.OK);
     }

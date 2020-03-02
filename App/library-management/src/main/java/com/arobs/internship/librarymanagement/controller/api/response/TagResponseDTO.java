@@ -10,16 +10,16 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @ApiModel
-@JsonIgnoreProperties(value = "id", allowGetters = true)
-public class TagResponseDTO {
+ //   @JsonIgnoreProperties(value = "id", allowGetters = true)
+    public class TagResponseDTO {
 
-    @ApiModelProperty
-    private int id;
+//        @ApiModelProperty
+//        private int id;
 
-    @ApiModelProperty(required = true)
-    @NotNull
-    @Size(max = 50)
-    private String tagName;
+        @ApiModelProperty(required = true)
+        @NotNull
+        @Size(max = 50)
+        private String tagName;
 
     public TagResponseDTO() {
     }
@@ -28,10 +28,10 @@ public class TagResponseDTO {
         this.tagName = tagName;
     }
 
-    public TagResponseDTO(int id, @NotNull @Size(max = 50) String tagName) {
-        this.id = id;
-        this.tagName = tagName;
-    }
+//    public TagResponseDTO(int id, @NotNull @Size(max = 50) String tagName) {
+//        this.id = id;
+//        this.tagName = tagName;
+//    }
 
     public String getTagName() {
         return tagName;
@@ -41,25 +41,25 @@ public class TagResponseDTO {
         this.tagName = tagName;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TagResponseDTO that = (TagResponseDTO) o;
-        return Objects.equals(id, that.id) &&
-                tagName.equals(that.tagName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, tagName);
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        TagResponseDTO that = (TagResponseDTO) o;
+//        return Objects.equals(id, that.id) &&
+//                tagName.equals(that.tagName);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, tagName);
+//    }
 }

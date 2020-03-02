@@ -1,21 +1,20 @@
 package com.arobs.internship.librarymanagement.service;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
+import com.arobs.internship.librarymanagement.model.Book;
 
-import javax.transaction.Transactional;
 import java.util.Set;
 
 public interface BookService {
 
-    BookResponseDTO addBook(BookRegistrationDTO request) throws FoundException;
+    Book addBook(BookRegistrationDTO request) throws FoundException;
 
-    BookResponseDTO retrieveBookByAuthorAndTitle(String author, String title);
+    Book retrieveBookByAuthorAndTitle(String author, String title);
 
-    BookResponseDTO retrieveBookById(int id);
+    Book retrieveBookById(int id);
 
-    Set<BookResponseDTO> getAll();
+    Set<Book> getAll();
 
     boolean deleteBook(int id);
 }

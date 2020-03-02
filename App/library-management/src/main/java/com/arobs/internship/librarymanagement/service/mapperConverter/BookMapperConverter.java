@@ -5,7 +5,7 @@ import com.arobs.internship.librarymanagement.controller.api.response.BookRespon
 import com.arobs.internship.librarymanagement.model.Book;
 import org.modelmapper.ModelMapper;
 
-public class BookMapperConvertor {
+public class BookMapperConverter {
 
     static ModelMapper modelMapper = new ModelMapper();
 

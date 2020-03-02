@@ -3,8 +3,10 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
+import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
 import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
+import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/employee", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -32,7 +35,7 @@ public class EmployeeController {
         EmployeeResponseDTO employeeResponse;
 
         try {
-           employeeResponse = getEmployeeService().addEmployee(request);
+           employeeResponse = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().addEmployee(request));
         } catch (InvalidEmailException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
         }
@@ -47,7 +50,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResponseDTO> retrieveByUserName(
             @RequestParam String userName) {
 
-        EmployeeResponseDTO employeeResponseDTO = getEmployeeService().retrieveByUserName(userName);
+        EmployeeResponseDTO employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveByUserName(userName));
 
         return employeeResponseDTO != null
                 ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
@@ -61,7 +64,7 @@ public class EmployeeController {
         EmployeeResponseDTO employeeResponseDTO;
 
         try {
-            employeeResponseDTO = getEmployeeService().retrieveByEmail(email);
+            employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveByEmail(email));
         } catch (InvalidEmailException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
         } catch (EmptyResultDataAccessException e) {
@@ -77,7 +80,7 @@ public class EmployeeController {
             @RequestParam String userName,
             @RequestParam String password) {
         this.employeeService.changePassword(password, userName);
-        EmployeeResponseDTO employeeResponseDTO = getEmployeeService().retrieveByUserName(userName);
+        EmployeeResponseDTO employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveByUserName(userName));
 
         return employeeResponseDTO != null
                 ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
@@ -97,7 +100,7 @@ public class EmployeeController {
                 e.printStackTrace();
             }
         }
-        EmployeeUpdateDTO employeeUpdateDTO = getEmployeeService().employeeUpdate(request, userName);
+        EmployeeUpdateDTO employeeUpdateDTO = EmployeeMapperConverter.generateDTOUpdateFromEntity(getEmployeeService().employeeUpdate(request, userName));
 
         return employeeUpdateDTO != null
                 ? new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK)
@@ -115,10 +118,11 @@ public class EmployeeController {
     @RequestMapping(value = "/retrieveEmployees", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<EmployeeResponseDTO>> retrieveAll() {
-        Set<EmployeeResponseDTO> employeeResponseDTOS = getEmployeeService().retrieveAll();
+        Set<EmployeeResponseDTO> emloyee = getEmployeeService().retrieveAll().stream().map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(),employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
 
-        return employeeResponseDTOS != null
-                ? new ResponseEntity<>(employeeResponseDTOS, HttpStatus.OK)
+
+        return emloyee != null
+                ? new ResponseEntity<>(emloyee, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

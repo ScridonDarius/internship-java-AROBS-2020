@@ -1,5 +1,7 @@
 package com.arobs.internship.librarymanagement.model;
 
+import org.springframework.data.repository.cdi.Eager;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -129,23 +131,23 @@ public class Book {
         this.rentRequests = rentRequests;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return id == book.id &&
-                title.equals(book.title) &&
-                author.equals(book.author) &&
-                description.equals(book.description) &&
-                tags.equals(book.tags) &&
-                copies.equals(book.copies) &&
-                bookRents.equals(book.bookRents) &&
-                rentRequests.equals(book.rentRequests);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, author, description, tags, copies, bookRents, rentRequests);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Book book = (Book) o;
+//        return id == book.id &&
+//                title.equals(book.title) &&
+//                author.equals(book.author) &&
+//                description.equals(book.description) &&
+//                tags.equals(book.tags) &&
+//                copies.equals(book.copies) &&
+//                bookRents.equals(book.bookRents) &&
+//                rentRequests.equals(book.rentRequests);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, title, author, description, tags, copies, bookRents, rentRequests);
+//    }
 }
