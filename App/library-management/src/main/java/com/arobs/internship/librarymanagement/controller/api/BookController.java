@@ -3,6 +3,7 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
+import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.service.impl.BookServiceImpl;
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,7 +23,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookResponseDTO> createBook(@RequestBody BookRegistrationDTO request) {
         BookResponseDTO bookResponseDTO;
@@ -37,13 +38,13 @@ public class BookController {
 
     @RequestMapping(value = "/findBook", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookResponseDTO> retrieveByAuthorAndTitle(
+    public ResponseEntity<Book> retrieveByAuthorAndTitle(
             @RequestParam String author,
             @RequestParam String title) {
-        BookResponseDTO bookResponseDTO;
+        Book bookResponseDTO;
 
         try {
-            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(bookService.retrieveBookByAuthorAndTitle(author, title));
+            bookResponseDTO = getBookService().retrieveBookByAuthorAndTitle(author, title);
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
         }

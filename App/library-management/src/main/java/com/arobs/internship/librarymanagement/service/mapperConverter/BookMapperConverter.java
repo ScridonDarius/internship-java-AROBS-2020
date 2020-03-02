@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.service.mapperConverter;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
 import com.arobs.internship.librarymanagement.model.Book;
 import org.modelmapper.ModelMapper;

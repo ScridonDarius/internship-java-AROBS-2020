@@ -87,8 +87,7 @@ public class TagController {
     @RequestMapping(value = "retrieveTags", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<TagResponseDTO>> retrieveAll() {
-        //tag.getId(),
-        Set<TagResponseDTO> tags = getTagService().getAll().stream().map(tag -> new TagResponseDTO(tag.getTagName())).collect(Collectors.toSet());
+        Set<TagResponseDTO> tags = getTagService().getAll().stream().map(tag -> new TagResponseDTO(tag.getId(), tag.getTagName())).collect(Collectors.toSet());
 
         return tags != null
                 ? new ResponseEntity<>(tags, HttpStatus.OK)

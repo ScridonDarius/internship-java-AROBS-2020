@@ -19,7 +19,7 @@ public class TagRepositoryJdbcImpl implements TagRepository {
     }
 
     @Override
-    public List<Tag> findByTagName(String tagName) {
+    public Tag findByTagName(String tagName) {
          jdbcTemplate.queryForObject("SELECT * FROM tag WHERE tag_name = ?", new Object[]{tagName}, new TagMapper());
          return null;
     }

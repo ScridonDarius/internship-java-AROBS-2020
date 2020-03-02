@@ -5,9 +5,7 @@ import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
 import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.TagService;
-import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
-import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -50,7 +47,7 @@ public class TagServiceImpl implements TagService {
         tag.setTagName(newTag);
         getTagRepository().updateTag(tag);
 
-       return tag;
+        return tag;
     }
 
     @Transactional
@@ -64,15 +61,14 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public Tag retrieveByTagName(String tagName) {
-        List<Tag> tags = getTagRepository().findByTagName(tagName);
-        Tag tag = ValidationService.safeGetUniqueResult(tags);
-        return tag;
+        return getTagRepository().findByTagName(tagName);
     }
 
-    @Transactional
+
     @Override
-    public Set<Tag> getAll() {
-        return ListToSetConverter.convertListToSet(getTagRepository().findAll());
+    @Transactional
+    public List<Tag> getAll() {
+        return getTagRepository().findAll();
     }
 
     protected TagRepository getTagRepository() {

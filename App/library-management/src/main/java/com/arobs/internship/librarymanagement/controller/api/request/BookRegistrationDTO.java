@@ -1,6 +1,6 @@
 package com.arobs.internship.librarymanagement.controller.api.request;
 
-import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
+import com.arobs.internship.librarymanagement.controller.api.response.TagBookResponseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,13 +28,12 @@ public class BookRegistrationDTO {
     private String description;
 
     @ApiModelProperty(required = true)
-    @NotNull
-    private Set<TagResponseDTO> tags;
+    private @NotNull Set<TagBookResponseDTO> tags;
 
     public BookRegistrationDTO() {
     }
 
-    public BookRegistrationDTO(@NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<TagResponseDTO> tags) {
+    public BookRegistrationDTO(@NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, Set<TagBookResponseDTO> tags) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -65,11 +64,11 @@ public class BookRegistrationDTO {
         this.description = description;
     }
 
-    public Set<TagResponseDTO> getTags() {
+    public Set<TagBookResponseDTO> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagResponseDTO> tags) {
+    public void setTags(Set<TagBookResponseDTO> tags) {
         this.tags = tags;
     }
 

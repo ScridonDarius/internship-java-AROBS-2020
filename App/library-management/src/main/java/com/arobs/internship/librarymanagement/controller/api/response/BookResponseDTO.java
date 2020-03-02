@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 import java.util.Set;
 
 @ApiModel
@@ -34,13 +32,12 @@ public class BookResponseDTO {
     private String description;
 
     @ApiModelProperty(required = true)
-    @NotNull
-    private Set<TagResponseDTO> tags;
+    private @NotNull Set<Tag> tags;
 
     public BookResponseDTO() {
     }
 
-    public BookResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<TagResponseDTO> tags) {
+    public BookResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, Set<Tag> tags) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -80,11 +77,11 @@ public class BookResponseDTO {
         this.description = description;
     }
 
-    public Set<TagResponseDTO> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagResponseDTO> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 }

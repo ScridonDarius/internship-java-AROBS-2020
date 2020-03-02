@@ -1,5 +1,7 @@
 package com.arobs.internship.librarymanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
@@ -65,6 +67,12 @@ public class Book {
         this.title = title;
         this.author = author;
         this.description = description;
+    }
+    public Book(String title, String author, String description, Set<Tag> tags) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.tags = tags;
     }
 
     public int getId() {
