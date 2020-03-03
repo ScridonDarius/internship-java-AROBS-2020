@@ -44,7 +44,22 @@ public class BookController {
         BookResponseDTO bookResponseDTO;
 
         try {
-            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(getBookService().retrieveBookByAuthorAndTitle(author,title));
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(this.getBookService().retrieveBookByAuthorAndTitle(author,title));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
+        }
+        return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/findBook/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BookResponseDTO> retrieveById(
+            @PathVariable("id") int id )         {
+        BookResponseDTO bookResponseDTO;
+
+        try {
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(this.getBookService().retrieveBookById(id));
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
         }
