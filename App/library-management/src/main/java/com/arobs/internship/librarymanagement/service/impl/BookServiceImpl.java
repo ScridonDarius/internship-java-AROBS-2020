@@ -106,28 +106,21 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Book updateBook(BookUpdateDTO bookUpdateDTO, int bookId) {
         final Book book = retrieveBookById(bookId);
-        final Set<Tag> results = new HashSet<>();
+        Set<Tag> bookTags = book.getTags();
+        final Set<TagBookResponseDTO> booksTag = bookTags.stream().map(tag -> new TagBookResponseDTO(tag.getTagName())).collect(Collectors.toSet());
 
-        Set<Tag> allTags = book.getTags();
-       // final Set<String> tagNames = allTags.stream().map(Tag::getTagName).collect(Collectors.toSet());
+        final Set<TagBookResponseDTO> requestTags = bookUpdateDTO.getTags();
 
-      for(TagBookResponseDTO tag : bookUpdateDTO.getTags()){
-              results.add(TagMapperConverter.generateEntityFromTagBookDTO(tag));
-      }
-        System.out.println(results.toString());
+        final Set<TagBookResponseDTO> results = new HashSet<>();
 
-        Set<TagBookResponseDTO> tags = results.stream().map(tag -> new TagBookResponseDTO(tag.getTagName())).collect(Collectors.toSet());
+        results.addAll(requestTags);
+        results.addAll(booksTag);
 
-
-        addTags(tags);
-
-
-        book.setTags(results);
-
-        if(bookUpdateDTO.getDescription().isEmpty()){
+        if (bookUpdateDTO.getDescription().isEmpty()) {
             bookUpdateDTO.setDescription(book.getDescription());
         }
 
+        book.setTags(addTags(results));
         book.setDescription(bookUpdateDTO.getDescription());
         getBookRepository().updateBook(book);
         return book;
