@@ -11,9 +11,13 @@ public interface CopyRepository {
 
     Copy findById(int copyId);
 
+    Copy findByISBN(String isbn);
+
     Copy updateCopy(Copy copy);
 
     boolean deleteCopy(Copy copy);
 
     List<Copy> getAll();
+
+    List<Copy> findByBookId(int id);
 }

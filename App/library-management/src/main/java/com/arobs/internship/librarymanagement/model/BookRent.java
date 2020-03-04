@@ -28,15 +28,15 @@ public class BookRent {
     @Column(nullable = false, name = "note")
     private String note;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "copy_id")
     private Copy copy;
 

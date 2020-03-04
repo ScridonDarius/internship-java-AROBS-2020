@@ -40,19 +40,13 @@ public class Book {
     )
     private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "book",
-            cascade = CascadeType.ALL
-    )
+    @OneToMany(mappedBy = "book")
     private Set<Copy> copies = new HashSet<>();
 
-    @OneToMany(mappedBy = "book",
-            cascade = CascadeType.ALL
-    )
+    @OneToMany(mappedBy = "book")
     private Set<BookRent> bookRents;
 
-    @OneToMany(mappedBy = "book",
-            cascade = CascadeType.ALL
-    )
+    @OneToMany(mappedBy = "book")
     private Set<RentRequest> rentRequests;
 
     public Book() {

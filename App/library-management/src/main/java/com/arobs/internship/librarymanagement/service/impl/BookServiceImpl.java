@@ -3,7 +3,6 @@ package com.arobs.internship.librarymanagement.service.impl;
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagBookResponseDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.Tag;
@@ -14,7 +13,6 @@ import com.arobs.internship.librarymanagement.service.converter.ListToSetConvert
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -46,12 +44,11 @@ public class BookServiceImpl implements BookService {
         bookRepository = factory.getBookRepository();
     }
 
-    // TODO : change list with querry to DataBase (If we have a long list with books, affect our performance)
-
     @Override
     @Transactional
     public Book addBook(BookRegistrationDTO bookRegistrationDTO) throws FoundException {
         Book book = BookMapperConverter.generateEntityFromDTORegistration(bookRegistrationDTO);
+
         if (retrieveBookByAuthorAndTitle(bookRegistrationDTO.getAuthor(), bookRegistrationDTO.getTitle()) == null) {
             if (!CollectionUtils.isEmpty(bookRegistrationDTO.getTags())) {
                 book.setTags(addTags(bookRegistrationDTO.getTags()));
@@ -61,22 +58,6 @@ public class BookServiceImpl implements BookService {
             throw new FoundException();
         }
         return book;
-    }
-
-    private Set<Tag> addTags(Set<TagBookResponseDTO> tags) {
-        final Set<Tag> results = new HashSet<>();
-
-        final List<Tag> allTags = tagService.getAll();
-        final Set<String> tagNames = allTags.stream().map(Tag::getTagName).collect(Collectors.toSet());
-
-        for (TagBookResponseDTO tag : tags) {
-            if (!tagNames.contains(tag.getTagName())) {
-                results.add(tagService.addTag(TagMapperConverter.generateRegistrationFromTagBookDTO(tag)));
-            } else {
-                results.add(allTags.stream().filter(tagg -> tag.getTagName().equals(tag.getTagName())).findFirst().get());
-            }
-        }
-        return results;
     }
 
     @Override
@@ -106,30 +87,48 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Book updateBook(BookUpdateDTO bookUpdateDTO, int bookId) {
         final Book book = retrieveBookById(bookId);
-        Set<Tag> bookTags = book.getTags();
-        final Set<TagBookResponseDTO> booksTag = bookTags.stream().map(tag -> new TagBookResponseDTO(tag.getTagName())).collect(Collectors.toSet());
-
         final Set<TagBookResponseDTO> requestTags = bookUpdateDTO.getTags();
-
-        final Set<TagBookResponseDTO> results = new HashSet<>();
-
-        results.addAll(requestTags);
-        results.addAll(booksTag);
+        final Set<TagBookResponseDTO> booksTag = book.getTags().stream().map(tag -> new TagBookResponseDTO(tag.getTagName())).collect(Collectors.toSet());
+        requestTags.addAll(booksTag);
 
         if (bookUpdateDTO.getDescription().isEmpty()) {
             bookUpdateDTO.setDescription(book.getDescription());
         }
-        book.setTags(addTags(results));
+
+        if (bookUpdateDTO.getTags().isEmpty()) {
+            bookUpdateDTO.setTags(booksTag);
+        }
+
+        book.setTags(addTags(requestTags));
+
         book.setDescription(bookUpdateDTO.getDescription());
         getBookRepository().updateBook(book);
+
         return book;
     }
-
 
     @Override
     @Transactional
     public Set<Book> getAll() {
         return ListToSetConverter.convertListToSet(getBookRepository().getAll());
+    }
+
+    private Set<Tag> addTags(Set<TagBookResponseDTO> tags) {
+        final Set<Tag> results = new HashSet<>();
+
+        final List<Tag> allTags = tagService.getAll();
+        final Set<String> tagNames = allTags.stream().map(Tag::getTagName).collect(Collectors.toSet());
+
+        for (TagBookResponseDTO tag : tags) {
+            if (!tag.getTagName().isEmpty()) {
+                if (!tagNames.contains(tag.getTagName()) && (tag.getTagName().isEmpty())) {
+                    results.add(tagService.addTag(TagMapperConverter.generateRegistrationFromTagBookDTO(tag)));
+                } else {
+                    results.add(allTags.stream().filter(tagg -> tag.getTagName().equals(tagg.getTagName())).findFirst().get());
+                }
+            }
+        }
+        return results;
     }
 
     protected BookRepository getBookRepository() {

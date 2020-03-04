@@ -34,7 +34,7 @@ public class BookRequest {
     @Enumerated(EnumType.STRING)
     private BookRentStatus bookRentStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 

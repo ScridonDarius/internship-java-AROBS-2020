@@ -20,9 +20,8 @@ public class TagRepositoryHibernateImpl implements TagRepository {
 
     @Override
     public Tag createTag(Tag tag) {
-        Session session = getSessionFactory().getCurrentSession();
-        session.save(tag);
-        return session.get(Tag.class, tag.getId());
+       getSessionFactory().getCurrentSession().save(tag);
+        return getSessionFactory().getCurrentSession().get(Tag.class, tag.getId());
     }
 
     @Override

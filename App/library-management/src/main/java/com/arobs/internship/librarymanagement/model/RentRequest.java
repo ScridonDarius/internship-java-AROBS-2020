@@ -22,11 +22,11 @@ public class RentRequest {
     @Enumerated(EnumType.STRING)
     private RentRequestStatus rentRequestStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 

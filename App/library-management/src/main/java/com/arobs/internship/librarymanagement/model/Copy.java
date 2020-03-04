@@ -27,7 +27,7 @@ public class Copy {
     @Enumerated(EnumType.STRING)
     private CopyStatus copyStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 

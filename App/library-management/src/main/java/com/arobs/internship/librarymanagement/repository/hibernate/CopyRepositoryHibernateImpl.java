@@ -18,14 +18,23 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
 
     @Override
     public Copy save(Copy copy) {
-        Session session = getSessionFactory().getCurrentSession();
-        session.save(copy);
-        return session.get(Copy.class, copy.getId());
+      getSessionFactory().getCurrentSession().save(copy);
+        return getSessionFactory().getCurrentSession().get(Copy.class, copy.getId());
     }
 
     @Override
     public Copy findById(int copyId) {
-        return null;
+    return getSessionFactory().getCurrentSession().get(Copy.class, copyId);
+    }
+
+    @Override
+    public Copy findByISBN(String isbn) {
+       return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE isbn = :isbn",Copy.class).setParameter("isbn", isbn).getSingleResult();
+    }
+
+    @Override
+    public List<Copy> findByBookId(int id) {
+        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE book_id = :id",Copy.class).setParameter("id", id).getResultList();
     }
 
     @Override
