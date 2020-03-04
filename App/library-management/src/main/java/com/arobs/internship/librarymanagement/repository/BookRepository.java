@@ -15,4 +15,6 @@ public interface BookRepository {
     void delete(Book book);
 
     List<Book> getAll();
+
+    void updateBook(Book book);
 }

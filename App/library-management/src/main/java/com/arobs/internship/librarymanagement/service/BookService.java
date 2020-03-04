@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.service;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.Book;
 
@@ -17,4 +18,6 @@ public interface BookService {
     Set<Book> getAll();
 
     boolean deleteBook(int id);
+
+    Book updateBook(BookUpdateDTO bookUpdateDTO, int bookId);
 }

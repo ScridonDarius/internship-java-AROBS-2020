@@ -43,6 +43,12 @@ public class BookRepositoryHibernateImpl implements BookRepository {
         return getSessionFactory().getCurrentSession().createQuery("FROM Book", Book.class).getResultList();
     }
 
+    @Override
+    public void updateBook(Book book) {
+         getSessionFactory().getCurrentSession().update(book);
+
+    }
+
     protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }

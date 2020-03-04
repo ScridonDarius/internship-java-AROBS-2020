@@ -24,6 +24,10 @@ public class TagMapperConverter {
         return modelMapper.map(book, TagRegistrationDTO.class);
     }
 
+    public static Tag generateEntityFromTagBookDTO(TagBookResponseDTO book) {
+        return modelMapper.map(book, Tag.class);
+    }
+
     public static Tag generateEntityFromDTORegistration(TagRegistrationDTO tagRegistrationDTO) {
         return modelMapper.map(tagRegistrationDTO, Tag.class);
     }

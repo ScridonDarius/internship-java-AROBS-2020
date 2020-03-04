@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagBookResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
@@ -100,6 +101,38 @@ public class BookServiceImpl implements BookService {
         }
         return true;
     }
+
+    @Override
+    @Transactional
+    public Book updateBook(BookUpdateDTO bookUpdateDTO, int bookId) {
+        final Book book = retrieveBookById(bookId);
+        final Set<Tag> results = new HashSet<>();
+
+        Set<Tag> allTags = book.getTags();
+       // final Set<String> tagNames = allTags.stream().map(Tag::getTagName).collect(Collectors.toSet());
+
+      for(TagBookResponseDTO tag : bookUpdateDTO.getTags()){
+              results.add(TagMapperConverter.generateEntityFromTagBookDTO(tag));
+      }
+        System.out.println(results.toString());
+
+        Set<TagBookResponseDTO> tags = results.stream().map(tag -> new TagBookResponseDTO(tag.getTagName())).collect(Collectors.toSet());
+
+
+        addTags(tags);
+
+
+        book.setTags(results);
+
+        if(bookUpdateDTO.getDescription().isEmpty()){
+            bookUpdateDTO.setDescription(book.getDescription());
+        }
+
+        book.setDescription(bookUpdateDTO.getDescription());
+        getBookRepository().updateBook(book);
+        return book;
+    }
+
 
     @Override
     @Transactional

@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.service.mapperConverter;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
 import com.arobs.internship.librarymanagement.model.Book;
@@ -21,6 +22,15 @@ public class BookMapperConverter {
     public static Book generateEntityFromDTOResponse(BookResponseDTO bookResponseDTO) {
         return modelMapper.map(bookResponseDTO, Book.class);
     }
+
+    public static BookResponseDTO generateResponseFromUpdate(BookUpdateDTO bookUpdateDTO) {
+        return modelMapper.map(bookUpdateDTO, BookResponseDTO.class);
+    }
+
+    public static BookUpdateDTO generateUpdateDTOFromEntity(Book book) {
+        return modelMapper.map(book, BookUpdateDTO.class);
+    }
+
 
     public static BookRegistrationDTO generateDTORegistrationFromEntity(Book book) {
         return modelMapper.map(book, BookRegistrationDTO.class);
