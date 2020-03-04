@@ -119,7 +119,6 @@ public class BookServiceImpl implements BookService {
         if (bookUpdateDTO.getDescription().isEmpty()) {
             bookUpdateDTO.setDescription(book.getDescription());
         }
-
         book.setTags(addTags(results));
         book.setDescription(bookUpdateDTO.getDescription());
         getBookRepository().updateBook(book);

@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.ScriptAssert;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -42,8 +43,7 @@ public class Book {
     @OneToMany(mappedBy = "book",
             cascade = CascadeType.ALL
     )
-    private Set<Copy> copies;
-
+    private Set<Copy> copies = new HashSet<>();
 
     @OneToMany(mappedBy = "book",
             cascade = CascadeType.ALL

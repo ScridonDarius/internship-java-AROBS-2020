@@ -15,7 +15,7 @@ import java.util.Objects;
 public class EmployeeRegistrationDTO {
 
     @ApiModelProperty
-    private Long id;
+    private int id;
 
     @ApiModelProperty(required = true)
     @NotNull
@@ -87,11 +87,11 @@ public class EmployeeRegistrationDTO {
         this.createDate = createDate;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
