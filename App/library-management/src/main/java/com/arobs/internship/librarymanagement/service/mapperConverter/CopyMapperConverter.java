@@ -9,7 +9,7 @@ import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.Copy;
 import org.modelmapper.ModelMapper;
 
-public class CopyMapperConvertor {
+public class CopyMapperConverter {
 
     static ModelMapper modelMapper = new ModelMapper();
 

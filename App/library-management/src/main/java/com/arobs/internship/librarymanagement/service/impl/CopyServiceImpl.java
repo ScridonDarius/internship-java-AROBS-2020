@@ -2,7 +2,6 @@ package com.arobs.internship.librarymanagement.service.impl;
 
 import com.arobs.internship.librarymanagement.controller.api.request.CopyRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.TagBookResponseDTO;
 import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.model.enums.CopyCondition;
@@ -11,13 +10,12 @@ import com.arobs.internship.librarymanagement.repository.CopyRepository;
 import com.arobs.internship.librarymanagement.service.BookService;
 import com.arobs.internship.librarymanagement.service.CopyService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
-import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapperConvertor;
+import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapperConverter;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class CopyServiceImpl implements CopyService {
@@ -103,7 +101,7 @@ public class CopyServiceImpl implements CopyService {
     }
 
     private Copy saveCopy(CopyRegistrationDTO copyRegistrationDTO) {
-        Copy copy = CopyMapperConvertor.generateEntityFromDTORegistration(copyRegistrationDTO);
+        Copy copy = CopyMapperConverter.generateEntityFromDTORegistration(copyRegistrationDTO);
         copy.setCopyCondition(CopyCondition.GOOD);
         copy.setCopyStatus(CopyStatus.AVAILABLE);
 
