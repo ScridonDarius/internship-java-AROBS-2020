@@ -69,18 +69,21 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book retrieveBookById(int id) {
-        return getBookRepository().findBookById(id);
+        return ValidationService.safeGetUniqueResult(getBookRepository().findBookById(id));
     }
 
     @Override
     @Transactional
     public boolean deleteBook(int id) {
-        final Book book = getBookRepository().findBookById(id);
-        if (!Objects.isNull(book)) {
+        final Book book = retrieveBookById(id);
+
+        if (!Objects.isNull(retrieveBookById(id))) {
             getBookRepository().delete(book);
             return true;
+        } else {
+            return false;
         }
-        return false;
+
     }
 
     @Override

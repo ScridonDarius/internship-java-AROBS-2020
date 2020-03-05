@@ -2,7 +2,6 @@ package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.repository.CopyRepository;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -18,23 +17,23 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
 
     @Override
     public Copy save(Copy copy) {
-      getSessionFactory().getCurrentSession().save(copy);
+        getSessionFactory().getCurrentSession().save(copy);
         return getSessionFactory().getCurrentSession().get(Copy.class, copy.getId());
     }
 
     @Override
     public Copy findById(int copyId) {
-    return getSessionFactory().getCurrentSession().get(Copy.class, copyId);
+        return getSessionFactory().getCurrentSession().get(Copy.class, copyId);
     }
 
     @Override
     public Copy findByISBN(String isbn) {
-       return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE isbn = :isbn",Copy.class).setParameter("isbn", isbn).getSingleResult();
+        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE isbn = :isbn", Copy.class).setParameter("isbn", isbn).getSingleResult();
     }
 
     @Override
     public List<Copy> findByBookId(int id) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE book_id = :id",Copy.class).setParameter("id", id).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE book_id = :id", Copy.class).setParameter("id", id).getResultList();
     }
 
     @Override
@@ -50,7 +49,7 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
 
     @Override
     public List<Copy> getAll() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Copy",Copy.class).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM Copy", Copy.class).getResultList();
     }
 
 

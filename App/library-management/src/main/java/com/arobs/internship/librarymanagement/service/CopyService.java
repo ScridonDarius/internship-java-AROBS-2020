@@ -1,9 +1,7 @@
 package com.arobs.internship.librarymanagement.service;
 
-import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.CopyRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
-import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.Copy;
 
 import java.util.Set;

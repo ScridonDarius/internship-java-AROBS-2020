@@ -1,8 +1,8 @@
 package com.arobs.internship.librarymanagement.repository.jdbc;
 
 import com.arobs.internship.librarymanagement.model.Tag;
-import com.arobs.internship.librarymanagement.repository.jdbc.mapper.TagMapper;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
+import com.arobs.internship.librarymanagement.repository.jdbc.mapper.TagMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,13 +20,13 @@ public class TagRepositoryJdbcImpl implements TagRepository {
 
     @Override
     public Tag findByTagName(String tagName) {
-         jdbcTemplate.queryForObject("SELECT * FROM tag WHERE tag_name = ?", new Object[]{tagName}, new TagMapper());
-         return null;
+        jdbcTemplate.queryForObject("SELECT * FROM tag WHERE tag_name = ?", new Object[]{tagName}, new TagMapper());
+        return null;
     }
 
     @Override
     public Tag createTag(Tag tag) {
-        int id  = jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
+        int id = jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
 
         return null;
     }

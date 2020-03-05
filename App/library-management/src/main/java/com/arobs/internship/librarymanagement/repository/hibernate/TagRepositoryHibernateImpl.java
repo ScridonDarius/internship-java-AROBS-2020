@@ -1,9 +1,7 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
-import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +18,7 @@ public class TagRepositoryHibernateImpl implements TagRepository {
 
     @Override
     public Tag createTag(Tag tag) {
-       getSessionFactory().getCurrentSession().save(tag);
+        getSessionFactory().getCurrentSession().save(tag);
         return getSessionFactory().getCurrentSession().get(Tag.class, tag.getId());
     }
 

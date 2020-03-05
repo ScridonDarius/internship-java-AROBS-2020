@@ -40,6 +40,7 @@ public abstract class RepositoryFactory {
                 throw new IllegalArgumentException("Invalid factory");
         }
     }
+
     public abstract EmployeeRepository getEmployeeRepository();
 
     public abstract BookRepository getBookRepository();

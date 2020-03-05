@@ -107,7 +107,7 @@ public class CopyController {
         return new ResponseEntity<>(copyResponseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/udateCopy", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/updateCopy", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CopyUpdateDTO> updateBook(
             @RequestParam int copyId,

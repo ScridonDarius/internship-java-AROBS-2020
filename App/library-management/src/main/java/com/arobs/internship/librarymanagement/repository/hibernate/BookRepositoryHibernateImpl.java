@@ -24,28 +24,29 @@ public class BookRepositoryHibernateImpl implements BookRepository {
 
     @Override
     public List<Book> findBook(String author, String title) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Book WHERE author = :author AND title = :title", Book.class)
+        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.author = :author AND b.title = :title", Book.class)
                 .setParameter("author", author).setParameter("title", title).getResultList();
     }
 
     @Override
-    public Book findBookById(int id) {
-        return getSessionFactory().getCurrentSession().get(Book.class, id);
+    public List<Book> findBookById(int id) {
+        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.id = :id", Book.class).setParameter("id", id).getResultList();
+
     }
 
     @Override
     public void delete(Book book) {
-        getSessionFactory().getCurrentSession().delete(book);
+        getSessionFactory().getCurrentSession().createQuery("DELETE FROM Book WHERE id = :id").setParameter("id", book.getId()).executeUpdate();
     }
 
     @Override
     public List<Book> getAll() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Book", Book.class).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags", Book.class).getResultList();
     }
 
     @Override
     public void updateBook(Book book) {
-         getSessionFactory().getCurrentSession().update(book);
+        getSessionFactory().getCurrentSession().update(book);
 
     }
 

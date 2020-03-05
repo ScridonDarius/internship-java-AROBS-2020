@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @ApiModel
 public class CopyUpdateDTO {

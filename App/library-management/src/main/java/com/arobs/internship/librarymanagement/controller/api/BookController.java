@@ -4,8 +4,6 @@ import com.arobs.internship.librarymanagement.controller.api.request.BookRegistr
 import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
-import com.arobs.internship.librarymanagement.model.Book;
-import com.arobs.internship.librarymanagement.repository.jdbc.mapper.BookMapper;
 import com.arobs.internship.librarymanagement.service.impl.BookServiceImpl;
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -50,7 +48,7 @@ public class BookController {
         BookResponseDTO bookResponseDTO;
 
         try {
-            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(this.getBookService().retrieveBookByAuthorAndTitle(author,title));
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(this.getBookService().retrieveBookByAuthorAndTitle(author, title));
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
         }
@@ -61,7 +59,7 @@ public class BookController {
     @RequestMapping(value = "/findBook/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookResponseDTO> retrieveById(
-            @PathVariable("id") int id )         {
+            @PathVariable("id") Integer id) {
         BookResponseDTO bookResponseDTO;
 
         try {
@@ -93,9 +91,9 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteBook(
             @PathVariable("id") int id) {
-        getBookService().deleteBook(id);
+        boolean result = getBookService().deleteBook(id);
 
-        return new ResponseEntity<>(getBookService().deleteBook(id), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/retrieveBooks", method = RequestMethod.GET)

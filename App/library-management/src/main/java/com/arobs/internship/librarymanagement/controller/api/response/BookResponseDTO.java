@@ -32,12 +32,13 @@ public class BookResponseDTO {
     private String description;
 
     @ApiModelProperty(required = true)
-    private @NotNull Set<Tag> tags;
+    @NotNull
+    private Set<Tag> tags;
 
     public BookResponseDTO() {
     }
 
-    public BookResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, Set<Tag> tags) {
+    public BookResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<Tag> tags) {
         this.id = id;
         this.title = title;
         this.author = author;

@@ -1,6 +1,5 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
-import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.BookRequest;
 import com.arobs.internship.librarymanagement.repository.BookRequestRepository;
 import org.hibernate.SessionFactory;
@@ -15,13 +14,11 @@ public class BookRequestRepositoryHibernateImpl implements BookRequestRepository
         this.sessionFactory = sessionFactory;
     }
 
-
     @Override
     public BookRequest save(BookRequest bookRequest) {
-       getSessionFactory().getCurrentSession().save(bookRequest);
-       return getSessionFactory().getCurrentSession().get(BookRequest.class, bookRequest.getId());
+        getSessionFactory().getCurrentSession().save(bookRequest);
+        return getSessionFactory().getCurrentSession().get(BookRequest.class, bookRequest.getId());
     }
-
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;

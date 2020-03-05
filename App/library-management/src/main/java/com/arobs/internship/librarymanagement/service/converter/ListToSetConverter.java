@@ -7,9 +7,6 @@ import java.util.Set;
 public class ListToSetConverter {
 
     public static <T> Set<T> convertListToSet(List<T> list) {
-        Set<T> set = new HashSet<>();
-        for (T t : list)
-            set.add(t);
-        return set;
+        return new HashSet<>(list);
     }
 }

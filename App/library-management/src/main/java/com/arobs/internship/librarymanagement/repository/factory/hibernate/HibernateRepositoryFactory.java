@@ -1,6 +1,5 @@
 package com.arobs.internship.librarymanagement.repository.factory.hibernate;
 
-import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.BookRepository;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class HibernateRepositoryFactory extends RepositoryFactory {
 
     @Autowired
-    private EmployeeRepositoryHibernateImpl  employeeRepositoryHibernate;
+    private EmployeeRepositoryHibernateImpl employeeRepositoryHibernate;
 
     @Autowired
     private BookRepositoryHibernateImpl bookRepositoryHibernate;

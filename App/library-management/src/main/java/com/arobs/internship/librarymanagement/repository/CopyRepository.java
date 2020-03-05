@@ -1,7 +1,6 @@
 package com.arobs.internship.librarymanagement.repository;
 
 import com.arobs.internship.librarymanagement.model.Copy;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

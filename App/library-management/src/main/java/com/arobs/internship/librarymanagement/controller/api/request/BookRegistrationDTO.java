@@ -28,12 +28,13 @@ public class BookRegistrationDTO {
     private String description;
 
     @ApiModelProperty(required = true)
-    private @NotNull Set<TagBookResponseDTO> tags;
+    @NotNull
+    private Set<TagBookResponseDTO> tags;
 
     public BookRegistrationDTO() {
     }
 
-    public BookRegistrationDTO(@NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, Set<TagBookResponseDTO> tags) {
+    public BookRegistrationDTO(@NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<TagBookResponseDTO> tags) {
         this.title = title;
         this.author = author;
         this.description = description;

@@ -3,7 +3,6 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
-import com.arobs.internship.librarymanagement.repository.jdbc.mapper.TagMapper;
 import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -74,14 +73,14 @@ public class TagController {
     @RequestMapping(value = "/deleteTag", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteTag(@RequestParam String tagName) {
-
+        boolean result;
         try {
-            getTagService().deleteTag(tagName);
+            result = getTagService().deleteTag(tagName);
 
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
         }
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/retrieveTags", method = RequestMethod.GET)

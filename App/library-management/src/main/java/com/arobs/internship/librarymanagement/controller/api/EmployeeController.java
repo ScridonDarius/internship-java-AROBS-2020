@@ -1,8 +1,8 @@
 package com.arobs.internship.librarymanagement.controller.api;
 
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeUpdateDTO;
+import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
 import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
@@ -34,7 +34,7 @@ public class EmployeeController {
         EmployeeResponseDTO employeeResponse;
 
         try {
-           employeeResponse = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().addEmployee(request));
+            employeeResponse = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().addEmployee(request));
         } catch (InvalidEmailException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
         }
@@ -117,7 +117,7 @@ public class EmployeeController {
     @RequestMapping(value = "/retrieveEmployees", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<EmployeeResponseDTO>> retrieveAll() {
-        Set<EmployeeResponseDTO> emloyee = getEmployeeService().retrieveAll().stream().map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(),employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
+        Set<EmployeeResponseDTO> emloyee = getEmployeeService().retrieveAll().stream().map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
 
 
         return emloyee != null

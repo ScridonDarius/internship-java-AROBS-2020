@@ -20,7 +20,6 @@ import java.util.Set;
 @Service
 public class CopyServiceImpl implements CopyService {
 
-
     final CopyRepository copyRepository;
 
     final BookService bookService;
