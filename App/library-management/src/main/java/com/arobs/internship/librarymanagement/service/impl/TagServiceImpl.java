@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -54,8 +55,11 @@ public class TagServiceImpl implements TagService {
     @Override
     public boolean deleteTag(String tagName) {
         final Tag tag = retrieveByTagName(tagName);
-        getTagRepository().deleteTag(tag);
-        return true;
+        if (!Objects.isNull(tag)) {
+            getTagRepository().deleteTag(tag);
+            return true;
+        }
+        return false;
     }
 
     @Transactional

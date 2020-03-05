@@ -15,7 +15,7 @@ public interface CopyRepository {
 
     Copy updateCopy(Copy copy);
 
-    boolean deleteCopy(Copy copy);
+    void deleteCopy(Copy copy);
 
     List<Copy> getAll();
 

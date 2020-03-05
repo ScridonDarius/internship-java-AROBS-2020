@@ -78,9 +78,9 @@ public class BookServiceImpl implements BookService {
         final Book book = getBookRepository().findBookById(id);
         if (!Objects.isNull(book)) {
             getBookRepository().delete(book);
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -121,7 +121,7 @@ public class BookServiceImpl implements BookService {
 
         for (TagBookResponseDTO tag : tags) {
             if (!tag.getTagName().isEmpty()) {
-                if (!tagNames.contains(tag.getTagName()) && (tag.getTagName().isEmpty())) {
+                if (!tagNames.contains(tag.getTagName())) {
                     results.add(tagService.addTag(TagMapperConverter.generateRegistrationFromTagBookDTO(tag)));
                 } else {
                     results.add(allTags.stream().filter(tagg -> tag.getTagName().equals(tagg.getTagName())).findFirst().get());

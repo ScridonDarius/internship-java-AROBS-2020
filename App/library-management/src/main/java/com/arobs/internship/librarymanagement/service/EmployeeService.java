@@ -1,7 +1,7 @@
 package com.arobs.internship.librarymanagement.service;
 
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.EmployeeUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
 import com.arobs.internship.librarymanagement.model.Employee;
 

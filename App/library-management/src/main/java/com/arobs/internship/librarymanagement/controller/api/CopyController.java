@@ -1,21 +1,23 @@
 package com.arobs.internship.librarymanagement.controller.api;
 
-import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.CopyRegistrationDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.CopyResponseDTO;
-import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.Copy;
+import com.arobs.internship.librarymanagement.model.enums.CopyCondition;
 import com.arobs.internship.librarymanagement.service.impl.CopyServiceImpl;
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapperConvertor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,29 +33,108 @@ public class CopyController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CopyResponseDTO> createBook(@RequestParam String title,
-                                           @RequestParam String author,
-                                           @RequestBody CopyRegistrationDTO request) {
-        CopyResponseDTO copyResponseDTO;
-
-        copyResponseDTO = CopyMapperConvertor.generateDTOResponseFromEntity(getCopyService().saveCopy(request, title, author));
+    public ResponseEntity<CopyResponseDTO> createCopyByAuthorAndTitle(@RequestParam String title, @RequestParam String author, @RequestBody CopyRegistrationDTO request) {
+        CopyResponseDTO copyResponseDTO = CopyMapperConvertor.generateDTOResponseFromEntity(getCopyService().saveCopyByAuthorAndTitle(request, title, author));
 
         return new ResponseEntity<>(copyResponseDTO, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/retrieveTags", method = RequestMethod.GET)
+    @RequestMapping(value = "/createCopyByBookId/{bookId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Set<CopyResponseDTO>> retrieveAll(
+    public ResponseEntity<CopyResponseDTO> createCopyByBookId(@PathVariable("bookId") int bookId, @RequestBody CopyRegistrationDTO request) {
+        CopyResponseDTO copyResponseDTO = CopyMapperConvertor.generateDTOResponseFromEntity(getCopyService().saveCopyByBookId(request, bookId));
+
+        return new ResponseEntity<>(copyResponseDTO, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/retrieveCopyByAuthorAndTitle", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Set<CopyResponseDTO>> retrieveCopyByAuthorAndTitle(
             @RequestParam String author,
             @RequestParam String title
     ) {
-        Set<CopyResponseDTO> copyResponseDTO = getCopyService().findCopyByBook(author, title).stream().
+        Set<CopyResponseDTO> copyResponseDTO = getCopyService().findCopyByAuthorAndTitle(author, title).stream().
                 map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConvertor.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
 
 
         return copyResponseDTO != null
                 ? new ResponseEntity<>(copyResponseDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/retrieveCopyByBookId/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Set<CopyResponseDTO>> retrieveCopyByBookId(@PathVariable("id") int id) {
+        Set<CopyResponseDTO> copyResponseDTO = getCopyService().findCopyByBookId(id).stream().
+                map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConvertor.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
+
+
+        return copyResponseDTO != null
+                ? new ResponseEntity<>(copyResponseDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/retrieveCopys", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Set<CopyResponseDTO>> retrieveAll() {
+        Set<CopyResponseDTO> copys = getCopyService().getAll().stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConvertor.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
+
+        return copys != null
+                ? new ResponseEntity<>(copys, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/findCopy/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<CopyResponseDTO> retrieveById(
+            @PathVariable("id") int id) {
+        CopyResponseDTO copyResponseDTO;
+
+        try {
+            copyResponseDTO = CopyMapperConvertor.generateDTOResponseFromEntity(getCopyService().findById(id));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This copy doesn't exist!");
+        }
+        return new ResponseEntity<>(copyResponseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/findCopy", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<CopyResponseDTO> retrieveByIsbn(
+            @RequestParam String isbn) {
+        CopyResponseDTO copyResponseDTO;
+
+        try {
+            copyResponseDTO = CopyMapperConvertor.generateDTOResponseFromEntity(getCopyService().findByISBN(isbn));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This copy doesn't exist!");
+        }
+        return new ResponseEntity<>(copyResponseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/udateCopy", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<CopyUpdateDTO> updateBook(
+            @RequestParam int copyId,
+            @RequestBody @Valid CopyUpdateDTO request) {
+        CopyUpdateDTO copyUpdateDTO;
+
+        try {
+            copyUpdateDTO = CopyMapperConvertor.generateUpdateDTOeFromEntity(getCopyService().updateCopy(request, copyId));
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
+        }
+        return new ResponseEntity<>(copyUpdateDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/deleteCopy/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Boolean> deleteCopy(
+            @PathVariable("id") int id) {
+        boolean response = getCopyService().deleteCopy(id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     public CopyServiceImpl getCopyService() {

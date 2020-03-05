@@ -39,17 +39,18 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
 
     @Override
     public Copy updateCopy(Copy copy) {
-        return null;
+        getSessionFactory().getCurrentSession().update(copy);
+        return findById(copy.getId());
     }
 
     @Override
-    public boolean deleteCopy(Copy copy) {
-        return false;
+    public void deleteCopy(Copy copy) {
+        getSessionFactory().getCurrentSession().delete(copy);
     }
 
     @Override
     public List<Copy> getAll() {
-        return null;
+        return getSessionFactory().getCurrentSession().createQuery("FROM Copy",Copy.class).getResultList();
     }
 
 

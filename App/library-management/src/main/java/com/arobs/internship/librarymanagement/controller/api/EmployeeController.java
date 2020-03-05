@@ -2,8 +2,7 @@ package com.arobs.internship.librarymanagement.controller.api;
 
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.EmployeeUpdateDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
+import com.arobs.internship.librarymanagement.controller.api.request.EmployeeUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
 import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;

@@ -1,4 +1,4 @@
-package com.arobs.internship.librarymanagement.controller.api.response;
+package com.arobs.internship.librarymanagement.controller.api.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
