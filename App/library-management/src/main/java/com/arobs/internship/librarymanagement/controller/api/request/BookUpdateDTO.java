@@ -17,12 +17,13 @@ public class BookUpdateDTO {
     private String description;
 
     @ApiModelProperty(required = true)
-    private @NotNull Set<TagBookResponseDTO> tags;
+    @NotNull
+    private Set<TagBookResponseDTO> tags;
 
     public BookUpdateDTO() {
     }
 
-    public BookUpdateDTO(@NotNull @Size(max = 100) String description, Set<TagBookResponseDTO> tags) {
+    public BookUpdateDTO(@NotNull @Size(max = 100) String description, @NotNull Set<TagBookResponseDTO> tags) {
         this.description = description;
         this.tags = tags;
     }

@@ -3,6 +3,7 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.CopyRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.CopyResponseDTO;
+import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 import com.arobs.internship.librarymanagement.service.impl.CopyServiceImpl;
 import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -69,13 +70,23 @@ public class CopyController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/retrieveCopys", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveCopies", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<CopyResponseDTO>> retrieveAll() {
         Set<CopyResponseDTO> copys = getCopyService().getAll().stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
 
         return copys != null
                 ? new ResponseEntity<>(copys, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/retrieveCopiesByStatusAndBook", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Set<CopyResponseDTO>> retrieveByStatusAndBook(@RequestParam int bookId, @RequestParam CopyStatus copyStatus) {
+        Set<CopyResponseDTO> copies = getCopyService().retrieveCopysByStatusAndBookId(bookId, copyStatus).stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
+
+        return copies != null
+                ? new ResponseEntity<>(copies, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

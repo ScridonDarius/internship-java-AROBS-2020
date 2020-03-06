@@ -77,7 +77,7 @@ public class BookServiceImpl implements BookService {
     public boolean deleteBook(int id) {
         final Book book = retrieveBookById(id);
 
-        if (!Objects.isNull(retrieveBookById(id))) {
+        if (!Objects.isNull(book)) {
             getBookRepository().delete(book);
             return true;
         } else {

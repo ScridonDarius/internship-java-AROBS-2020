@@ -1,6 +1,6 @@
 package com.arobs.internship.librarymanagement.model;
 
-import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
+import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -32,7 +32,7 @@ public class BookRequest {
 
     @Column(nullable = false, length = 50, name = "Status")
     @Enumerated(EnumType.STRING)
-    private BookRentStatus bookRentStatus;
+    private BookRequestStatus bookRequestStatus;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
@@ -41,13 +41,13 @@ public class BookRequest {
     public BookRequest() {
     }
 
-    public BookRequest(String title, String author, String publishingCompany, int copyNumber, BigDecimal totalCost, BookRentStatus bookRentStatus, Employee employee) {
+    public BookRequest(String title, String author, String publishingCompany, int copyNumber, BigDecimal totalCost, BookRequestStatus bookRequestStatus, Employee employee) {
         this.title = title;
         this.author = author;
         this.publishingCompany = publishingCompany;
         this.copyNumber = copyNumber;
         this.totalCost = totalCost;
-        this.bookRentStatus = bookRentStatus;
+        this.bookRequestStatus = bookRequestStatus;
         this.employee = employee;
     }
 
@@ -99,12 +99,12 @@ public class BookRequest {
         this.totalCost = totalCost;
     }
 
-    public BookRentStatus getBookRentStatus() {
-        return bookRentStatus;
+    public BookRequestStatus getBookRequestStatus() {
+        return bookRequestStatus;
     }
 
-    public void setBookRentStatus(BookRentStatus bookRentStatus) {
-        this.bookRentStatus = bookRentStatus;
+    public void setBookRequestStatus(BookRequestStatus bookRequestStatus) {
+        this.bookRequestStatus = bookRequestStatus;
     }
 
     public Employee getEmployee() {
@@ -114,24 +114,5 @@ public class BookRequest {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BookRequest that = (BookRequest) o;
-        return id == that.id &&
-                copyNumber == that.copyNumber &&
-                title.equals(that.title) &&
-                author.equals(that.author) &&
-                publishingCompany.equals(that.publishingCompany) &&
-                totalCost.equals(that.totalCost) &&
-                bookRentStatus == that.bookRentStatus &&
-                employee.equals(that.employee);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, author, publishingCompany, copyNumber, totalCost, bookRentStatus, employee);
-    }
+    
 }

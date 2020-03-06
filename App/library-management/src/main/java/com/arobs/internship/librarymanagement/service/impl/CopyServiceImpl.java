@@ -53,6 +53,12 @@ public class CopyServiceImpl implements CopyService {
         return copyRepository.save(copy);
     }
 
+    @Override
+    @Transactional
+    public Set<Copy> retrieveCopysByStatusAndBookId(int bookId, CopyStatus copyStatus){
+        return ListToSetConverter.convertListToSet(getCopyRepository().findCopysByStatusAndByBookId(bookId, copyStatus.toString()));
+    }
+
     @Transactional
     @Override
     public Set<Copy> getAll() {

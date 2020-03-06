@@ -1,14 +1,21 @@
-package com.arobs.internship.librarymanagement.controller.api.request;
+package com.arobs.internship.librarymanagement.controller.api.response;
 
+import com.arobs.internship.librarymanagement.model.Employee;
+import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public class BookRequestRegistrationDTO {
+@ApiModel
+public class BookRequestResponseDTO {
+
+    @ApiModelProperty
+    private int id;
 
     @ApiModelProperty(required = true)
     @NotNull
@@ -33,24 +40,34 @@ public class BookRequestRegistrationDTO {
     @NotNull
     private BigDecimal totalCost;
 
+    @NotNull
     @Enumerated
     private BookRequestStatus bookRequestStatus;
 
     @ApiModelProperty(required = true)
     @NotNull
-    private int employeeId;
+    private BookRequestEmployeeDTO employee;
 
-    public BookRequestRegistrationDTO() {
+    public BookRequestResponseDTO() {
     }
 
-    public BookRequestRegistrationDTO(@NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 50) String publishingCompany, @NotNull int copyNumber, @NotNull BigDecimal totalCost, BookRequestStatus bookRequestStatus, @NotNull int employeeId) {
+    public BookRequestResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 50) String publishingCompany, @NotNull int copyNumber, @NotNull BigDecimal totalCost, @NotNull BookRequestStatus bookRequestStatus, @NotNull BookRequestEmployeeDTO employee) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.publishingCompany = publishingCompany;
         this.copyNumber = copyNumber;
         this.totalCost = totalCost;
         this.bookRequestStatus = bookRequestStatus;
-        this.employeeId = employeeId;
+        this.employee = employee;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -101,11 +118,11 @@ public class BookRequestRegistrationDTO {
         this.bookRequestStatus = bookRequestStatus;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+    public BookRequestEmployeeDTO getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployee(BookRequestEmployeeDTO employee) {
+        this.employee = employee;
     }
 }
