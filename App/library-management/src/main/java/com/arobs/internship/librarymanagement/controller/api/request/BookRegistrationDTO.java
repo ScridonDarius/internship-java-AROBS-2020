@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 import java.util.Set;
 
 @ApiModel
@@ -71,21 +70,5 @@ public class BookRegistrationDTO {
 
     public void setTags(Set<TagBookResponseDTO> tags) {
         this.tags = tags;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BookRegistrationDTO that = (BookRegistrationDTO) o;
-        return title.equals(that.title) &&
-                author.equals(that.author) &&
-                description.equals(that.description) &&
-                tags.equals(that.tags);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, author, description, tags);
     }
 }

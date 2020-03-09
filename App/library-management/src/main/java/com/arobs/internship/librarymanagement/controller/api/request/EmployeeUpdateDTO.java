@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
 @ApiModel
 public class EmployeeUpdateDTO {
@@ -56,20 +55,5 @@ public class EmployeeUpdateDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmployeeUpdateDTO that = (EmployeeUpdateDTO) o;
-        return firstName.equals(that.firstName) &&
-                lastName.equals(that.lastName) &&
-                email.equals(that.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, email);
     }
 }

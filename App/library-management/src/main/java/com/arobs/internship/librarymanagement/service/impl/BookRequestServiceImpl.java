@@ -32,10 +32,11 @@ public class BookRequestServiceImpl implements BookRequestService {
     @Transactional
     @Override
     public BookRequest save(BookRequestRegistrationDTO bookRequestRegistration) throws FoundException {
-        if (Objects.isNull(bookService.retrieveBookByAuthorAndTitle(bookRequestRegistration.getAuthor(), bookRequestRegistration.getTitle())) && !Objects.nonNull(retrieveByAuthorAndTitle(bookRequestRegistration.getAuthor(), bookRequestRegistration.getTitle()))) {
+        if (Objects.isNull(bookService.retrieveByAuthorAndTitle(bookRequestRegistration.getAuthor(), bookRequestRegistration.getTitle())) && !Objects.nonNull(retrieveByAuthorAndTitle(bookRequestRegistration.getAuthor(), bookRequestRegistration.getTitle()))) {
             return getBookRequestRepository().save(BookRequestMapperConverter.generateEntityFromDTORegistration(bookRequestRegistration));
-        } else throw new FoundException();
-
+        } else {
+            throw new FoundException();
+        }
     }
 
     @Transactional
@@ -49,7 +50,6 @@ public class BookRequestServiceImpl implements BookRequestService {
     public BookRequest retrieveByAuthorTitleAndEmployeeId(String author, String title, int employeeId) {
         return ValidationService.safeGetUniqueResult(getBookRequestRepository().findByAuthorTitleAndEmployeeId(author, title, employeeId));
     }
-
 
     @Transactional
     @Override
@@ -70,27 +70,26 @@ public class BookRequestServiceImpl implements BookRequestService {
 
     @Transactional
     @Override
-    public Set<BookRequest> retrieveAll(){
+    public Set<BookRequest> retrieveAll() {
         return ListToSetConverter.convertListToSet(getBookRequestRepository().getAll());
     }
 
     @Transactional
     @Override
-    public Set<BookRequest> retrieveByStatus(BookRequestStatus bookRequestStatus){
+    public Set<BookRequest> retrieveByStatus(BookRequestStatus bookRequestStatus) {
         return Set.copyOf(getBookRequestRepository().findByStatus(bookRequestStatus.toString()));
     }
 
     @Transactional
     @Override
-    public BookRequest update(BookRequestUpdateDTO bookRequestUpdateDTO, int bookRequestId)throws FoundException{
+    public BookRequest update(BookRequestUpdateDTO bookRequestUpdateDTO, int bookRequestId) throws FoundException {
         BookRequest bookRequest = retrieveById(bookRequestId);
 
-        if(!Objects.isNull(bookRequest)){
+        if (!Objects.isNull(bookRequest)) {
             bookRequest.setBookRequestStatus(bookRequestUpdateDTO.getBookRequestStatus());
             bookRequest.setCopyNumber(bookRequestUpdateDTO.getCopyNumber());
             bookRequest.setTotalCost(bookRequestUpdateDTO.getTotalCost());
-        }
-        else throw new FoundException();
+        } else throw new FoundException();
 
         return bookRequest;
     }

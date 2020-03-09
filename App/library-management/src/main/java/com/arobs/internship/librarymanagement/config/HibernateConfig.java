@@ -61,7 +61,6 @@ public class HibernateConfig {
         return sessionFactory;
     }
 
-
     @Bean
     public HibernateTransactionManager transactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();

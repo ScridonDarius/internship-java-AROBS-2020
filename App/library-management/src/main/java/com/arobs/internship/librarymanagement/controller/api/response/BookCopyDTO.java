@@ -9,7 +9,6 @@ public class BookCopyDTO {
     @ApiModelProperty
     private int id;
 
-
     public BookCopyDTO() {
     }
 

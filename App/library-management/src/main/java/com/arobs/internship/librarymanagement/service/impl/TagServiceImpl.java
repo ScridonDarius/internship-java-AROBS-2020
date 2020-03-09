@@ -8,7 +8,6 @@ import com.arobs.internship.librarymanagement.service.TagService;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -19,13 +18,15 @@ import java.util.Objects;
 @Service
 public class TagServiceImpl implements TagService {
 
-    @Autowired
     private TagRepository tagRepository;
 
-    @Autowired
-    private  RepositoryFactory repositoryFactory;
+    private final RepositoryFactory repositoryFactory;
 
     private final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
+
+    public TagServiceImpl(RepositoryFactory repositoryFactory) {
+        this.repositoryFactory = repositoryFactory;
+    }
 
     @PostConstruct
     public void init() {
@@ -35,26 +36,26 @@ public class TagServiceImpl implements TagService {
 
     @Transactional
     @Override
-    public Tag addTag(TagRegistrationDTO request) {
-        return getTagRepository().createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
+    public Tag save(TagRegistrationDTO request) {
+        return getTagRepository().save(TagMapperConverter.generateEntityFromDTORegistration(request));
     }
 
     @Transactional
     @Override
-    public Tag updateTag(String tagName, String newTag) {
+    public Tag update(String tagName, String newTag) {
         final Tag tag = retrieveByTagName(tagName);
         tag.setTagName(newTag);
-        getTagRepository().updateTag(tag);
+        getTagRepository().update(tag);
 
         return tag;
     }
 
     @Transactional
     @Override
-    public boolean deleteTag(String tagName) {
+    public boolean delete(String tagName) {
         final Tag tag = retrieveByTagName(tagName);
         if (!Objects.isNull(tag)) {
-            getTagRepository().deleteTag(tag);
+            getTagRepository().delete(tag);
             return true;
         }
         return false;

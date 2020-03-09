@@ -12,7 +12,6 @@ import com.arobs.internship.librarymanagement.service.converter.ListToSetConvert
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import com.arobs.internship.librarymanagement.validation.util.EmployeeValidationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -26,11 +25,13 @@ import java.util.Set;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
     private EmployeeRepository employeeRepository;
 
-    @Autowired
-    private RepositoryFactory repositoryFactory;
+    private final  RepositoryFactory repositoryFactory;
+
+    public EmployeeServiceImpl(RepositoryFactory repositoryFactory) {
+        this.repositoryFactory = repositoryFactory;
+    }
 
     @PostConstruct
     public void init() {
@@ -41,7 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public Employee retrieveByUserName(String userName) {
-        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployee(userName));
+        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findByUserName(userName));
     }
 
     @Override
@@ -50,29 +51,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!EmployeeValidationUtil.isValidEmailAddress(email)) {
             throw new InvalidEmailException();
         }
-        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployeeByEmail(email));
+        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findByEmail(email));
     }
 
     @Override
     @Transactional
-    public Employee addEmployee(EmployeeRegistrationDTO request) throws InvalidEmailException {
+    public Employee save(EmployeeRegistrationDTO request) throws InvalidEmailException {
         request.setEmployeeStatus(EmployeeStatus.ACTIVE);
         request.setCreateDate(LocalDateTime.now());
 
         if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
             throw new InvalidEmailException();
         }
-        getEmployeeRepository().createEmployee(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
-        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployee(request.getUserName()));
+        getEmployeeRepository().save(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
+        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findByUserName(request.getUserName()));
     }
 
     @Override
     @Transactional
-    public boolean deleteEmployee(String userName) {
+    public boolean delete(String userName) {
 
-        final Employee employee = ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployee(userName));
+        final Employee employee = ValidationService.safeGetUniqueResult(getEmployeeRepository().findByUserName(userName));
         if (!Objects.isNull(employee)) {
-            getEmployeeRepository().deleteEmployee(userName);
+            getEmployeeRepository().delete(userName);
             return true;
         }
         return false;
@@ -96,12 +97,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public Employee employeeUpdate(EmployeeUpdateDTO request, String userName) {
+    public Employee update(EmployeeUpdateDTO request, String userName) {
         return updateAllEmployee(request, userName);
     }
 
     private Employee updateAllEmployee(EmployeeUpdateDTO request, String userName) {
-        Employee employee = ValidationService.safeGetUniqueResult(getEmployeeRepository().findEmployee(userName));
+        Employee employee = ValidationService.safeGetUniqueResult(getEmployeeRepository().findByUserName(userName));
         Employee oldEmployee = employee;
 
         if (Objects.isNull(request)) {
@@ -130,7 +131,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         if (!oldEmployee.equals(employee) && EmployeeValidationUtil.isValidEmailAddress(employee.getEmail())) {
-            getEmployeeRepository().updateEmployee(userName, employee);
+            getEmployeeRepository().update(userName, employee);
         }
 
         return employee;

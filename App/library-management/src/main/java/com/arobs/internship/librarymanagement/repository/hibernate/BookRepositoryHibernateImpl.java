@@ -23,15 +23,14 @@ public class BookRepositoryHibernateImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> findBook(String author, String title) {
+    public List<Book> findByAuthorAndTitle(String author, String title) {
         return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.author = :author AND b.title = :title", Book.class)
                 .setParameter("author", author).setParameter("title", title).getResultList();
     }
 
     @Override
-    public List<Book> findBookById(int id) {
+    public List<Book> findById(int id) {
         return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.id = :id", Book.class).setParameter("id", id).getResultList();
-
     }
 
     @Override
@@ -45,9 +44,8 @@ public class BookRepositoryHibernateImpl implements BookRepository {
     }
 
     @Override
-    public void updateBook(Book book) {
+    public void update(Book book) {
         getSessionFactory().getCurrentSession().update(book);
-
     }
 
     protected SessionFactory getSessionFactory() {

@@ -29,18 +29,17 @@ public class BookController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookResponseDTO> createBook(@RequestBody BookRegistrationDTO request) {
+    public ResponseEntity<BookResponseDTO> create(@RequestBody BookRegistrationDTO request) {
         BookResponseDTO bookResponseDTO;
         try {
-            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(getBookService().addBook(request));
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(getBookService().save(request));
         } catch (FoundException e) {
             throw new ResponseStatusException(HttpStatus.FOUND, "Book already exist in DataBase", e);
         }
-
         return new ResponseEntity<>(bookResponseDTO, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/findBook", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveByAuthorAndTitle", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookResponseDTO> retrieveByAuthorAndTitle(
             @RequestParam String author,
@@ -48,36 +47,36 @@ public class BookController {
         BookResponseDTO bookResponseDTO;
 
         try {
-            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(this.getBookService().retrieveBookByAuthorAndTitle(author, title));
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(this.getBookService().retrieveByAuthorAndTitle(author, title));
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
         }
         return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/findBook/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveById/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookResponseDTO> retrieveById(
             @PathVariable("id") Integer id) {
         BookResponseDTO bookResponseDTO;
 
         try {
-            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(this.getBookService().retrieveBookById(id));
+            bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(this.getBookService().retrieveById(id));
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
         }
         return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/updateBook", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookUpdateDTO> updateBook(
+    public ResponseEntity<BookUpdateDTO> update(
             @RequestParam int bookId,
             @RequestBody @Valid BookUpdateDTO request) {
         BookUpdateDTO bookUpdateDTO;
 
         try {
-            bookUpdateDTO = BookMapperConverter.generateUpdateDTOFromEntity(getBookService().updateBook(request, bookId));
+            bookUpdateDTO = BookMapperConverter.generateUpdateDTOFromEntity(getBookService().update(request, bookId));
 
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
@@ -85,16 +84,16 @@ public class BookController {
         return new ResponseEntity<>(bookUpdateDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/deleteBoook/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> deleteBook(
+    public ResponseEntity<Boolean> delete(
             @PathVariable("id") int id) {
-        boolean result = getBookService().deleteBook(id);
+        boolean result = getBookService().delete(id);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/retrieveBooks", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<BookResponseDTO>> retrieveAll() {
         Set<BookResponseDTO> books = getBookService().getAll().stream().map(book -> new BookResponseDTO(book.getId(), book.getTitle(), book.getAuthor(), book.getDescription(), book.getTags())).collect(Collectors.toSet());

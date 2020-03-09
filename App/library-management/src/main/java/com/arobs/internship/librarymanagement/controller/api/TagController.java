@@ -29,20 +29,17 @@ public class TagController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<TagResponseDTO> createTag(
-            @RequestBody TagRegistrationDTO request) {
-
-        TagResponseDTO tagResponse = TagMapperConverter.generateDTOResponseFromEntity(getTagService().addTag(request));
+    public ResponseEntity<TagResponseDTO> create(@RequestBody TagRegistrationDTO request) {
+        TagResponseDTO tagResponse = TagMapperConverter.generateDTOResponseFromEntity(getTagService().save(request));
 
         return tagResponse != null
                 ? new ResponseEntity<>(tagResponse, HttpStatus.CREATED)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/retrieveTagByName", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveByTagName", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<TagResponseDTO> retrieveByTagName(
-            @RequestParam String tagName) {
+    public ResponseEntity<TagResponseDTO> retrieveByTagName(@RequestParam String tagName) {
         TagResponseDTO tag;
 
         try {
@@ -51,18 +48,15 @@ public class TagController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
         }
         return new ResponseEntity<>(tag, HttpStatus.OK);
-
     }
 
-    @RequestMapping(value = "/updateTag", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<TagUpdateDTO> updateTag(
-            @RequestParam String tagName,
-            @RequestParam String newTag) {
+    public ResponseEntity<TagUpdateDTO> update(@RequestParam String tagName, @RequestParam String newTag) {
         TagUpdateDTO tag;
 
         try {
-            tag = TagMapperConverter.generateDTOUpdateFromEntity(getTagService().updateTag(tagName, newTag));
+            tag = TagMapperConverter.generateDTOUpdateFromEntity(getTagService().update(tagName, newTag));
 
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
@@ -70,12 +64,13 @@ public class TagController {
         return new ResponseEntity<>(tag, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/deleteTag", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> deleteTag(@RequestParam String tagName) {
+    public ResponseEntity<Boolean> delete(@RequestParam String tagName) {
         boolean result;
+
         try {
-            result = getTagService().deleteTag(tagName);
+            result = getTagService().delete(tagName);
 
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
@@ -83,7 +78,7 @@ public class TagController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/retrieveTags", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<TagResponseDTO>> retrieveAll() {
         Set<TagResponseDTO> tags = getTagService().getAll().stream().map(tag -> new TagResponseDTO(tag.getId(), tag.getTagName())).collect(Collectors.toSet());

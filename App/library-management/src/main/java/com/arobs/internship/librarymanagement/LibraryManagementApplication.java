@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
-@EnableScheduling
 public class LibraryManagementApplication {
 
     public static void main(String[] args) {

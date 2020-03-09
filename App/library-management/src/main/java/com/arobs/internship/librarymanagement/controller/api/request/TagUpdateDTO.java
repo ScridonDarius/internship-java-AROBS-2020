@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
 @ApiModel
 @JsonIgnoreProperties(value = "id", allowGetters = true)
@@ -46,19 +45,5 @@ public class TagUpdateDTO {
 
     public void setTagName(String tagName) {
         this.tagName = tagName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TagUpdateDTO that = (TagUpdateDTO) o;
-        return id == that.id &&
-                tagName.equals(that.tagName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, tagName);
     }
 }

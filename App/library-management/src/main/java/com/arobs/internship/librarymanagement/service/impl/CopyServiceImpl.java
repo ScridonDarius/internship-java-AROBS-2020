@@ -7,7 +7,6 @@ import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.model.enums.CopyCondition;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 import com.arobs.internship.librarymanagement.repository.CopyRepository;
-import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.BookService;
 import com.arobs.internship.librarymanagement.service.CopyService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
@@ -15,7 +14,6 @@ import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapper
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.Set;
@@ -29,42 +27,34 @@ public class CopyServiceImpl implements CopyService {
     @Autowired
     private BookService bookService;
 
-    @Autowired
-    private  RepositoryFactory repositoryFactory;
-
-    @PostConstruct
-    public void init() {
-        RepositoryFactory factory = repositoryFactory.getInstance();
-        copyRepository = factory.getCopyRepository();
-    }
     @Transactional
     @Override
-    public Set<Copy> findCopyByAuthorAndTitle(String author, String title) {
-        Book book = bookService.retrieveBookByAuthorAndTitle(author, title);
+    public Set<Copy> retrieveByAuthorAndTitle(String author, String title) {
+        Book book = bookService.retrieveByAuthorAndTitle(author, title);
         return ListToSetConverter.convertListToSet(copyRepository.findByBookId(book.getId()));
     }
 
     @Transactional
     @Override
-    public Copy saveCopyByAuthorAndTitle(CopyRegistrationDTO copyRegistrationDTO, String bookTitle, String bookAuthor) {
+    public Copy saveByAuthorAndTitle(CopyRegistrationDTO copyRegistrationDTO, String bookTitle, String bookAuthor) {
         Copy copy = save(copyRegistrationDTO);
-        copy.setBook(bookService.retrieveBookByAuthorAndTitle(bookAuthor, bookTitle));
+        copy.setBook(bookService.retrieveByAuthorAndTitle(bookAuthor, bookTitle));
 
         return copyRepository.save(copy);
     }
 
     @Transactional
     @Override
-    public Copy saveCopyByBookId(CopyRegistrationDTO copyRegistrationDTO, int bookId) {
+    public Copy saveByBookId(CopyRegistrationDTO copyRegistrationDTO, int bookId) {
         Copy copy = save(copyRegistrationDTO);
-        copy.setBook(bookService.retrieveBookById(bookId));
+        copy.setBook(bookService.retrieveById(bookId));
         return copyRepository.save(copy);
     }
 
     @Override
     @Transactional
-    public Set<Copy> retrieveCopysByStatusAndBookId(int bookId, CopyStatus copyStatus){
-        return ListToSetConverter.convertListToSet(getCopyRepository().findCopysByStatusAndByBookId(bookId, copyStatus.toString()));
+    public Set<Copy> retrieveByStatusAndBookId(int bookId, CopyStatus copyStatus){
+        return ListToSetConverter.convertListToSet(getCopyRepository().findByStatusAndByBookId(bookId, copyStatus.toString()));
     }
 
     @Transactional
@@ -75,19 +65,19 @@ public class CopyServiceImpl implements CopyService {
 
     @Transactional
     @Override
-    public Copy findByISBN(String isbn) {
+    public Copy retrieveByISBN(String isbn) {
         return copyRepository.findByISBN(isbn);
     }
 
     @Transactional
     @Override
-    public Copy findById(int copyId) {
+    public Copy retrieveById(int copyId) {
         return copyRepository.findById(copyId);
     }
 
     @Transactional
     @Override
-    public Set<Copy> findCopyByBookId(int bookId) {
+    public Set<Copy> retrieveByBookId(int bookId) {
         return ListToSetConverter.convertListToSet(copyRepository.findByBookId(bookId));
     }
 
@@ -96,17 +86,16 @@ public class CopyServiceImpl implements CopyService {
     public boolean delete(int copyId) {
         final Copy copy = getCopyRepository().findById(copyId);
         if (!Objects.isNull(copy)) {
-            getCopyRepository().deleteCopy(copy);
+            getCopyRepository().delete(copy);
             return true;
         }
         return false;
-
     }
 
     @Transactional
     @Override
     public Copy update(CopyUpdateDTO copyUpdateDTO, int copyId) {
-        final Copy copy = findById(copyId);
+        final Copy copy = retrieveById(copyId);
         copy.setCopyStatus(copyUpdateDTO.getCopyStatus());
         copy.setCopyCondition(copyUpdateDTO.getCopyCondition());
 

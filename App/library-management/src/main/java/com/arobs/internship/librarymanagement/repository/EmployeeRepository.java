@@ -6,17 +6,17 @@ import java.util.List;
 
 public interface EmployeeRepository {
 
-    int createEmployee(Employee employee);
+    int save(Employee employee);
 
-    List<Employee> findEmployee(String userName);
+    List<Employee> findByUserName(String userName);
 
-    void updateEmployee(String userName, Employee employee);
+    void update(String userName, Employee employee);
 
-    void deleteEmployee(String userName);
+    void delete(String userName);
 
     List<Employee> getAll();
 
-    List<Employee> findEmployeeByEmail(String email);
+    List<Employee> findByEmail(String email);
 
     Employee updatePassword(String userName, String password);
 }

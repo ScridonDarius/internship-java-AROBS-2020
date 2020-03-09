@@ -4,10 +4,8 @@ import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @ApiModel

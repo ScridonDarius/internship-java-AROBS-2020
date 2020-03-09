@@ -39,8 +39,7 @@ public class BookRentServiceImpl implements BookRentService {
     @Transactional
     @Override
     public BookRent save(BookRentRegistrationDTO bookRentRegistration) throws FoundException {
-
-        Set<Copy> copys = copyService.retrieveCopysByStatusAndBookId(bookRentRegistration.getBookId(), CopyStatus.AVAILABLE);
+        Set<Copy> copys = copyService.retrieveByStatusAndBookId(bookRentRegistration.getBookId(), CopyStatus.AVAILABLE);
 
         if (copys.size() > 0) {
             Copy copy = copys.iterator().next();
@@ -60,7 +59,7 @@ public class BookRentServiceImpl implements BookRentService {
     }
 
     private void changeCopyStatusRented(int copyId) {
-        CopyUpdateDTO copyUpdateDTO = CopyMapperConverter.generateUpdateDTOeFromEntity(copyService.findById(copyId));
+        CopyUpdateDTO copyUpdateDTO = CopyMapperConverter.generateUpdateDTOeFromEntity(copyService.retrieveById(copyId));
         copyUpdateDTO.setCopyStatus(CopyStatus.RENT);
         copyService.update(copyUpdateDTO, copyId);
     }

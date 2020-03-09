@@ -9,7 +9,7 @@ import org.modelmapper.ModelMapper;
 
 public class EmployeeMapperConverter {
 
-    static ModelMapper modelMapper = new ModelMapper();
+    private static ModelMapper modelMapper = new ModelMapper();
 
     public static EmployeeResponseDTO generateDTOResponseFromEntity(Employee employee) {
         return modelMapper.map(employee, EmployeeResponseDTO.class);

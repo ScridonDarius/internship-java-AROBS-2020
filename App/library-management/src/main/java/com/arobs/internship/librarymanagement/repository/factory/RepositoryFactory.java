@@ -1,7 +1,5 @@
 package com.arobs.internship.librarymanagement.repository.factory;
 
-import com.arobs.internship.librarymanagement.repository.BookRepository;
-import com.arobs.internship.librarymanagement.repository.CopyRepository;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
 import com.arobs.internship.librarymanagement.repository.factory.hibernate.HibernateRepositoryFactory;
@@ -20,11 +18,9 @@ public abstract class RepositoryFactory {
     @Autowired
     private JdbcRepositoryFactory jdbcRepositoryFactory;
 
-
     public String getType() {
         return type;
     }
-
 
     public RepositoryFactory() {
     }
@@ -32,10 +28,8 @@ public abstract class RepositoryFactory {
     public RepositoryFactory getInstance() {
         switch (getType()) {
             case "HIBERNATE":
-                System.out.println("HIBERNATE FLOW WAY");
                 return hibernateRepositoryFactory;
             case "JDBC":
-                System.out.println("JDBC FLOW WAY");
                 return jdbcRepositoryFactory;
             default:
                 throw new IllegalArgumentException("Invalid factory");
@@ -43,10 +37,6 @@ public abstract class RepositoryFactory {
     }
 
     public abstract EmployeeRepository getEmployeeRepository();
-
-    public abstract CopyRepository getCopyRepository();
-
-    public abstract BookRepository getBookRepository();
 
     public abstract TagRepository getTagRepository();
 }

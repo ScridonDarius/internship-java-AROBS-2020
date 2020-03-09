@@ -23,12 +23,6 @@ public class JdbcRepositoryFactory extends RepositoryFactory {
         return employeeRepositoryJdbc;
     }
 
-
-    @Override
-    public BookRepository getBookRepository() {
-        return null;
-    }
-
     @Override
     public TagRepository getTagRepository() {
         return tagRepositoryJdbc;

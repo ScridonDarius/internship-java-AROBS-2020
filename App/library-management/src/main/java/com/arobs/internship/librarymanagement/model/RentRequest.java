@@ -79,21 +79,4 @@ public class RentRequest {
     public void setBook(Book book) {
         this.book = book;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RentRequest that = (RentRequest) o;
-        return id == that.id &&
-                requestDate.equals(that.requestDate) &&
-                rentRequestStatus == that.rentRequestStatus &&
-                employee.equals(that.employee) &&
-                book.equals(that.book);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, requestDate, rentRequestStatus, employee, book);
-    }
 }

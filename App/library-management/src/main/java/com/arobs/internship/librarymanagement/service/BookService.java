@@ -9,15 +9,15 @@ import java.util.Set;
 
 public interface BookService {
 
-    Book addBook(BookRegistrationDTO request) throws FoundException;
+    Book save(BookRegistrationDTO request) throws FoundException;
 
-    Book retrieveBookByAuthorAndTitle(String author, String title);
+    Book retrieveByAuthorAndTitle(String author, String title);
 
-    Book retrieveBookById(int id);
+    Book retrieveById(int id);
 
     Set<Book> getAll();
 
-    boolean deleteBook(int id);
+    boolean delete(int id);
 
-    Book updateBook(BookUpdateDTO bookUpdateDTO, int bookId);
+    Book update(BookUpdateDTO bookUpdateDTO, int bookId);
 }

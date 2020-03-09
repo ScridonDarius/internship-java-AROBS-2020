@@ -7,16 +7,16 @@ import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.BookRepository;
-import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.BookService;
+import com.arobs.internship.librarymanagement.service.TagService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
@@ -27,29 +27,18 @@ import java.util.stream.Collectors;
 @Service
 public class BookServiceImpl implements BookService {
 
+    @Autowired
     private BookRepository bookRepository;
 
-    private final RepositoryFactory repositoryFactory;
-
-    private final TagServiceImpl tagService;
-
-    public BookServiceImpl(RepositoryFactory repositoryFactory, TagServiceImpl tagService) {
-        this.repositoryFactory = repositoryFactory;
-        this.tagService = tagService;
-    }
-
-    @PostConstruct
-    public void init() {
-        RepositoryFactory factory = repositoryFactory.getInstance();
-        bookRepository = factory.getBookRepository();
-    }
+    @Autowired
+    private TagService tagService;
 
     @Override
     @Transactional
-    public Book addBook(BookRegistrationDTO bookRegistrationDTO) throws FoundException {
+    public Book save(BookRegistrationDTO bookRegistrationDTO) throws FoundException {
         Book book = BookMapperConverter.generateEntityFromDTORegistration(bookRegistrationDTO);
 
-        if (retrieveBookByAuthorAndTitle(bookRegistrationDTO.getAuthor(), bookRegistrationDTO.getTitle()) == null) {
+        if (retrieveByAuthorAndTitle(bookRegistrationDTO.getAuthor(), bookRegistrationDTO.getTitle()) == null) {
             if (!CollectionUtils.isEmpty(bookRegistrationDTO.getTags())) {
                 book.setTags(addTags(bookRegistrationDTO.getTags()));
             }
@@ -62,20 +51,20 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Book retrieveBookByAuthorAndTitle(String author, String title) {
-        return ValidationService.safeGetUniqueResult(getBookRepository().findBook(author, title));
+    public Book retrieveByAuthorAndTitle(String author, String title) {
+        return ValidationService.safeGetUniqueResult(getBookRepository().findByAuthorAndTitle(author, title));
     }
 
     @Override
     @Transactional
-    public Book retrieveBookById(int id) {
-        return ValidationService.safeGetUniqueResult(getBookRepository().findBookById(id));
+    public Book retrieveById(int id) {
+        return ValidationService.safeGetUniqueResult(getBookRepository().findById(id));
     }
 
     @Override
     @Transactional
-    public boolean deleteBook(int id) {
-        final Book book = retrieveBookById(id);
+    public boolean delete(int id) {
+        final Book book = retrieveById(id);
 
         if (!Objects.isNull(book)) {
             getBookRepository().delete(book);
@@ -83,13 +72,12 @@ public class BookServiceImpl implements BookService {
         } else {
             return false;
         }
-
     }
 
     @Override
     @Transactional
-    public Book updateBook(BookUpdateDTO bookUpdateDTO, int bookId) {
-        final Book book = retrieveBookById(bookId);
+    public Book update(BookUpdateDTO bookUpdateDTO, int bookId) {
+        final Book book = retrieveById(bookId);
         final Set<TagBookResponseDTO> requestTags = bookUpdateDTO.getTags();
         final Set<TagBookResponseDTO> booksTag = book.getTags().stream().map(tag -> new TagBookResponseDTO(tag.getTagName())).collect(Collectors.toSet());
         requestTags.addAll(booksTag);
@@ -105,7 +93,7 @@ public class BookServiceImpl implements BookService {
         book.setTags(addTags(requestTags));
 
         book.setDescription(bookUpdateDTO.getDescription());
-        getBookRepository().updateBook(book);
+        getBookRepository().update(book);
 
         return book;
     }
@@ -125,7 +113,7 @@ public class BookServiceImpl implements BookService {
         for (TagBookResponseDTO tag : tags) {
             if (!tag.getTagName().isEmpty()) {
                 if (!tagNames.contains(tag.getTagName())) {
-                    results.add(tagService.addTag(TagMapperConverter.generateRegistrationFromTagBookDTO(tag)));
+                    results.add(tagService.save(TagMapperConverter.generateRegistrationFromTagBookDTO(tag)));
                 } else {
                     results.add(allTags.stream().filter(tagg -> tag.getTagName().equals(tagg.getTagName())).findFirst().get());
                 }

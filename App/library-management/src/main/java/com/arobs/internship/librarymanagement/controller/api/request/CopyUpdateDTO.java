@@ -5,11 +5,8 @@ import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @ApiModel
 public class CopyUpdateDTO {

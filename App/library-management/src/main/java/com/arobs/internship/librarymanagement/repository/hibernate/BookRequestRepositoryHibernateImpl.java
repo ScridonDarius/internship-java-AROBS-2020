@@ -1,7 +1,5 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
-import com.arobs.internship.librarymanagement.model.Book;
-import com.arobs.internship.librarymanagement.model.BookRent;
 import com.arobs.internship.librarymanagement.model.BookRequest;
 import com.arobs.internship.librarymanagement.repository.BookRequestRepository;
 import org.hibernate.SessionFactory;
@@ -54,7 +52,6 @@ public class BookRequestRepositoryHibernateImpl implements BookRequestRepository
     @Override
     public void update(BookRequest bookRequest) {
         getSessionFactory().getCurrentSession().update(bookRequest);
-
     }
 
     @Override
