@@ -12,6 +12,7 @@ import com.arobs.internship.librarymanagement.service.converter.ListToSetConvert
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import com.arobs.internship.librarymanagement.validation.util.EmployeeValidationUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -25,13 +26,11 @@ import java.util.Set;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
+    @Autowired
     private EmployeeRepository employeeRepository;
 
-    private final RepositoryFactory repositoryFactory;
-
-    public EmployeeServiceImpl(RepositoryFactory repositoryFactory) {
-        this.repositoryFactory = repositoryFactory;
-    }
+    @Autowired
+    private RepositoryFactory repositoryFactory;
 
     @PostConstruct
     public void init() {

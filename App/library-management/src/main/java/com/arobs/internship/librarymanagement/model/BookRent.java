@@ -28,15 +28,15 @@ public class BookRent {
     @Column(nullable = false, name = "note")
     private String note;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "copy_id")
     private Copy copy;
 
@@ -117,23 +117,4 @@ public class BookRent {
         this.copy = copy;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BookRent bookRent = (BookRent) o;
-        return id == bookRent.id &&
-                rentalDate.equals(bookRent.rentalDate) &&
-                returnDate.equals(bookRent.returnDate) &&
-                bookRentStatus == bookRent.bookRentStatus &&
-                note.equals(bookRent.note) &&
-                book.equals(bookRent.book) &&
-                employee.equals(bookRent.employee) &&
-                copy.equals(bookRent.copy);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, rentalDate, returnDate, bookRentStatus, note, book, employee, copy);
-    }
 }

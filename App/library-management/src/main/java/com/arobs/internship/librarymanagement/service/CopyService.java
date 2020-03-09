@@ -19,15 +19,15 @@ public interface CopyService {
     @Transactional
     Set<Copy> retrieveCopysByStatusAndBookId(int bookId, CopyStatus copyStatus);
 
-    Set<Copy> getAll();
+    Set<Copy> findAll();
 
     Copy findByISBN(String isbn);
 
-    boolean deleteCopy(int copyId);
+    boolean delete(int copyId);
 
     Set<Copy> findCopyByAuthorAndTitle(String author, String title);
 
     Copy findById(int copyId);
 
-    Copy updateCopy(CopyUpdateDTO copyUpdateDTO, int copyId);
+    Copy update(CopyUpdateDTO copyUpdateDTO, int copyId);
 }

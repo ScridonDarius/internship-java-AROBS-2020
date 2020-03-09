@@ -34,7 +34,7 @@ public class BookRequest {
     @Enumerated(EnumType.STRING)
     private BookRequestStatus bookRequestStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
@@ -114,5 +114,5 @@ public class BookRequest {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-    
+
 }

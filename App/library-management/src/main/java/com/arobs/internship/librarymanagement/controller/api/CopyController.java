@@ -73,7 +73,7 @@ public class CopyController {
     @RequestMapping(value = "/retrieveCopies", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<CopyResponseDTO>> retrieveAll() {
-        Set<CopyResponseDTO> copys = getCopyService().getAll().stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
+        Set<CopyResponseDTO> copys = getCopyService().findAll().stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
 
         return copys != null
                 ? new ResponseEntity<>(copys, HttpStatus.OK)
@@ -126,7 +126,7 @@ public class CopyController {
         CopyUpdateDTO copyUpdateDTO;
 
         try {
-            copyUpdateDTO = CopyMapperConverter.generateUpdateDTOeFromEntity(getCopyService().updateCopy(request, copyId));
+            copyUpdateDTO = CopyMapperConverter.generateUpdateDTOeFromEntity(getCopyService().update(request, copyId));
 
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
@@ -138,7 +138,7 @@ public class CopyController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteCopy(
             @PathVariable("id") int id) {
-        boolean response = getCopyService().deleteCopy(id);
+        boolean response = getCopyService().delete(id);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -53,7 +53,6 @@ public class BookController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
         }
         return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/findBook/{id}", method = RequestMethod.GET)
@@ -68,7 +67,6 @@ public class BookController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This book doesn't exist!");
         }
         return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/updateBook", method = RequestMethod.PATCH)
@@ -105,7 +103,6 @@ public class BookController {
                 ? new ResponseEntity<>(books, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
 
     protected BookServiceImpl getBookService() {
         return bookService;

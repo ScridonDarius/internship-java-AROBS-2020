@@ -27,7 +27,6 @@ public class BookRentResponseDTO {
     @Enumerated
     private BookRentStatus bookRentStatus;
 
-
     @ApiModelProperty(required = true)
     @NotNull
     @Size(max = 50)

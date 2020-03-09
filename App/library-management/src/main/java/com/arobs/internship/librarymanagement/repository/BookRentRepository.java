@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface BookRentRepository {
 
-    BookRent create(BookRent bookRent);
+    BookRent save(BookRent bookRent);
 
     List<BookRent> findByStatus(String bookRentStatus);
 
-    List<BookRent> findBookById(int id);
+    List<BookRent> findById(int rentId);
 
     void delete(BookRent book);
 
-    List<BookRent> getAll();
+    List<BookRent> findAll();
 
     void updateBook(BookRent book);
 }

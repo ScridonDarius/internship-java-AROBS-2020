@@ -12,7 +12,7 @@ public interface BookRentService {
 
     BookRent save(BookRentRegistrationDTO bookRentRegistration) throws FoundException;
 
-    BookRent retrieveById(int bookRentId);
+    BookRent retrieveById(int rentId);
 
     boolean delete(int bookRentId);
 

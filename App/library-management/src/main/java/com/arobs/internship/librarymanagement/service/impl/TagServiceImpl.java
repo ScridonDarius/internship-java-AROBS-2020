@@ -8,6 +8,7 @@ import com.arobs.internship.librarymanagement.service.TagService;
 import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -18,15 +19,13 @@ import java.util.Objects;
 @Service
 public class TagServiceImpl implements TagService {
 
+    @Autowired
     private TagRepository tagRepository;
 
+    @Autowired
+    private  RepositoryFactory repositoryFactory;
+
     private final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
-
-    private final RepositoryFactory repositoryFactory;
-
-    public TagServiceImpl(RepositoryFactory repositoryFactory) {
-        this.repositoryFactory = repositoryFactory;
-    }
 
     @PostConstruct
     public void init() {
@@ -37,8 +36,7 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public Tag addTag(TagRegistrationDTO request) {
-        Tag tag = getTagRepository().createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
-        return tag;
+        return getTagRepository().createTag(TagMapperConverter.generateEntityFromDTORegistration(request));
     }
 
     @Transactional
@@ -67,7 +65,6 @@ public class TagServiceImpl implements TagService {
     public Tag retrieveByTagName(String tagName) {
         return getTagRepository().findByTagName(tagName);
     }
-
 
     @Override
     @Transactional
