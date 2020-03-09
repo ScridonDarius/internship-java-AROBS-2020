@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -44,6 +43,13 @@ public class BookRequestServiceImpl implements BookRequestService {
     public BookRequest retrieveByAuthorAndTitle(String author, String title) {
         return ValidationService.safeGetUniqueResult(getBookRequestRepository().findByAuthorAndTitle(author, title));
     }
+
+    @Transactional
+    @Override
+    public BookRequest retrieveByAuthorTitleAndEmployeeId(String author, String title, int employeeId) {
+        return ValidationService.safeGetUniqueResult(getBookRequestRepository().findByAuthorTitleAndEmployeeId(author, title, employeeId));
+    }
+
 
     @Transactional
     @Override

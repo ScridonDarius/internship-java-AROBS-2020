@@ -79,6 +79,23 @@ public class BookRequestController {
 
     }
 
+    @RequestMapping(value = "/findBookRequestByAuthorTitleAndEmployeeId", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BookRequestResponseDTO> retrieveByAuthorTitleAndEmployeeId(
+            @RequestParam String author,
+            @RequestParam String title,
+            @RequestParam Integer employeeId) {
+        BookRequestResponseDTO bookResponseDTO;
+
+        try {
+            bookResponseDTO = BookRequestMapperConverter.generateDTOResponseFromEntity(getBookRequestService().retrieveByAuthorTitleAndEmployeeId(author, title, employeeId));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This bookRequest doesn't exist!");
+        }
+        return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
+
+    }
+
     @RequestMapping(value = "/deleteBookRequest/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> delete(@PathVariable("id") Integer id) {

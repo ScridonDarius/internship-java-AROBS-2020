@@ -13,21 +13,17 @@ public interface BookRequestService {
 
     BookRequest save(BookRequestRegistrationDTO bookRequestRegistration) throws FoundException;
 
-    @Transactional
     BookRequest retrieveByAuthorAndTitle(String author, String title);
 
-    @Transactional
+    BookRequest retrieveByAuthorTitleAndEmployeeId(String author, String title, int employeeId);
+
     BookRequest retrieveById(int bookRequestId);
 
-    @Transactional
     boolean delete(int bookRequestId);
 
-    @Transactional
     Set<BookRequest> retrieveAll();
 
-    @Transactional
     Set<BookRequest> retrieveByStatus(BookRequestStatus bookRequestStatus);
 
-    @Transactional
     BookRequest update(BookRequestUpdateDTO bookRequestUpdateDTO, int bookRequestId)throws FoundException;
 }

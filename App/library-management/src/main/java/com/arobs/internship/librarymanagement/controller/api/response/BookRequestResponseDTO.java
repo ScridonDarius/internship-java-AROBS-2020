@@ -1,7 +1,5 @@
 package com.arobs.internship.librarymanagement.controller.api.response;
 
-import com.arobs.internship.librarymanagement.model.Employee;
-import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -46,12 +44,12 @@ public class BookRequestResponseDTO {
 
     @ApiModelProperty(required = true)
     @NotNull
-    private BookRequestEmployeeDTO employee;
+    private BookEmployeeDTO employee;
 
     public BookRequestResponseDTO() {
     }
 
-    public BookRequestResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 50) String publishingCompany, @NotNull int copyNumber, @NotNull BigDecimal totalCost, @NotNull BookRequestStatus bookRequestStatus, @NotNull BookRequestEmployeeDTO employee) {
+    public BookRequestResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 50) String publishingCompany, @NotNull int copyNumber, @NotNull BigDecimal totalCost, @NotNull BookRequestStatus bookRequestStatus, @NotNull BookEmployeeDTO employee) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -118,11 +116,11 @@ public class BookRequestResponseDTO {
         this.bookRequestStatus = bookRequestStatus;
     }
 
-    public BookRequestEmployeeDTO getEmployee() {
+    public BookEmployeeDTO getEmployee() {
         return employee;
     }
 
-    public void setEmployee(BookRequestEmployeeDTO employee) {
+    public void setEmployee(BookEmployeeDTO employee) {
         this.employee = employee;
     }
 }

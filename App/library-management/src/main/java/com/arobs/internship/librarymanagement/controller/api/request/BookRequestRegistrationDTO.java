@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.controller.api.request;
 
 import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Enumerated;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
+@ApiModel
 public class BookRequestRegistrationDTO {
 
     @ApiModelProperty(required = true)

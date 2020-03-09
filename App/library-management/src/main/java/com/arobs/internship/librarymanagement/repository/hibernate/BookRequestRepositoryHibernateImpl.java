@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.Book;
+import com.arobs.internship.librarymanagement.model.BookRent;
 import com.arobs.internship.librarymanagement.model.BookRequest;
 import com.arobs.internship.librarymanagement.repository.BookRequestRepository;
 import org.hibernate.SessionFactory;
@@ -24,18 +25,24 @@ public class BookRequestRepositoryHibernateImpl implements BookRequestRepository
     }
 
     @Override
-    public List<BookRequest> findByAuthorAndTitle(String author, String title){
+    public List<BookRequest> findByAuthorAndTitle(String author, String title) {
         return getSessionFactory().getCurrentSession().createQuery("FROM BookRequest WHERE author = :author AND title = :title", BookRequest.class)
                 .setParameter("author", author).setParameter("title", title).getResultList();
     }
 
     @Override
-    public void delete(BookRequest bookRequest){
+    public List<BookRequest> findByAuthorTitleAndEmployeeId(String author, String title, int employeeId) {
+        return getSessionFactory().getCurrentSession().createQuery("FROM BookRequest WHERE author = :author AND title = :title AND employee_id = :employeeId", BookRequest.class)
+                .setParameter("author", author).setParameter("title", title).setParameter("employeeId", employeeId).getResultList();
+    }
+
+    @Override
+    public void delete(BookRequest bookRequest) {
         getSessionFactory().getCurrentSession().delete(bookRequest);
     }
 
     @Override
-    public List<BookRequest> findById(int bookRequestId){
+    public List<BookRequest> findById(int bookRequestId) {
         return getSessionFactory().getCurrentSession().createQuery("FROM BookRequest WHERE book_request_id = :bookRequestId").setParameter("bookRequestId", bookRequestId).getResultList();
     }
 
@@ -51,8 +58,8 @@ public class BookRequestRepositoryHibernateImpl implements BookRequestRepository
     }
 
     @Override
-    public List<BookRequest> findByStatus(String bookRequestStatus){
-        return getSessionFactory().getCurrentSession().createQuery("FROM BookRequest WHERE Status = :bookRequestStatus",BookRequest.class).setParameter("bookRequestStatus", bookRequestStatus).getResultList();
+    public List<BookRequest> findByStatus(String bookRequestStatus) {
+        return getSessionFactory().getCurrentSession().createQuery("FROM BookRequest WHERE Status = :bookRequestStatus", BookRequest.class).setParameter("bookRequestStatus", bookRequestStatus).getResultList();
     }
 
     public SessionFactory getSessionFactory() {

@@ -4,15 +4,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel
-public class BookRequestEmployeeDTO {
+public class BookDTO {
 
     @ApiModelProperty
     private int id;
 
-    public BookRequestEmployeeDTO() {
+    public BookDTO() {
     }
 
-    public BookRequestEmployeeDTO(int id) {
+    public BookDTO(int id) {
         this.id = id;
     }
 
@@ -24,3 +24,4 @@ public class BookRequestEmployeeDTO {
         this.id = id;
     }
 }
+
