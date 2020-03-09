@@ -137,5 +137,4 @@ public class BookServiceImpl implements BookService {
     protected BookRepository getBookRepository() {
         return bookRepository;
     }
-
 }

@@ -4,6 +4,7 @@ import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Column;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,12 +17,11 @@ public class BookRentRegistrationDTO {
     @NotNull
     private LocalDateTime rentalDate;
 
+    private LocalDateTime returnDate;
+
     @Enumerated
     private BookRentStatus bookRentStatus;
 
-    @ApiModelProperty(required = true)
-    @NotNull
-    @Size(max = 50)
     private String note;
 
     @ApiModelProperty(required = true)
@@ -39,13 +39,22 @@ public class BookRentRegistrationDTO {
     public BookRentRegistrationDTO() {
     }
 
-    public BookRentRegistrationDTO(@NotNull LocalDateTime rentalDate, BookRentStatus bookRentStatus, @NotNull @Size(max = 50) String note, @NotNull int bookId, @NotNull int employeeId, @NotNull int copyId) {
+    public BookRentRegistrationDTO(@NotNull LocalDateTime rentalDate, LocalDateTime returnDate, BookRentStatus bookRentStatus, String note, @NotNull int bookId, @NotNull int employeeId, @NotNull int copyId) {
         this.rentalDate = rentalDate;
+        this.returnDate = returnDate;
         this.bookRentStatus = bookRentStatus;
         this.note = note;
         this.bookId = bookId;
         this.employeeId = employeeId;
         this.copyId = copyId;
+    }
+
+    public LocalDateTime getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDateTime returnDate) {
+        this.returnDate = returnDate;
     }
 
     public LocalDateTime getRentalDate() {

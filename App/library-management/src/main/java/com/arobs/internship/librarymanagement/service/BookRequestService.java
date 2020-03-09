@@ -6,7 +6,6 @@ import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.BookRequest;
 import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
 
-import javax.transaction.Transactional;
 import java.util.Set;
 
 public interface BookRequestService {

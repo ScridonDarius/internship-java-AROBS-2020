@@ -7,12 +7,15 @@ import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.model.enums.CopyCondition;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 import com.arobs.internship.librarymanagement.repository.CopyRepository;
+import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.BookService;
 import com.arobs.internship.librarymanagement.service.CopyService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapperConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.Set;
@@ -20,15 +23,20 @@ import java.util.Set;
 @Service
 public class CopyServiceImpl implements CopyService {
 
-    final CopyRepository copyRepository;
+    @Autowired
+    private CopyRepository copyRepository;
 
-    final BookService bookService;
+    @Autowired
+    private BookService bookService;
 
-    public CopyServiceImpl(CopyRepository copyRepository, BookService bookService) {
-        this.copyRepository = copyRepository;
-        this.bookService = bookService;
+    @Autowired
+    private  RepositoryFactory repositoryFactory;
+
+    @PostConstruct
+    public void init() {
+        RepositoryFactory factory = repositoryFactory.getInstance();
+        copyRepository = factory.getCopyRepository();
     }
-
     @Transactional
     @Override
     public Set<Copy> findCopyByAuthorAndTitle(String author, String title) {
@@ -39,7 +47,7 @@ public class CopyServiceImpl implements CopyService {
     @Transactional
     @Override
     public Copy saveCopyByAuthorAndTitle(CopyRegistrationDTO copyRegistrationDTO, String bookTitle, String bookAuthor) {
-        Copy copy = saveCopy(copyRegistrationDTO);
+        Copy copy = save(copyRegistrationDTO);
         copy.setBook(bookService.retrieveBookByAuthorAndTitle(bookAuthor, bookTitle));
 
         return copyRepository.save(copy);
@@ -48,7 +56,7 @@ public class CopyServiceImpl implements CopyService {
     @Transactional
     @Override
     public Copy saveCopyByBookId(CopyRegistrationDTO copyRegistrationDTO, int bookId) {
-        Copy copy = saveCopy(copyRegistrationDTO);
+        Copy copy = save(copyRegistrationDTO);
         copy.setBook(bookService.retrieveBookById(bookId));
         return copyRepository.save(copy);
     }
@@ -61,7 +69,7 @@ public class CopyServiceImpl implements CopyService {
 
     @Transactional
     @Override
-    public Set<Copy> getAll() {
+    public Set<Copy> findAll() {
         return ListToSetConverter.convertListToSet(getCopyRepository().getAll());
     }
 
@@ -85,7 +93,7 @@ public class CopyServiceImpl implements CopyService {
 
     @Transactional
     @Override
-    public boolean deleteCopy(int copyId) {
+    public boolean delete(int copyId) {
         final Copy copy = getCopyRepository().findById(copyId);
         if (!Objects.isNull(copy)) {
             getCopyRepository().deleteCopy(copy);
@@ -97,7 +105,7 @@ public class CopyServiceImpl implements CopyService {
 
     @Transactional
     @Override
-    public Copy updateCopy(CopyUpdateDTO copyUpdateDTO, int copyId) {
+    public Copy update(CopyUpdateDTO copyUpdateDTO, int copyId) {
         final Copy copy = findById(copyId);
         copy.setCopyStatus(copyUpdateDTO.getCopyStatus());
         copy.setCopyCondition(copyUpdateDTO.getCopyCondition());
@@ -105,7 +113,7 @@ public class CopyServiceImpl implements CopyService {
         return copy;
     }
 
-    private Copy saveCopy(CopyRegistrationDTO copyRegistrationDTO) {
+    private Copy save(CopyRegistrationDTO copyRegistrationDTO) {
         Copy copy = CopyMapperConverter.generateEntityFromDTORegistration(copyRegistrationDTO);
         copy.setCopyCondition(CopyCondition.GOOD);
         copy.setCopyStatus(CopyStatus.AVAILABLE);
@@ -113,7 +121,7 @@ public class CopyServiceImpl implements CopyService {
         return copy;
     }
 
-    public CopyRepository getCopyRepository() {
+    protected CopyRepository getCopyRepository() {
         return copyRepository;
     }
 }

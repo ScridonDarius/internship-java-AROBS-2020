@@ -24,8 +24,8 @@ public class CopyMapperConverter {
         return modelMapper.map(copyRegistrationDTO, Copy.class);
     }
 
-    public static Copy generateEntityFromUpdateDTO(CopyUpdateDTO copyUpdateDTO) {
-        return modelMapper.map(copyUpdateDTO, Copy.class);
+    public static BookCopyDTO generateDTOFromEntity(Copy copy) {
+        return modelMapper.map(copy, BookCopyDTO.class);
     }
 
     public static BookCopyDTO generateBookCopyFromCopy(Book book) {

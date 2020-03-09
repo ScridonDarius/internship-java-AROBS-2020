@@ -15,14 +15,6 @@ public class EmployeeMapperConverter {
         return modelMapper.map(employee, EmployeeResponseDTO.class);
     }
 
-    public static Employee generateEntityFromDTOResponse(EmployeeResponseDTO employeeResponseDTO) {
-        return modelMapper.map(employeeResponseDTO, Employee.class);
-    }
-
-    public static EmployeeRegistrationDTO generateDTORegistrationFromEntity(Employee employee) {
-        return modelMapper.map(employee, EmployeeRegistrationDTO.class);
-    }
-
     public static BookEmployeeDTO generateBookRequestEmployeeFromEntity(Employee employee) {
         return modelMapper.map(employee, BookEmployeeDTO.class);
     }
@@ -33,9 +25,5 @@ public class EmployeeMapperConverter {
 
     public static EmployeeUpdateDTO generateDTOUpdateFromEntity(Employee employee) {
         return modelMapper.map(employee, EmployeeUpdateDTO.class);
-    }
-
-    public static Employee generateEntityFromDTOUpdate(EmployeeUpdateDTO employeeUpdateDTO) {
-        return modelMapper.map(employeeUpdateDTO, Employee.class);
     }
 }

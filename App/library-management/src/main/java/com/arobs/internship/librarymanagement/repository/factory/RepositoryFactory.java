@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.repository.factory;
 
 import com.arobs.internship.librarymanagement.repository.BookRepository;
+import com.arobs.internship.librarymanagement.repository.CopyRepository;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
 import com.arobs.internship.librarymanagement.repository.factory.hibernate.HibernateRepositoryFactory;
@@ -42,6 +43,8 @@ public abstract class RepositoryFactory {
     }
 
     public abstract EmployeeRepository getEmployeeRepository();
+
+    public abstract CopyRepository getCopyRepository();
 
     public abstract BookRepository getBookRepository();
 

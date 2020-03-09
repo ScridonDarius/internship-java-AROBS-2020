@@ -187,28 +187,4 @@ public class Employee {
     public void setBookRequests(Set<BookRequest> bookRequests) {
         this.bookRequests = bookRequests;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return id == employee.id &&
-                userName.equals(employee.userName) &&
-                firstName.equals(employee.firstName) &&
-                lastName.equals(employee.lastName) &&
-                password.equals(employee.password) &&
-                email.equals(employee.email) &&
-                employeeRole == employee.employeeRole &&
-                employeeStatus == employee.employeeStatus &&
-                createDate.equals(employee.createDate) &&
-                Objects.equals(rentRequestSet, employee.rentRequestSet) &&
-                Objects.equals(bookRents, employee.bookRents) &&
-                Objects.equals(bookRequests, employee.bookRequests);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userName, firstName, lastName, password, email, employeeRole, employeeStatus, createDate, rentRequestSet, bookRents, bookRequests);
-    }
 }
