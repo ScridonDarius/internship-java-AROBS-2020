@@ -13,13 +13,13 @@ public interface CopyRepository {
 
     Copy findByISBN(String isbn);
 
-    Copy updateCopy(Copy copy);
+    Copy update(Copy copy);
 
-    void deleteCopy(Copy copy);
+    void delete(Copy copy);
 
     List<Copy> getAll();
 
-    List<Copy> findCopysByStatusAndByBookId(int id, String copyStatus);
+    List<Copy> findByStatusAndByBookId(int id, String copyStatus);
 
     List<Copy> findByBookId(int id);
 }

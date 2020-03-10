@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface TagService {
 
-    Tag addTag(TagRegistrationDTO request);
+    Tag save(TagRegistrationDTO request);
 
     Tag retrieveByTagName(String tagName);
 
-    Tag updateTag(String tagName, String newTag);
+    Tag update(String tagName, String newTag);
 
-    boolean deleteTag(String tagName);
+    boolean delete(String tagName);
 
     List<Tag> getAll();
 }

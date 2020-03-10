@@ -8,13 +8,13 @@ public interface BookRepository {
 
     Book save(Book book);
 
-    List<Book> findBook(String author, String title);
+    List<Book> findByAuthorAndTitle(String author, String title);
 
-    List<Book> findBookById(int id);
+    List<Book> findById(int id);
 
     void delete(Book book);
 
     List<Book> getAll();
 
-    void updateBook(Book book);
+    void update(Book book);
 }

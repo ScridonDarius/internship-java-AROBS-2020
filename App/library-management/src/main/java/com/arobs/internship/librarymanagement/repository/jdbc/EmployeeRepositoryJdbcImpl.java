@@ -19,22 +19,22 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
-    public int createEmployee(Employee employee) {
+    public int save(Employee employee) {
         return jdbcTemplate.update("INSERT INTO employee(user_name,first_name,last_name,email,password,Role,Status,create_date) VALUES(?,?,?,?,MD5(?),?,?,?)", employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getPassword(), employee.getEmployeeRole().toString(), employee.getEmployeeStatus().toString(), employee.getCreateDate());
     }
 
     @Override
-    public List<Employee> findEmployee(String userName) {
+    public List<Employee> findByUserName(String userName) {
         jdbcTemplate.queryForObject("SELECT * FROM employee WHERE user_name = ?", new Object[]{userName}, new EmployeeMapper());
         return null;
     }
 
     @Override
-    public void updateEmployee(String userName, Employee employee) {
+    public void update(String userName, Employee employee) {
     }
 
     @Override
-    public void deleteEmployee(String userName) {
+    public void delete(String userName) {
         jdbcTemplate.update("DELETE FROM tag WHERE user_name = ?", userName);
     }
 
@@ -44,7 +44,7 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
-    public List<Employee> findEmployeeByEmail(String email) {
+    public List<Employee> findByEmail(String email) {
         jdbcTemplate.queryForObject("SELECT * FROM employee WHERE email = ?", new Object[]{email}, new EmployeeMapper());
         return null;
     }

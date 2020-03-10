@@ -9,17 +9,17 @@ import java.util.Set;
 
 public interface EmployeeService {
 
-    Employee addEmployee(EmployeeRegistrationDTO request) throws InvalidEmailException;
+    Employee save(EmployeeRegistrationDTO request) throws InvalidEmailException;
 
     Employee retrieveByUserName(String userName);
 
     Employee retrieveByEmail(String email) throws InvalidEmailException;
 
-    boolean deleteEmployee(String userName);
+    boolean delete(String userName);
 
     Set<Employee> retrieveAll();
 
-    Employee employeeUpdate(EmployeeUpdateDTO request, String userName);
+    Employee update(EmployeeUpdateDTO request, String userName);
 
     Employee changePassword(String password, String userName);
 }

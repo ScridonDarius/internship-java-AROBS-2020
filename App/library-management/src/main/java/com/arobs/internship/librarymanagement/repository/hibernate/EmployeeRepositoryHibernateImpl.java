@@ -18,22 +18,22 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     }
 
     @Override
-    public int createEmployee(Employee employee) {
+    public int save(Employee employee) {
         return (int) getSessionFactory().getCurrentSession().save(employee);
     }
 
     @Override
-    public List<Employee> findEmployee(String userName) {
+    public List<Employee> findByUserName(String userName) {
         return (List<Employee>) getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE user_name = :userName").setParameter("userName", userName).list();
     }
 
     @Override
-    public void updateEmployee(String userName, Employee employee) {
+    public void update(String userName, Employee employee) {
         getSessionFactory().getCurrentSession().update(employee);
     }
 
     @Override
-    public void deleteEmployee(String userName) {
+    public void delete(String userName) {
         getSessionFactory().getCurrentSession().createQuery("DELETE FROM Employee WHERE user_name = :userName").setParameter("userName", userName);
     }
 
@@ -43,7 +43,7 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     }
 
     @Override
-    public List<Employee> findEmployeeByEmail(String email) {
+    public List<Employee> findByEmail(String email) {
         return (List<Employee>) getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE email = :email").setParameter("email", email).list();
     }
 
@@ -51,7 +51,7 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     public Employee updatePassword(String userName, String password) {
         getSessionFactory().getCurrentSession().createQuery("UPDATE Employee SET password = :password WHERE user_name = :userName").setParameter("password", password).setParameter("userName", userName).executeUpdate();
 
-        return ValidationService.safeGetUniqueResult(findEmployee(userName));
+        return ValidationService.safeGetUniqueResult(findByUserName(userName));
     }
 
     protected SessionFactory getSessionFactory() {

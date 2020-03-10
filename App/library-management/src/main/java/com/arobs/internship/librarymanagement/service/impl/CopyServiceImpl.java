@@ -59,7 +59,7 @@ public class CopyServiceImpl implements CopyService {
 
     @Transactional
     @Override
-    public Set<Copy> findAll() {
+    public Set<Copy> retrieveAll() {
         return ListToSetConverter.convertListToSet(getCopyRepository().getAll());
     }
 

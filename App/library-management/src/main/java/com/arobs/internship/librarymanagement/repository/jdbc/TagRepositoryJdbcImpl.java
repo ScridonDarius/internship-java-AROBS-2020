@@ -25,19 +25,19 @@ public class TagRepositoryJdbcImpl implements TagRepository {
     }
 
     @Override
-    public Tag createTag(Tag tag) {
+    public Tag save(Tag tag) {
         int id = jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
 
         return null;
     }
 
     @Override
-    public void updateTag(Tag tag) {
+    public void update(Tag tag) {
         jdbcTemplate.update("UPDATE tag set tag_name = ? WHERE id =?", tag.getTagName(), tag.getId());
     }
 
     @Override
-    public void deleteTag(Tag tag) {
+    public void delete(Tag tag) {
         jdbcTemplate.update("DELETE FROM tag WHERE tag_name = ?", tag.getTagName());
     }
 

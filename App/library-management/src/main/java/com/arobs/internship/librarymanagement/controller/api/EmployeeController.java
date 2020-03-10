@@ -34,7 +34,7 @@ public class EmployeeController {
         EmployeeResponseDTO employeeResponse;
 
         try {
-            employeeResponse = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().addEmployee(request));
+            employeeResponse = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().save(request));
         } catch (InvalidEmailException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
         }
@@ -99,7 +99,7 @@ public class EmployeeController {
                 e.printStackTrace();
             }
         }
-        EmployeeUpdateDTO employeeUpdateDTO = EmployeeMapperConverter.generateDTOUpdateFromEntity(getEmployeeService().employeeUpdate(request, userName));
+        EmployeeUpdateDTO employeeUpdateDTO = EmployeeMapperConverter.generateDTOUpdateFromEntity(getEmployeeService().update(request, userName));
 
         return employeeUpdateDTO != null
                 ? new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK)
@@ -111,7 +111,7 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deleteEmloyee(@RequestParam String userName) {
 
-        return new ResponseEntity<>(this.employeeService.deleteEmployee(userName), HttpStatus.OK);
+        return new ResponseEntity<>(this.employeeService.delete(userName), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/retrieveEmployees", method = RequestMethod.GET)

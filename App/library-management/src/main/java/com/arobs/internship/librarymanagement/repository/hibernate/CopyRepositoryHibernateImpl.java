@@ -33,7 +33,7 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
     }
 
     @Override
-    public List<Copy> findCopysByStatusAndByBookId(int id, String copyStatus){
+    public List<Copy> findByStatusAndByBookId(int id, String copyStatus){
         return  getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE book_id = :id AND Status = :copyStatus",Copy.class).setParameter("id", id).setParameter("copyStatus", copyStatus).getResultList();
     }
 
@@ -43,13 +43,13 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
     }
 
     @Override
-    public Copy updateCopy(Copy copy) {
+    public Copy update(Copy copy) {
         getSessionFactory().getCurrentSession().update(copy);
         return findById(copy.getId());
     }
 
     @Override
-    public void deleteCopy(Copy copy) {
+    public void delete(Copy copy) {
         getSessionFactory().getCurrentSession().delete(copy);
     }
 

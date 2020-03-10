@@ -17,13 +17,13 @@ public class TagRepositoryHibernateImpl implements TagRepository {
     }
 
     @Override
-    public Tag createTag(Tag tag) {
+    public Tag save(Tag tag) {
         getSessionFactory().getCurrentSession().save(tag);
         return getSessionFactory().getCurrentSession().get(Tag.class, tag.getId());
     }
 
     @Override
-    public void deleteTag(final Tag tag) {
+    public void delete(final Tag tag) {
         getSessionFactory().getCurrentSession().delete(tag);
     }
 
@@ -37,7 +37,7 @@ public class TagRepositoryHibernateImpl implements TagRepository {
     }
 
     @Override
-    public void updateTag(final Tag tag) {
+    public void update(final Tag tag) {
         getSessionFactory().getCurrentSession().update(tag);
     }
 

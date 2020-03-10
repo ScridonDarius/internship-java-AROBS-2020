@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface TagRepository {
 
-    Tag createTag(Tag tag);
+    Tag save(Tag tag);
 
     Tag findByTagName(String tagName);
 
-    void updateTag(Tag tag);
+    void update(Tag tag);
 
-    void deleteTag(Tag tag);
+    void delete(Tag tag);
 
     List<Tag> findAll();
 }

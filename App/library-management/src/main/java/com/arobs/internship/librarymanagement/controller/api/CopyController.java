@@ -68,7 +68,7 @@ public class CopyController {
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<CopyResponseDTO>> retrieveAll() {
-        Set<CopyResponseDTO> copys = getCopyService().findAll().stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
+        Set<CopyResponseDTO> copys = getCopyService().retrieveAll().stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
 
         return copys != null
                 ? new ResponseEntity<>(copys, HttpStatus.OK)

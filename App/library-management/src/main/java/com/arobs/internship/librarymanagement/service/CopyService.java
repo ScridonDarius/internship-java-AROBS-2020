@@ -10,24 +10,23 @@ import java.util.Set;
 
 public interface CopyService {
 
-    Set<Copy> findCopyByBookId(int bookId);
+    Set<Copy> retrieveByBookId(int bookId);
 
-    Copy saveCopyByAuthorAndTitle(CopyRegistrationDTO copyRegistrationDTO, String bookTitle, String bookAuthor);
+    Copy saveByAuthorAndTitle(CopyRegistrationDTO copyRegistrationDTO, String bookTitle, String bookAuthor);
 
-    Copy saveCopyByBookId(CopyRegistrationDTO copyRegistrationDTO, int bookId);
+    Copy saveByBookId(CopyRegistrationDTO copyRegistrationDTO, int bookId);
 
-    @Transactional
-    Set<Copy> retrieveCopysByStatusAndBookId(int bookId, CopyStatus copyStatus);
+    Set<Copy> retrieveByStatusAndBookId(int bookId, CopyStatus copyStatus);
 
-    Set<Copy> findAll();
+    Set<Copy> retrieveAll();
 
-    Copy findByISBN(String isbn);
+    Copy retrieveByISBN(String isbn);
 
     boolean delete(int copyId);
 
-    Set<Copy> findCopyByAuthorAndTitle(String author, String title);
+    Set<Copy> retrieveByAuthorAndTitle(String author, String title);
 
-    Copy findById(int copyId);
+    Copy retrieveById(int copyId);
 
     Copy update(CopyUpdateDTO copyUpdateDTO, int copyId);
 }
