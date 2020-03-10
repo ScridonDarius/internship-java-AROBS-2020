@@ -7,10 +7,9 @@ import com.arobs.internship.librarymanagement.controller.api.response.BookRespon
 import com.arobs.internship.librarymanagement.model.Book;
 import org.modelmapper.ModelMapper;
 
-
 public class BookMapperConverter {
 
-    static ModelMapper modelMapper = new ModelMapper();
+    private static ModelMapper modelMapper = new ModelMapper();
 
     public static BookResponseDTO generateDTOResponseFromEntity(Book book) {
         return modelMapper.map(book, BookResponseDTO.class);

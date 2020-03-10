@@ -27,7 +27,6 @@ public class TagRepositoryJdbcImpl implements TagRepository {
     @Override
     public Tag save(Tag tag) {
         int id = jdbcTemplate.update("INSERT INTO tag(tag_name) VALUES (?)", tag.getTagName());
-
         return null;
     }
 

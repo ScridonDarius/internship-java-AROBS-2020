@@ -10,7 +10,7 @@ import org.modelmapper.ModelMapper;
 
 public class CopyMapperConverter {
 
-    static ModelMapper modelMapper = new ModelMapper();
+    private static ModelMapper modelMapper = new ModelMapper();
 
     public static CopyResponseDTO generateDTOResponseFromEntity(Copy copy) {
         return modelMapper.map(copy, CopyResponseDTO.class);

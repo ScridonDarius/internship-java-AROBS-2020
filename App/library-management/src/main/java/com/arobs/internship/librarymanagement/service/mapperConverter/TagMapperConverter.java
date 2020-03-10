@@ -9,7 +9,7 @@ import org.modelmapper.ModelMapper;
 
 public class TagMapperConverter {
 
-    static ModelMapper modelMapper = new ModelMapper();
+    private static ModelMapper modelMapper = new ModelMapper();
 
     public static TagResponseDTO generateDTOResponseFromEntity(Tag tag) {
         return modelMapper.map(tag, TagResponseDTO.class);

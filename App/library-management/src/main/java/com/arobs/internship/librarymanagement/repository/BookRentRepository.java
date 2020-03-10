@@ -16,5 +16,5 @@ public interface BookRentRepository {
 
     List<BookRent> findAll();
 
-    void updateBook(BookRent book);
+    void update(BookRent book);
 }

@@ -5,6 +5,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.BookRentUpd
 import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.BookRent;
+import com.arobs.internship.librarymanagement.model.BookRequest;
 import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -54,7 +57,7 @@ public class BookRentServiceImpl implements BookRentService {
 
             return bookRent;
         } else {
-            throw new ValidationException("No Book Available");
+            throw new ValidationException();
         }
     }
 
@@ -72,7 +75,12 @@ public class BookRentServiceImpl implements BookRentService {
 
     @Transactional
     @Override
-    public boolean delete(int bookRentId) {
+    public boolean delete(int rentId) {
+        final BookRent bookRent = retrieveById(rentId);
+        if (!Objects.isNull(bookRent)) {
+            getBookRentRepository().delete(bookRent);
+            return true;
+        }
         return false;
     }
 
@@ -85,13 +93,19 @@ public class BookRentServiceImpl implements BookRentService {
     @Transactional
     @Override
     public Set<BookRent> retrieveByStatus(BookRentStatus bookRequestStatus) {
-        return null;
+        return ListToSetConverter.convertListToSet(getBookRentRepository().findByStatus(bookRequestStatus.toString()));
     }
 
     @Transactional
     @Override
-    public BookRent update(BookRentUpdateDTO bookRentUpdateDTO, int bookRentId) throws FoundException {
-        return null;
+    public BookRent update(BookRentUpdateDTO bookRentUpdateDTO, int rentId) throws FoundException {
+        BookRent bookRent = retrieveById(rentId);
+
+        if (!Objects.isNull(rentId)) {
+           bookRent.setBookRentStatus(bookRentUpdateDTO.getBookRentStatus());
+        } else throw new FoundException();
+
+        return bookRent;
     }
 
     public BookRentRepository getBookRentRepository() {

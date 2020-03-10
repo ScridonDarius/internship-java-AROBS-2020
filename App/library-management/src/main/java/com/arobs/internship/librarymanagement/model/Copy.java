@@ -4,7 +4,6 @@ import com.arobs.internship.librarymanagement.model.enums.CopyCondition;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -91,23 +90,5 @@ public class Copy {
 
     public void setBookRents(Set<BookRent> bookRents) {
         this.bookRents = bookRents;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Copy copy = (Copy) o;
-        return id == copy.id &&
-                isbn.equals(copy.isbn) &&
-                copyCondition == copy.copyCondition &&
-                copyStatus == copy.copyStatus &&
-                book.equals(copy.book) &&
-                Objects.equals(bookRents, copy.bookRents);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, isbn, copyCondition, copyStatus, book, bookRents);
     }
 }

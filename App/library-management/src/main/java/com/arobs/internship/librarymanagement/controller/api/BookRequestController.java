@@ -2,18 +2,12 @@ package com.arobs.internship.librarymanagement.controller.api;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRequestRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.BookRequestUpdateDTO;
-import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookRequestResponseDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
-import com.arobs.internship.librarymanagement.model.BookRequest;
 import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
 import com.arobs.internship.librarymanagement.service.impl.BookRequestServiceImpl;
-import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.BookRequestMapperConverter;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
-import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,7 +31,7 @@ public class BookRequestController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookRequestResponseDTO> createBookRequestRegistration(@RequestBody BookRequestRegistrationDTO request) {
+    public ResponseEntity<BookRequestResponseDTO> create(@RequestBody BookRequestRegistrationDTO request) {
         BookRequestResponseDTO bookRequestResponseDTO;
         try {
             bookRequestResponseDTO = BookRequestMapperConverter.generateDTOResponseFromEntity(getBookRequestService().save(request));
@@ -50,8 +44,7 @@ public class BookRequestController {
 
     @RequestMapping(value = "/retrieveById/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookRequestResponseDTO> retrieveById(
-            @PathVariable("id") Integer id) {
+    public ResponseEntity<BookRequestResponseDTO> retrieveById(@PathVariable("id") Integer id) {
         BookRequestResponseDTO bookRequestResponseDTO;
 
         try {
@@ -63,11 +56,9 @@ public class BookRequestController {
     }
 
 
-    @RequestMapping(value = "/findBookRequestByAuthorAndTitle", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveByAuthorAndTitle", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookRequestResponseDTO> retrieveByAuthorAndTitle(
-            @RequestParam String author,
-            @RequestParam String title) {
+    public ResponseEntity<BookRequestResponseDTO> retrieveByAuthorAndTitle(@RequestParam String author, @RequestParam String title) {
         BookRequestResponseDTO bookResponseDTO;
 
         try {
@@ -76,15 +67,11 @@ public class BookRequestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This bookRequest doesn't exist!");
         }
         return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
-
     }
 
-    @RequestMapping(value = "/findBookRequestByAuthorTitleAndEmployeeId", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveByAuthorTitleAndEmployeeId", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookRequestResponseDTO> retrieveByAuthorTitleAndEmployeeId(
-            @RequestParam String author,
-            @RequestParam String title,
-            @RequestParam Integer employeeId) {
+    public ResponseEntity<BookRequestResponseDTO> retrieveByAuthorTitleAndEmployeeId(@RequestParam String author, @RequestParam String title, @RequestParam Integer employeeId) {
         BookRequestResponseDTO bookResponseDTO;
 
         try {
@@ -93,10 +80,9 @@ public class BookRequestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This bookRequest doesn't exist!");
         }
         return new ResponseEntity<>(bookResponseDTO, HttpStatus.OK);
-
     }
 
-    @RequestMapping(value = "/deleteBookRequest/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> delete(@PathVariable("id") Integer id) {
         boolean result;
@@ -109,7 +95,7 @@ public class BookRequestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/retriveBooksRequest", method = RequestMethod.GET)
+    @RequestMapping(value = "/retriveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<BookRequestResponseDTO>> retrieveAll() {
         Set<BookRequestResponseDTO> books = getBookRequestService()
@@ -139,22 +125,19 @@ public class BookRequestController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/updateBookRequest", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookRequestUpdateDTO> updateBook(
-            @RequestParam int bookId,
-            @RequestBody @Valid BookRequestUpdateDTO request) {
+    public ResponseEntity<BookRequestUpdateDTO> update(@RequestParam int bookId, @RequestBody @Valid BookRequestUpdateDTO request) {
         BookRequestUpdateDTO bookRequestUpdateDTO;
 
         try {
-            bookRequestUpdateDTO = BookRequestMapperConverter.generateDTOUpdateFromEntity(getBookRequestService().update(request,bookId));
+            bookRequestUpdateDTO = BookRequestMapperConverter.generateDTOUpdateFromEntity(getBookRequestService().update(request, bookId));
 
-        }catch (FoundException e) {
+        } catch (FoundException e) {
             throw new ResponseStatusException(HttpStatus.FOUND, "Processing fail. this book not exist!");
         }
         return new ResponseEntity<>(bookRequestUpdateDTO, HttpStatus.OK);
     }
-
 
     public BookRequestServiceImpl getBookRequestService() {
         return bookRequestService;

@@ -4,7 +4,6 @@ import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "book_rent")
@@ -116,5 +115,4 @@ public class BookRent {
     public void setCopy(Copy copy) {
         this.copy = copy;
     }
-
 }

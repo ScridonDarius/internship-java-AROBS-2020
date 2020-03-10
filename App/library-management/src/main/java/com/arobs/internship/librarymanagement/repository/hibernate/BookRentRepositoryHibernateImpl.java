@@ -34,9 +34,7 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
 
     @Override
     public void delete(BookRent book) {
-
-        // TODO :
-
+       getSessionFactory().getCurrentSession().delete(book);
     }
 
     @Override
@@ -45,10 +43,8 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
     }
 
     @Override
-    public void updateBook(BookRent book) {
-
-        // TODO :
-
+    public void update(BookRent book) {
+       getSessionFactory().getCurrentSession().update(book);
     }
 
     public SessionFactory getSessionFactory() {

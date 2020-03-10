@@ -8,7 +8,7 @@ import org.modelmapper.ModelMapper;
 
 public class BookRequestMapperConverter {
 
-    static ModelMapper modelMapper = new ModelMapper();
+    private static ModelMapper modelMapper = new ModelMapper();
 
     public static BookRequestResponseDTO generateDTOResponseFromEntity(BookRequest bookRequest) {
         return modelMapper.map(bookRequest, BookRequestResponseDTO.class);

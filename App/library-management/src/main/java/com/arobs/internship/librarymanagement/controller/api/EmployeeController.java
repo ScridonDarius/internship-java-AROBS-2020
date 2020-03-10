@@ -29,8 +29,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EmployeeResponseDTO> createEmployee(
-            @RequestBody EmployeeRegistrationDTO request) {
+    public ResponseEntity<EmployeeResponseDTO> create(@RequestBody EmployeeRegistrationDTO request) {
         EmployeeResponseDTO employeeResponse;
 
         try {
@@ -46,9 +45,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "retrieveByUserName", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EmployeeResponseDTO> retrieveByUserName(
-            @RequestParam String userName) {
-
+    public ResponseEntity<EmployeeResponseDTO> retrieveByUserName(@RequestParam String userName) {
         EmployeeResponseDTO employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveByUserName(userName));
 
         return employeeResponseDTO != null
@@ -58,8 +55,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "retrieveByEmail", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EmployeeResponseDTO> retrieveByEmail(
-            @RequestParam String email) {
+    public ResponseEntity<EmployeeResponseDTO> retrieveByEmail(@RequestParam String email) {
         EmployeeResponseDTO employeeResponseDTO;
 
         try {
@@ -75,22 +71,18 @@ public class EmployeeController {
 
     @RequestMapping(value = "updatePassword", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EmployeeResponseDTO> updatePassword(
-            @RequestParam String userName,
-            @RequestParam String password) {
+    public ResponseEntity<EmployeeResponseDTO> updatePassword(@RequestParam String userName, @RequestParam String password) {
         this.employeeService.changePassword(password, userName);
-        EmployeeResponseDTO employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveByUserName(userName));
+        EmployeeResponseDTO employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().changePassword(password, userName));
 
         return employeeResponseDTO != null
                 ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/updateEmployee", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EmployeeUpdateDTO> updateEmployee(
-            @RequestParam String userName,
-            @RequestBody @Valid EmployeeUpdateDTO request) {
+    public ResponseEntity<EmployeeUpdateDTO> update(@RequestParam String userName, @RequestBody @Valid EmployeeUpdateDTO request) {
 
         if (Objects.isNull(request)) {
             try {
@@ -106,19 +98,17 @@ public class EmployeeController {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-    @RequestMapping(value = "/deleteEmployee", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> deleteEmloyee(@RequestParam String userName) {
+    public ResponseEntity<Boolean> delete(@RequestParam String userName) {
 
         return new ResponseEntity<>(this.employeeService.delete(userName), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/retrieveEmployees", method = RequestMethod.GET)
+    @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<EmployeeResponseDTO>> retrieveAll() {
         Set<EmployeeResponseDTO> emloyee = getEmployeeService().retrieveAll().stream().map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
-
 
         return emloyee != null
                 ? new ResponseEntity<>(emloyee, HttpStatus.OK)

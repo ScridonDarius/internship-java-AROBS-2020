@@ -1,7 +1,6 @@
 package com.arobs.internship.librarymanagement.repository;
 
 import com.arobs.internship.librarymanagement.model.Copy;
-import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 
 import java.util.List;
 

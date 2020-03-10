@@ -5,7 +5,6 @@ import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -55,18 +54,6 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate) {
-        this.id = id;
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.email = email;
-        this.employeeRole = employeeRole;
-        this.employeeStatus = employeeStatus;
-        this.createDate = createDate;
-    }
-
     public Employee(String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate) {
         this.userName = userName;
         this.firstName = firstName;
@@ -76,20 +63,6 @@ public class Employee {
         this.employeeRole = employeeRole;
         this.employeeStatus = employeeStatus;
         this.createDate = createDate;
-    }
-
-    public Employee(String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate, Set<RentRequest> rentRequestSet, Set<BookRent> bookRents, Set<BookRequest> bookRequests) {
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.email = email;
-        this.employeeRole = employeeRole;
-        this.employeeStatus = employeeStatus;
-        this.createDate = createDate;
-        this.rentRequestSet = rentRequestSet;
-        this.bookRents = bookRents;
-        this.bookRequests = bookRequests;
     }
 
     public int getId() {

@@ -4,7 +4,6 @@ import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity
 @Table(name = "book_request")
@@ -114,5 +113,4 @@ public class BookRequest {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-
 }

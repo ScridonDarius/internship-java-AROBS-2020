@@ -128,24 +128,4 @@ public class Book {
     public void setRentRequests(Set<RentRequest> rentRequests) {
         this.rentRequests = rentRequests;
     }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Book book = (Book) o;
-//        return id == book.id &&
-//                title.equals(book.title) &&
-//                author.equals(book.author) &&
-//                description.equals(book.description) &&
-//                tags.equals(book.tags) &&
-//                copies.equals(book.copies) &&
-//                bookRents.equals(book.bookRents) &&
-//                rentRequests.equals(book.rentRequests);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, title, author, description, tags, copies, bookRents, rentRequests);
-//    }
 }
