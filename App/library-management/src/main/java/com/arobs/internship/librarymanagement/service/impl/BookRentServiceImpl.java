@@ -5,7 +5,6 @@ import com.arobs.internship.librarymanagement.controller.api.request.BookRentUpd
 import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.BookRent;
-import com.arobs.internship.librarymanagement.model.BookRequest;
 import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
@@ -19,12 +18,12 @@ import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapper
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -42,26 +41,24 @@ public class BookRentServiceImpl implements BookRentService {
     @Transactional
     @Override
     public BookRent save(BookRentRegistrationDTO bookRentRegistration) throws FoundException {
-        Set<Copy> copys = copyService.retrieveByStatusAndBookId(bookRentRegistration.getBookId(), CopyStatus.AVAILABLE);
-
-        if (copys.size() > 0) {
-            Copy copy = copys.iterator().next();
-
-            bookRentRegistration.setBookRentStatus(BookRentStatus.ON_GOING);
-            bookRentRegistration.setRentalDate(LocalDateTime.now());
-            bookRentRegistration.setReturnDate(LocalDateTime.now().plusMonths(1));
-            bookRentRegistration.setCopyId(copy.getId());
-
-            BookRent bookRent = getBookRentRepository().save(BookRentMapperConverter.generateEntityFromRegistration(bookRentRegistration));
-            changeCopyStatusRented(copy.getId());
-
-            return bookRent;
-        } else {
+        final Set<Copy> copies = copyService.retrieveByStatusAndBookId(bookRentRegistration.getBookId(), CopyStatus.AVAILABLE);
+        if (CollectionUtils.isEmpty(copies)) {
             throw new ValidationException();
         }
+
+        Copy copy = copies.iterator().next();
+        bookRentRegistration.setBookRentStatus(BookRentStatus.ON_GOING);
+        bookRentRegistration.setRentalDate(LocalDateTime.now());
+        bookRentRegistration.setReturnDate(LocalDateTime.now().plusMonths(1));
+        bookRentRegistration.setCopyId(copy.getId());
+
+        BookRent bookRent = getBookRentRepository().save(BookRentMapperConverter.generateEntityFromRegistration(bookRentRegistration));
+        changeCopyStatusToRent(copy.getId());
+
+        return bookRent;
     }
 
-    private void changeCopyStatusRented(int copyId) {
+    private void changeCopyStatusToRent(int copyId) {
         CopyUpdateDTO copyUpdateDTO = CopyMapperConverter.generateUpdateDTOeFromEntity(copyService.retrieveById(copyId));
         copyUpdateDTO.setCopyStatus(CopyStatus.RENT);
         copyService.update(copyUpdateDTO, copyId);
@@ -102,10 +99,16 @@ public class BookRentServiceImpl implements BookRentService {
         BookRent bookRent = retrieveById(rentId);
 
         if (!Objects.isNull(rentId)) {
-           bookRent.setBookRentStatus(bookRentUpdateDTO.getBookRentStatus());
+            bookRent.setBookRentStatus(bookRentUpdateDTO.getBookRentStatus());
         } else throw new FoundException();
 
         return bookRent;
+    }
+
+    @Transactional
+    @Override
+    public Set<BookRent> getBookRentsOrderedByDate() {
+        return ListToSetConverter.convertListToSet(getBookRentRepository().orderByRentDate());
     }
 
     public BookRentRepository getBookRentRepository() {

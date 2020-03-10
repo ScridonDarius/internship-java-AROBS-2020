@@ -17,4 +17,6 @@ public interface BookRentRepository {
     List<BookRent> findAll();
 
     void update(BookRent book);
+
+    List<BookRent> orderByRentDate();
 }

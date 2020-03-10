@@ -43,6 +43,11 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
     }
 
     @Override
+    public List<BookRent> orderByRentDate() {
+        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent ORDER BY  rental_date",BookRent.class).getResultList();
+    }
+
+    @Override
     public void update(BookRent book) {
        getSessionFactory().getCurrentSession().update(book);
     }

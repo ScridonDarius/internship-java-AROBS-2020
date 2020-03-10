@@ -22,4 +22,6 @@ public interface BookRentService {
 
     BookRent update(BookRentUpdateDTO bookRentUpdateDTO, int bookRentId)throws FoundException;
 
+    Set<BookRent> getBookRentsOrderedByDate();
+
 }
