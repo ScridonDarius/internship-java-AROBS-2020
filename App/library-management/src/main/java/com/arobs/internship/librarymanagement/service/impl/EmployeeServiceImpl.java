@@ -95,6 +95,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         return ListToSetConverter.convertListToSet(getEmployeeRepository().getAll());
     }
 
+    @Transactional
+    @Override
+    public Employee retrieveById(int id) {
+        return ValidationService.safeGetUniqueResult(getEmployeeRepository().findById(id));
+    }
+
     @Override
     @Transactional
     public Employee update(EmployeeUpdateDTO request, String userName) {

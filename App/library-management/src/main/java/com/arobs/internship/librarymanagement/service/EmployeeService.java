@@ -15,6 +15,8 @@ public interface EmployeeService {
 
     Employee retrieveByEmail(String email) throws InvalidEmailException;
 
+    Employee retrieveById(int id);
+
     boolean delete(String userName);
 
     Set<Employee> retrieveAll();

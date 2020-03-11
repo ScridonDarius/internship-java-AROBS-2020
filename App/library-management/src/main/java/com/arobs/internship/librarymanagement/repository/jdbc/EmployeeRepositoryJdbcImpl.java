@@ -50,6 +50,11 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
+    public List<Employee> findById(int id) {
+        return null;
+    }
+
+    @Override
     public Employee updatePassword(String userName, String password) {
         return null;
     }

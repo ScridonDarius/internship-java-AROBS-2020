@@ -151,4 +151,19 @@ public class EmployeeResponseDTO {
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeResponseDTO{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", employeeRole=" + employeeRole +
+                ", employeeStatus=" + employeeStatus +
+                ", createDate=" + createDate +
+                '}';
+    }
 }

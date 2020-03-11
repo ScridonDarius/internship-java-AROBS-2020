@@ -18,5 +18,7 @@ public interface EmployeeRepository {
 
     List<Employee> findByEmail(String email);
 
+    List<Employee> findById(int id);
+
     Employee updatePassword(String userName, String password);
 }

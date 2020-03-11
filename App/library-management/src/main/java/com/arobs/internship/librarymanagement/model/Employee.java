@@ -54,6 +54,18 @@ public class Employee {
     public Employee() {
     }
 
+    public Employee(int id, String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate) {
+        this.id = id;
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.employeeRole = employeeRole;
+        this.employeeStatus = employeeStatus;
+        this.createDate = createDate;
+    }
+
     public Employee(String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate) {
         this.userName = userName;
         this.firstName = firstName;

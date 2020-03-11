@@ -54,6 +54,11 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
         return ValidationService.safeGetUniqueResult(findByUserName(userName));
     }
 
+    @Override
+    public List<Employee> findById(int id) {
+       return getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE employee_id = :id").setParameter("id", id).getResultList();
+    }
+
     protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }

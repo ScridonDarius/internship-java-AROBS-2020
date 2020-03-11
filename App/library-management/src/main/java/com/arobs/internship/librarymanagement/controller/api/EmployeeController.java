@@ -4,6 +4,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.EmployeeReg
 import com.arobs.internship.librarymanagement.controller.api.request.EmployeeUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
+import com.arobs.internship.librarymanagement.service.EmployeeService;
 import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,9 +22,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/employee", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class EmployeeController {
-    private final EmployeeServiceImpl employeeService;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeServiceImpl employeeService) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
@@ -65,7 +66,19 @@ public class EmployeeController {
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This email doesn't exist!");
         }
+        return new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK);
+    }
 
+    @RequestMapping(value = "retrieveById/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<EmployeeResponseDTO> retrieveById(@PathVariable("id") Integer id) {
+        EmployeeResponseDTO employeeResponseDTO;
+
+        try {
+            employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveById(id));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This employee doesn't exist!");
+        }
         return new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK);
     }
 
@@ -108,14 +121,15 @@ public class EmployeeController {
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<EmployeeResponseDTO>> retrieveAll() {
-        Set<EmployeeResponseDTO> emloyee = getEmployeeService().retrieveAll().stream().map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
+        Set<EmployeeResponseDTO> employees = getEmployeeService().retrieveAll().stream()
+                .map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
 
-        return emloyee != null
-                ? new ResponseEntity<>(emloyee, HttpStatus.OK)
+        return employees != null
+                ? new ResponseEntity<>(employees, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public EmployeeServiceImpl getEmployeeService() {
+    protected EmployeeService getEmployeeService() {
         return employeeService;
     }
 }
