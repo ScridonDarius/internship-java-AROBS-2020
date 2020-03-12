@@ -12,7 +12,7 @@ public interface EmployeeRepository {
 
     void update(String userName, Employee employee);
 
-    void delete(String userName);
+    void delete(int id);
 
     List<Employee> getAll();
 

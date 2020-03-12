@@ -17,7 +17,7 @@ public interface EmployeeService {
 
     Employee retrieveById(int id);
 
-    boolean delete(String userName);
+    boolean delete(int id);
 
     Set<Employee> retrieveAll();
 

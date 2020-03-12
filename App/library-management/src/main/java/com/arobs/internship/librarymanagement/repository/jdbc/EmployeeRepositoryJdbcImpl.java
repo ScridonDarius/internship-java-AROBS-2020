@@ -34,8 +34,8 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
-    public void delete(String userName) {
-        jdbcTemplate.update("DELETE FROM tag WHERE user_name = ?", userName);
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM tag WHERE employee_id = ?", id);
     }
 
     @Override

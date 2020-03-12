@@ -2,7 +2,9 @@ package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.repository.BookRepository;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,13 +26,13 @@ public class BookRepositoryHibernateImpl implements BookRepository {
 
     @Override
     public List<Book> findByAuthorAndTitle(String author, String title) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.author = :author AND b.title = :title", Book.class)
-                .setParameter("author", author).setParameter("title", title).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH  b.tags WHERE b.author = :author AND b.title = :title", Book.class).setMaxResults(1)
+                .setParameter("author", author).setParameter("title", title).list();
     }
 
     @Override
     public List<Book> findById(int id) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.id = :id", Book.class).setParameter("id", id).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.id = :id", Book.class).setMaxResults(1).setParameter("id", id).getResultList();
     }
 
     @Override

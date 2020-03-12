@@ -37,21 +37,24 @@ public class EmployeeController {
             employeeResponse = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().save(request));
         } catch (InvalidEmailException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.OK, "Processing fail. This email doesn't exist!", e);
         }
 
-        return employeeResponse != null
-                ? new ResponseEntity<>(employeeResponse, HttpStatus.CREATED)
-                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "retrieveByUserName", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EmployeeResponseDTO> retrieveByUserName(@RequestParam String userName) {
-        EmployeeResponseDTO employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveByUserName(userName));
+        EmployeeResponseDTO employeeResponseDTO;
 
-        return employeeResponseDTO != null
-                ? new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK)
-                : new ResponseEntity<>(new EmployeeResponseDTO(), HttpStatus.NOT_FOUND);
+        try {
+            employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveByUserName(userName));
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.OK, "Processing fail. This userName doesn't exist!");
+        }
+        return new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "retrieveByEmail", method = RequestMethod.GET)
@@ -63,8 +66,8 @@ public class EmployeeController {
             employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveByEmail(email));
         } catch (InvalidEmailException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format", e);
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This email doesn't exist!");
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.OK, "Processing fail. This email doesn't exist!");
         }
         return new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK);
     }
@@ -76,8 +79,8 @@ public class EmployeeController {
 
         try {
             employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().retrieveById(id));
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This employee doesn't exist!");
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.OK, "Processing fail. This employee doesn't exist!");
         }
         return new ResponseEntity<>(employeeResponseDTO, HttpStatus.OK);
     }
@@ -113,9 +116,8 @@ public class EmployeeController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> delete(@RequestParam String userName) {
-
-        return new ResponseEntity<>(this.employeeService.delete(userName), HttpStatus.OK);
+    public ResponseEntity<Boolean> delete(@RequestParam Integer id) {
+        return new ResponseEntity<>(this.employeeService.delete(id), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
@@ -124,9 +126,7 @@ public class EmployeeController {
         Set<EmployeeResponseDTO> employees = getEmployeeService().retrieveAll().stream()
                 .map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
 
-        return employees != null
-                ? new ResponseEntity<>(employees, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     protected EmployeeService getEmployeeService() {

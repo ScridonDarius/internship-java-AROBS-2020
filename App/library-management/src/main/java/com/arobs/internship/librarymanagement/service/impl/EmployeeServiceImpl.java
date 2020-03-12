@@ -12,6 +12,7 @@ import com.arobs.internship.librarymanagement.service.converter.ListToSetConvert
 import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import com.arobs.internship.librarymanagement.validation.util.EmployeeValidationUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
 
-    private final  RepositoryFactory repositoryFactory;
+    private final RepositoryFactory repositoryFactory;
 
     public EmployeeServiceImpl(RepositoryFactory repositoryFactory) {
         this.repositoryFactory = repositoryFactory;
@@ -49,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public Employee retrieveByEmail(String email) throws InvalidEmailException {
         if (!EmployeeValidationUtil.isValidEmailAddress(email)) {
-            throw new InvalidEmailException();
+            throw new InvalidEmailException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format");
         }
         return ValidationService.safeGetUniqueResult(getEmployeeRepository().findByEmail(email));
     }
@@ -61,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         request.setCreateDate(LocalDateTime.now());
 
         if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
-            throw new InvalidEmailException();
+            throw new InvalidEmailException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format");
         }
         getEmployeeRepository().save(EmployeeMapperConverter.generateEntityFromDTORegistration(request));
         return ValidationService.safeGetUniqueResult(getEmployeeRepository().findByUserName(request.getUserName()));
@@ -69,11 +70,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public boolean delete(String userName) {
+    public boolean delete(int id) {
 
-        final Employee employee = ValidationService.safeGetUniqueResult(getEmployeeRepository().findByUserName(userName));
+        final Employee employee = ValidationService.safeGetUniqueResult(getEmployeeRepository().findById(id));
         if (!Objects.isNull(employee)) {
-            getEmployeeRepository().delete(userName);
+            getEmployeeRepository().delete(id);
             return true;
         }
         return false;
@@ -117,7 +118,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (!EmployeeValidationUtil.isValidEmailAddress(request.getEmail())) {
             try {
-                throw new InvalidEmailException();
+                throw new InvalidEmailException(HttpStatus.NOT_ACCEPTABLE, "Invalid email format");
 
             } catch (InvalidEmailException e) {
                 e.printStackTrace();

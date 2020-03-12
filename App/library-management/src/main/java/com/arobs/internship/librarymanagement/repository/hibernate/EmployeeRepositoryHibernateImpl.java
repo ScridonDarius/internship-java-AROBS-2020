@@ -33,8 +33,8 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     }
 
     @Override
-    public void delete(String userName) {
-        getSessionFactory().getCurrentSession().createQuery("DELETE FROM Employee WHERE user_name = :userName").setParameter("userName", userName);
+    public void delete(int id) {
+        getSessionFactory().getCurrentSession().createQuery("DELETE FROM Employee WHERE employee_id = :id").setParameter("id", id);
     }
 
     @Override
