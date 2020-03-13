@@ -109,9 +109,7 @@ public class EmployeeController {
         }
         EmployeeUpdateDTO employeeUpdateDTO = EmployeeMapperConverter.generateDTOUpdateFromEntity(getEmployeeService().update(request, userName));
 
-        return employeeUpdateDTO != null
-                ? new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(employeeUpdateDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)

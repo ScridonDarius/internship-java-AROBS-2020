@@ -141,12 +141,12 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    void givenEmployeeUserNameAndUpdateDTO_whenUpdate_returnCheckIfUpdateDTOIsNull() {
+    void givenEmployeeUserNameAndUpdateDTO_whenUpdate_returnResponseEntity() {
 
         // TODO : repair method :)
-        
+
         when(employeeService.update(employeeUpdateDTO, "darius")).thenReturn(employees.iterator().next());
-        ResponseEntity responseEntity = employeeController.update("darius", null);
-        assertEquals(null, responseEntity);
+        ResponseEntity responseEntity = employeeController.update("darius", employeeUpdateDTO);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 }
