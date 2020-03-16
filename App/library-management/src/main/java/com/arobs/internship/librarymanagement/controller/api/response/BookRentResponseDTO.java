@@ -38,16 +38,16 @@ public class BookRentResponseDTO {
 
     @ApiModelProperty(required = true)
     @NotNull
-    private BookEmployeeDTO employee;
+    private EmployeeDTO employee;
 
     @ApiModelProperty(required = true)
     @NotNull
-    private BookCopyDTO copy;
+    private BookDTO copy;
 
     public BookRentResponseDTO() {
     }
 
-    public BookRentResponseDTO(int id, @NotNull LocalDateTime rentalDate, LocalDateTime returnDate, @NotNull BookRentStatus bookRentStatus, @NotNull @Size(max = 50) String note, @NotNull BookDTO book, @NotNull BookEmployeeDTO employee, @NotNull BookCopyDTO copy) {
+    public BookRentResponseDTO(int id, @NotNull LocalDateTime rentalDate, LocalDateTime returnDate, @NotNull BookRentStatus bookRentStatus, @NotNull @Size(max = 50) String note, @NotNull BookDTO book, @NotNull EmployeeDTO employee, @NotNull BookDTO copy) {
         this.id = id;
         this.rentalDate = rentalDate;
         this.returnDate = returnDate;
@@ -106,19 +106,19 @@ public class BookRentResponseDTO {
         this.book = book;
     }
 
-    public BookEmployeeDTO getEmployee() {
+    public EmployeeDTO getEmployee() {
         return employee;
     }
 
-    public void setEmployee(BookEmployeeDTO employee) {
+    public void setEmployee(EmployeeDTO employee) {
         this.employee = employee;
     }
 
-    public BookCopyDTO getCopy() {
+    public BookDTO getCopy() {
         return copy;
     }
 
-    public void setCopy(BookCopyDTO copy) {
+    public void setCopy(BookDTO copy) {
         this.copy = copy;
     }
 }

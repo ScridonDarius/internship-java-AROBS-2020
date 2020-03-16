@@ -9,7 +9,7 @@ import com.arobs.internship.librarymanagement.repository.BookRequestRepository;
 import com.arobs.internship.librarymanagement.service.BookRequestService;
 import com.arobs.internship.librarymanagement.service.BookService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
-import com.arobs.internship.librarymanagement.service.mapperConverter.BookRequestMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.BookRequestMapperConverter;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,7 @@ public class BookRequestServiceImpl implements BookRequestService {
 
     @Autowired
     BookService bookService;
+
     final BookRequestRepository bookRequestRepository;
 
     public BookRequestServiceImpl(BookRequestRepository bookRequestRepository) {

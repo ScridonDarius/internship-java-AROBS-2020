@@ -10,7 +10,7 @@ import com.arobs.internship.librarymanagement.repository.CopyRepository;
 import com.arobs.internship.librarymanagement.service.BookService;
 import com.arobs.internship.librarymanagement.service.CopyService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
-import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.CopyMapperConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

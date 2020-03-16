@@ -5,7 +5,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateD
 import com.arobs.internship.librarymanagement.controller.api.response.CopyResponseDTO;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 import com.arobs.internship.librarymanagement.service.impl.CopyServiceImpl;
-import com.arobs.internship.librarymanagement.service.mapperConverter.CopyMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.CopyMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

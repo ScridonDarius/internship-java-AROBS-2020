@@ -4,7 +4,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.TagRegistra
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
-import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.TagMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

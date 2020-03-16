@@ -44,12 +44,12 @@ public class BookRequestResponseDTO {
 
     @ApiModelProperty(required = true)
     @NotNull
-    private BookEmployeeDTO employee;
+    private EmployeeDTO employee;
 
     public BookRequestResponseDTO() {
     }
 
-    public BookRequestResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 50) String publishingCompany, @NotNull int copyNumber, @NotNull BigDecimal totalCost, @NotNull BookRequestStatus bookRequestStatus, @NotNull BookEmployeeDTO employee) {
+    public BookRequestResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 50) String publishingCompany, @NotNull int copyNumber, @NotNull BigDecimal totalCost, @NotNull BookRequestStatus bookRequestStatus, @NotNull EmployeeDTO employee) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -116,11 +116,11 @@ public class BookRequestResponseDTO {
         this.bookRequestStatus = bookRequestStatus;
     }
 
-    public BookEmployeeDTO getEmployee() {
+    public EmployeeDTO getEmployee() {
         return employee;
     }
 
-    public void setEmployee(BookEmployeeDTO employee) {
+    public void setEmployee(EmployeeDTO employee) {
         this.employee = employee;
     }
 }

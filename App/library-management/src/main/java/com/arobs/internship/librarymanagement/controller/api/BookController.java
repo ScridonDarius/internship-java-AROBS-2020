@@ -5,7 +5,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateD
 import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.service.impl.BookServiceImpl;
-import com.arobs.internship.librarymanagement.service.mapperConverter.BookMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.BookMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

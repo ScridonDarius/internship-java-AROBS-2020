@@ -1,8 +1,8 @@
-package com.arobs.internship.librarymanagement.service.mapperConverter;
+package com.arobs.internship.librarymanagement.mapperConverter;
 
 import com.arobs.internship.librarymanagement.controller.api.request.CopyRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
-import com.arobs.internship.librarymanagement.controller.api.response.BookCopyDTO;
+import com.arobs.internship.librarymanagement.controller.api.response.BookDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.CopyResponseDTO;
 import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.Copy;
@@ -24,11 +24,11 @@ public class CopyMapperConverter {
         return modelMapper.map(copyRegistrationDTO, Copy.class);
     }
 
-    public static BookCopyDTO generateDTOFromEntity(Copy copy) {
-        return modelMapper.map(copy, BookCopyDTO.class);
+    public static BookDTO generateDTOFromEntity(Copy copy) {
+        return modelMapper.map(copy, BookDTO.class);
     }
 
-    public static BookCopyDTO generateBookCopyFromCopy(Book book) {
-        return modelMapper.map(book, BookCopyDTO.class);
+    public static BookDTO generateBookCopyFromCopy(Book book) {
+        return modelMapper.map(book, BookDTO.class);
     }
 }

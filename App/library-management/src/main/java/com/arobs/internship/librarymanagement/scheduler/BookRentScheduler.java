@@ -29,8 +29,11 @@ public class BookRentScheduler {
     private static final Logger LOG = LoggerFactory.getLogger(BookRentScheduler.class);
 
     private static final long MILLIS_PER_MINUTE = 60000;
+    private static final long MINUTE = 30;
 
-    private static final String EMAIL_SUBJECT = "";
+    private static final String SENDER = "scridondarius255@gmail.com";
+    private static final String MAIL_SUBJECT = "Book is outdated";
+    private static final String MAIL_CONTENT = "Please return book, rent is outdated";
 
     @Autowired
     private BookRentService bookRentService;
@@ -45,7 +48,7 @@ public class BookRentScheduler {
     public JavaMailSender emailSender;
 
 
-    @Scheduled(fixedRate = 15000)
+    @Scheduled(fixedRate = MINUTE * MILLIS_PER_MINUTE)
     public void checkRentTime() throws FoundException {
         final Set<BookRent> bookRents = getBookRentService().getBookRentsOrderedByDate();
 
@@ -54,8 +57,7 @@ public class BookRentScheduler {
         }
 
         bookRents.forEach(bookRent -> {
-            if (bookRent.getRentalDate().plusMinutes(3).compareTo(LocalDateTime.now()) < 0) {
-                System.out.println("STATUS CHANGE");
+            if (bookRent.getRentalDate().plusMonths(1).compareTo(LocalDateTime.now()) < 0 && bookRent.getBookRentStatus() != BookRentStatus.LATE) {
                 bookRent.setBookRentStatus(BookRentStatus.LATE);
 
                 BookRentUpdateDTO bookRentUpdateDTO = new BookRentUpdateDTO();
@@ -63,11 +65,12 @@ public class BookRentScheduler {
 
                 Employee employee =employeeService.retrieveById(bookRent.getEmployee().getId());
                 MailResponseDTO mail = new MailResponseDTO();
-                mail.setMailFrom("scridondarius255@gmail.com");
-                mail.setMailTo("scridonenterprise@gmail.com");
-                mail.setMailSubject("BookRent it was outdated");
-                mail.setMailContent("ddadad");
-                mailService.sendEmail(mail);
+
+                mail.setMailFrom(SENDER);
+                mail.setMailTo(employee.getEmail());
+                mail.setMailSubject(MAIL_SUBJECT);
+                mail.setMailContent(MAIL_CONTENT);
+              //  mailService.sendEmail(mail);
 
                 try {
                     getBookRentService().update(bookRentUpdateDTO, bookRent.getId());

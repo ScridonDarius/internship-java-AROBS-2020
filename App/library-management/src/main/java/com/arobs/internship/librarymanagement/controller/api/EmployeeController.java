@@ -5,9 +5,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.EmployeeUpd
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.exception.InvalidEmailException;
 import com.arobs.internship.librarymanagement.service.EmployeeService;
-import com.arobs.internship.librarymanagement.service.impl.EmployeeServiceImpl;
-import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
-import org.springframework.dao.EmptyResultDataAccessException;
+import com.arobs.internship.librarymanagement.mapperConverter.EmployeeMapperConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

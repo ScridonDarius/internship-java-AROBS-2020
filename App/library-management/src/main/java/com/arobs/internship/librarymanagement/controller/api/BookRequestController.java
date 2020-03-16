@@ -6,8 +6,8 @@ import com.arobs.internship.librarymanagement.controller.api.response.BookReques
 import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
 import com.arobs.internship.librarymanagement.service.impl.BookRequestServiceImpl;
-import com.arobs.internship.librarymanagement.service.mapperConverter.BookRequestMapperConverter;
-import com.arobs.internship.librarymanagement.service.mapperConverter.EmployeeMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.BookRequestMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.EmployeeMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

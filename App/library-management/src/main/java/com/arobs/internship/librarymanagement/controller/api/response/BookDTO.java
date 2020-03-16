@@ -24,4 +24,3 @@ public class BookDTO {
         this.id = id;
     }
 }
-

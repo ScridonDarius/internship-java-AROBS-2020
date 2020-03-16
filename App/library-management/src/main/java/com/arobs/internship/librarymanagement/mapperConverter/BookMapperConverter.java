@@ -1,4 +1,4 @@
-package com.arobs.internship.librarymanagement.service.mapperConverter;
+package com.arobs.internship.librarymanagement.mapperConverter;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;

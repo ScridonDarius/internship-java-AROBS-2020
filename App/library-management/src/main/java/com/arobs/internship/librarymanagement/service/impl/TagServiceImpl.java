@@ -5,7 +5,7 @@ import com.arobs.internship.librarymanagement.model.Tag;
 import com.arobs.internship.librarymanagement.repository.TagRepository;
 import com.arobs.internship.librarymanagement.repository.factory.RepositoryFactory;
 import com.arobs.internship.librarymanagement.service.TagService;
-import com.arobs.internship.librarymanagement.service.mapperConverter.TagMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.TagMapperConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

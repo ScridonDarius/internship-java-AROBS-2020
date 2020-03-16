@@ -33,12 +33,12 @@ public class CopyResponseDTO {
     private CopyStatus copyStatus;
 
     @ApiModelProperty(required = true)
-    private BookCopyDTO book;
+    private BookDTO book;
 
     public CopyResponseDTO() {
     }
 
-    public CopyResponseDTO(int id, @NotNull @Size(max = 20) String isbn, @NotNull CopyCondition copyCondition, @NotNull CopyStatus copyStatus, BookCopyDTO book) {
+    public CopyResponseDTO(int id, @NotNull @Size(max = 20) String isbn, @NotNull CopyCondition copyCondition, @NotNull CopyStatus copyStatus, BookDTO book) {
         this.id = id;
         this.isbn = isbn;
         this.copyCondition = copyCondition;
@@ -85,11 +85,11 @@ public class CopyResponseDTO {
         this.copyStatus = copyStatus;
     }
 
-    public BookCopyDTO getBook() {
+    public BookDTO getBook() {
         return book;
     }
 
-    public void setBook(BookCopyDTO book) {
+    public void setBook(BookDTO book) {
         this.book = book;
     }
 }
