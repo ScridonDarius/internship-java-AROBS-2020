@@ -45,8 +45,8 @@ public class RentRequestRepositoryHibernateImpl implements RentRequestRepository
     }
 
     @Override
-    public void update(RentRequest rentRequest) {
-        getSessionFactory().getCurrentSession().update(rentRequest);
+    public void update(String rentRequestStatus, int rentRequestId) {
+        getSessionFactory().getCurrentSession().createQuery("UPDATE RentRequest SET Status = :rentRequestStatus WHERE rent_request_id = :rentRequestId ").setParameter("rentRequestStatus",rentRequestStatus).setParameter("rentRequestId",rentRequestId).executeUpdate();
     }
 
     @Override

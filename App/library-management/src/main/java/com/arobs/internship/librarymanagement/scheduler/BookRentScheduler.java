@@ -12,8 +12,6 @@ import com.arobs.internship.librarymanagement.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -48,7 +46,7 @@ public class BookRentScheduler {
     public JavaMailSender emailSender;
 
 
-    @Scheduled(fixedRate = MINUTE * MILLIS_PER_MINUTE)
+   // @Scheduled(fixedRate = MINUTE * MILLIS_PER_MINUTE)
     public void checkRentTime() throws FoundException {
         final Set<BookRent> bookRents = getBookRentService().getBookRentsOrderedByDate();
 
@@ -63,14 +61,14 @@ public class BookRentScheduler {
                 BookRentUpdateDTO bookRentUpdateDTO = new BookRentUpdateDTO();
                 bookRentUpdateDTO.setBookRentStatus(BookRentStatus.LATE);
 
-                Employee employee =employeeService.retrieveById(bookRent.getEmployee().getId());
+                Employee employee = employeeService.retrieveById(bookRent.getEmployee().getId());
                 MailResponseDTO mail = new MailResponseDTO();
 
                 mail.setMailFrom(SENDER);
                 mail.setMailTo(employee.getEmail());
                 mail.setMailSubject(MAIL_SUBJECT);
                 mail.setMailContent(MAIL_CONTENT);
-              //  mailService.sendEmail(mail);
+                //  mailService.sendEmail(mail); TODO : uncomment all is good
 
                 try {
                     getBookRentService().update(bookRentUpdateDTO, bookRent.getId());
@@ -80,7 +78,7 @@ public class BookRentScheduler {
             }
         });
     }
-    
+
     public BookRentService getBookRentService() {
         return bookRentService;
     }

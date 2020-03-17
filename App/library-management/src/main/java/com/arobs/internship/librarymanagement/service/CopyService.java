@@ -29,4 +29,6 @@ public interface CopyService {
     Copy retrieveById(int copyId);
 
     Copy update(CopyUpdateDTO copyUpdateDTO, int copyId);
+
+    Set<Copy> retreiveAllByStatus(CopyStatus copyStatus);
 }

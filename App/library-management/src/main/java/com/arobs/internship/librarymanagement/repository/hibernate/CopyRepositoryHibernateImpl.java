@@ -54,10 +54,14 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
     }
 
     @Override
-    public List<Copy> getAll() {
+    public List<Copy> findAll() {
         return getSessionFactory().getCurrentSession().createQuery("FROM Copy", Copy.class).getResultList();
     }
 
+    @Override
+    public List<Copy> findAllByStatus(String copyStatus) {
+        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE Status = :copyStatus").setParameter("copyStatus", copyStatus).getResultList();
+    }
 
     protected SessionFactory getSessionFactory() {
         return sessionFactory;

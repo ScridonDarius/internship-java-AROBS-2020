@@ -93,6 +93,12 @@ public class RentRequestServiceImpl implements RentRequestService {
 
     @Transactional
     @Override
+    public void update(RentRequest rentRequest) {
+        getRentRequestRepository().update(rentRequest.getRentRequestStatus().toString(), rentRequest.getId());
+    }
+
+    @Transactional
+    @Override
     public Set<RentRequest> getBookRentsOrderedByDate() {
         return ListToSetConverter.convertListToSet(getRentRequestRepository().orderByRentDate());
     }

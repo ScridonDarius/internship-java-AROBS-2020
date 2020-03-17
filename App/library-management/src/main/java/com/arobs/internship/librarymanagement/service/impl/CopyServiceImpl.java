@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -59,7 +60,7 @@ public class CopyServiceImpl implements CopyService {
     @Transactional
     @Override
     public Set<Copy> retrieveAll() {
-        return ListToSetConverter.convertListToSet(getCopyRepository().getAll());
+        return ListToSetConverter.convertListToSet(getCopyRepository().findAll());
     }
 
     @Transactional
@@ -108,6 +109,12 @@ public class CopyServiceImpl implements CopyService {
         copy.setCopyStatus(CopyStatus.AVAILABLE);
 
         return copy;
+    }
+
+    @Transactional
+    @Override
+    public Set<Copy> retreiveAllByStatus(CopyStatus copyStatus) {
+        return ListToSetConverter.convertListToSet(getCopyRepository().findAllByStatus(copyStatus.toString()));
     }
 
     protected CopyRepository getCopyRepository() {

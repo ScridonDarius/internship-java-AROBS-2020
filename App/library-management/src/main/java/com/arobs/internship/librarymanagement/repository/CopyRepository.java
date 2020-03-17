@@ -16,9 +16,11 @@ public interface CopyRepository {
 
     void delete(Copy copy);
 
-    List<Copy> getAll();
+    List<Copy> findAll();
 
     List<Copy> findByStatusAndByBookId(int id, String copyStatus);
+
+    List<Copy> findAllByStatus(String copyStatus);
 
     List<Copy> findByBookId(int id);
 }

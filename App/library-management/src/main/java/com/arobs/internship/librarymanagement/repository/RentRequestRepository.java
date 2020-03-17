@@ -16,7 +16,7 @@ public interface RentRequestRepository {
 
     List<RentRequest> findAll();
 
-    void update(RentRequest rentRequest);
+    void update(String rentRequestStatus, int rentRequestId);
 
     List<RentRequest> orderByRentDate();
 }
