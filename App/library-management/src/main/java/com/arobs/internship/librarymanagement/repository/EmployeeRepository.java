@@ -1,7 +1,9 @@
 package com.arobs.internship.librarymanagement.repository;
 
 import com.arobs.internship.librarymanagement.model.Employee;
+import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EmployeeRepository {
@@ -21,4 +23,8 @@ public interface EmployeeRepository {
     List<Employee> findById(int id);
 
     Employee updatePassword(String userName, String password);
+
+    void updateRemovalSuspended(LocalDateTime removalSuspended, int employeeId);
+
+    void updateStatus(String employeeStatus, int employeeId);
 }

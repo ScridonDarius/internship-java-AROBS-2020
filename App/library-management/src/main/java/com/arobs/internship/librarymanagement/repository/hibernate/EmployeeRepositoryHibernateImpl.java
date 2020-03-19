@@ -1,11 +1,13 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.Employee;
+import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -52,6 +54,17 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
         getSessionFactory().getCurrentSession().createQuery("UPDATE Employee SET password = :password WHERE user_name = :userName").setParameter("password", password).setParameter("userName", userName).executeUpdate();
 
         return ValidationService.safeGetUniqueResult(findByUserName(userName));
+    }
+
+    @Override
+    public void updateStatus(String employeeStatus, int employeeId) {
+        getSessionFactory().getCurrentSession().createQuery("UPDATE Employee SET Status = :employeeStatus WHERE employee_id = :employeeId").setParameter("employeeStatus", employeeStatus).setParameter("employeeId", employeeId).executeUpdate();
+    }
+
+    @Override
+    public void updateRemovalSuspended(LocalDateTime removalSuspended, int employeeId) {
+        getSessionFactory().getCurrentSession().createQuery("UPDATE Employee SET removal_Suspended = :removalSuspended WHERE employee_id = :employeeId").setParameter("removalSuspended", removalSuspended).setParameter("employeeId", employeeId).executeUpdate();
+
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.arobs.internship.librarymanagement.model;
 
+import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationStatus;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -23,14 +25,18 @@ public class RentRequestConfirmation {
     @Column(nullable = false, name = "confirmation_date")
     private LocalDateTime confirmation;
 
+    @Column(nullable = false, length = 50, name = "Status")
+    @Enumerated(EnumType.STRING)
+    private RentRequestConfirmationStatus rentRequestConfirmationStatus;
 
     public RentRequestConfirmation() {
     }
 
-    public RentRequestConfirmation(RentRequest rentRequestId, Copy copyId, LocalDateTime confirmation) {
+    public RentRequestConfirmation(RentRequest rentRequestId, Copy copyId, LocalDateTime confirmation, RentRequestConfirmationStatus rentRequestConfirmationStatus) {
         this.rentRequestId = rentRequestId;
         this.copyId = copyId;
         this.confirmation = confirmation;
+        this.rentRequestConfirmationStatus = rentRequestConfirmationStatus;
     }
 
     public int getId() {
@@ -63,5 +69,13 @@ public class RentRequestConfirmation {
 
     public void setConfirmation(LocalDateTime confirmation) {
         this.confirmation = confirmation;
+    }
+
+    public RentRequestConfirmationStatus getRentRequestConfirmationStatus() {
+        return rentRequestConfirmationStatus;
+    }
+
+    public void setRentRequestConfirmationStatus(RentRequestConfirmationStatus rentRequestConfirmationStatus) {
+        this.rentRequestConfirmationStatus = rentRequestConfirmationStatus;
     }
 }

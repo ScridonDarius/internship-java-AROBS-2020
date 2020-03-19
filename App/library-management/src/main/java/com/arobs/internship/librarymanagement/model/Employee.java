@@ -31,6 +31,10 @@ public class Employee {
     @Column(nullable = false, length = 50, name = "email")
     private String email;
 
+
+    @Column(nullable = false, length = 50, name = "removal_Suspended")
+    private LocalDateTime removalSuspended;
+
     @Column(nullable = false, name = "Role")
     @Enumerated(EnumType.STRING)
     private EmployeeRole employeeRole;
@@ -54,7 +58,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime createDate) {
+    public Employee(int id, String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus,LocalDateTime removalSuspended, LocalDateTime createDate) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -63,6 +67,7 @@ public class Employee {
         this.email = email;
         this.employeeRole = employeeRole;
         this.employeeStatus = employeeStatus;
+        this.removalSuspended = removalSuspended;
         this.createDate = createDate;
     }
 
@@ -75,6 +80,14 @@ public class Employee {
         this.employeeRole = employeeRole;
         this.employeeStatus = employeeStatus;
         this.createDate = createDate;
+    }
+
+    public LocalDateTime getRemovalSuspended() {
+        return removalSuspended;
+    }
+
+    public void setRemovalSuspended(LocalDateTime removalSuspended) {
+        this.removalSuspended = removalSuspended;
     }
 
     public int getId() {

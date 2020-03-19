@@ -14,6 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,13 +36,24 @@ public class BookRentController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookRentResponseDTO> create(@RequestBody BookRentRegistrationDTO request) {
-        BookRentResponseDTO bookResponseDTO;
+        BookRentResponseDTO bookResponseDTO = new BookRentResponseDTO();
         try {
             bookResponseDTO = BookRentMapperConverter.generateResponseFromEntity(getBookRentService().save(request));
         } catch (FoundException e) {
             throw new ResponseStatusException(HttpStatus.FOUND, "Book already exist in DataBase", e);
         } catch (ValidationException e) {
-            throw new ResponseStatusException(HttpStatus.FOUND, "Processing fail. No copy available for rent, please make a request");
+            if(e.getMessage().equals("Please make a request, someone is waiting for same book")) {
+                throw new ResponseStatusException(HttpStatus.FOUND, "Processing fail.Someone is waiting for same book please male a rent request");
+            }
+            if(e.getMessage().equals("No copies avaliable")){
+                throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Process fail.No copy Available for rent, please make a request");
+            }
+            if(e.getMessage().equals("You have another rent for this book.")){
+                throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Process fail.You are in DB with rent for this book");
+            }
+            if(e.getMessage().equals("you are suspended")){
+                throw  new ResponseStatusException(HttpStatus.FORBIDDEN,"Process fail.You dont have permission, because you are suspended");
+            }
         }
 
         return new ResponseEntity<>(bookResponseDTO, HttpStatus.CREATED);
@@ -115,6 +127,17 @@ public class BookRentController {
         }
         return new ResponseEntity<>(bookRequestUpdateDTO, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/returnBook", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BookRentResponseDTO> returnBook(@RequestParam Integer rentId)throws FoundException {
+        BookRentResponseDTO bookRentResponseDTO;
+
+            bookRentResponseDTO = BookRentMapperConverter.generateResponseFromEntity(getBookRentService().renturnBook(rentId));
+
+        return new ResponseEntity<>(bookRentResponseDTO, HttpStatus.OK);
+    }
+
 
     public BookRentServiceImpl getBookRentService() {
         return bookRentService;

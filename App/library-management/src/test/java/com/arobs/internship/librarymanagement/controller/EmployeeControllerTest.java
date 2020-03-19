@@ -44,8 +44,8 @@ public class EmployeeControllerTest {
 
     @BeforeAll
     static void setUp() {
-        employees.add(new Employee(1, "scridondarius", "Darius", "Scridon", "scridondarius", "scridondarius@gmail.com", EmployeeRole.EMPLOYEE, EmployeeStatus.ACTIVE, LocalDateTime.now()));
-        employees.add(new Employee(2, "mariusscridon", "Marius", "Scridon", "scridonmarius", "scridonmarius@gmail.com", EmployeeRole.EMPLOYEE, EmployeeStatus.ACTIVE, LocalDateTime.now().minusMonths(1)));
+        employees.add(new Employee(1, "scridondarius", "Darius", "Scridon", "scridondarius", "scridondarius@gmail.com", EmployeeRole.EMPLOYEE, EmployeeStatus.ACTIVE,LocalDateTime.now(), LocalDateTime.now()));
+        employees.add(new Employee(2, "mariusscridon", "Marius", "Scridon", "scridonmarius", "scridonmarius@gmail.com", EmployeeRole.EMPLOYEE, EmployeeStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now().minusMonths(1)));
     }
 
     @Test

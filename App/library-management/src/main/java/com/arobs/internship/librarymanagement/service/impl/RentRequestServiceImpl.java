@@ -99,7 +99,7 @@ public class RentRequestServiceImpl implements RentRequestService {
 
     @Transactional
     @Override
-    public Set<RentRequest> getBookRentsOrderedByDate() {
+    public Set<RentRequest> getRentRequestsOrderByDate() {
         return ListToSetConverter.convertListToSet(getRentRequestRepository().orderByRentDate());
     }
 

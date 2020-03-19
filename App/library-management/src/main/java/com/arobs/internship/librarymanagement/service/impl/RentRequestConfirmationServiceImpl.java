@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
 import com.arobs.internship.librarymanagement.model.RentRequestConfirmation;
+import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationStatus;
 import com.arobs.internship.librarymanagement.repository.RentRequestConfirmationRepository;
 import com.arobs.internship.librarymanagement.service.RentRequestConfirmationService;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
@@ -42,6 +43,12 @@ public class RentRequestConfirmationServiceImpl implements RentRequestConfirmati
 
     @Transactional
     @Override
+    public void updateStatus(RentRequestConfirmationStatus rentRequestConfirmationStatus, int rentConfirmationId) {
+        getRentRequestConfirmationRepository().updateStatus(rentRequestConfirmationStatus.toString(), rentConfirmationId);
+    }
+
+    @Transactional
+    @Override
     public List<RentRequestConfirmation> findAll() {
         return getRentRequestConfirmationRepository().findAll();
     }
@@ -49,6 +56,7 @@ public class RentRequestConfirmationServiceImpl implements RentRequestConfirmati
     @Transactional
     @Override
     public void update(RentRequestConfirmation rentRequest) {
+        getRentRequestConfirmationRepository().update(rentRequest);
 
     }
 

@@ -19,4 +19,8 @@ public interface BookRentRepository {
     void update(BookRent book);
 
     List<BookRent> orderByRentDate();
+
+    boolean findByBookIdAndEmployeeId(int bookId, int employeeId);
+
+
 }

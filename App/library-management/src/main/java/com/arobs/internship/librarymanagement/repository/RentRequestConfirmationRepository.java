@@ -17,4 +17,6 @@ public interface RentRequestConfirmationRepository {
     void update(RentRequestConfirmation rentRequest);
 
     List<RentRequestConfirmation> orderByConfirmationDate();
+
+    void updateStatus(String rentRequestStatus, int rentConfirmationId);
 }

@@ -90,6 +90,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    @Transactional
+    @Override
+    public void updateStatus(EmployeeStatus employeeStatus, int employeeId) {
+        getEmployeeRepository().updateStatus(employeeStatus.toString(),employeeId);
+    }
+
+    @Transactional
+    @Override
+    public void updateRemovalSuspendedDate(LocalDateTime removalSuspended, int employeeId) {
+        getEmployeeRepository().updateRemovalSuspended(removalSuspended, employeeId);
+    }
+
     @Override
     @Transactional
     public Set<Employee> retrieveAll() {

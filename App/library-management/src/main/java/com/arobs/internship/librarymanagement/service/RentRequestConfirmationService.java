@@ -1,6 +1,7 @@
 package com.arobs.internship.librarymanagement.service;
 
 import com.arobs.internship.librarymanagement.model.RentRequestConfirmation;
+import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationStatus;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface RentRequestConfirmationService {
     void update(RentRequestConfirmation rentRequest);
 
     List<RentRequestConfirmation> orderByConfirmationDate();
+
+    void updateStatus(RentRequestConfirmationStatus rentRequestConfirmationStatus, int rentConfirmationId);
 }

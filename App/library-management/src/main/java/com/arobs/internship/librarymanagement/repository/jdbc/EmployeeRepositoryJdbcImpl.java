@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -30,7 +31,17 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
+    public void updateStatus(String employeeStatus, int employeeId) {
+
+    }
+
+    @Override
     public void update(String userName, Employee employee) {
+    }
+
+    @Override
+    public void updateRemovalSuspended(LocalDateTime removalSuspended, int employeeId) {
+
     }
 
     @Override

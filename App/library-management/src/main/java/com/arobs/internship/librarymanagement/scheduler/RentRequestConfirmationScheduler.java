@@ -8,6 +8,7 @@ import com.arobs.internship.librarymanagement.model.RentRequest;
 import com.arobs.internship.librarymanagement.model.RentRequestConfirmation;
 import com.arobs.internship.librarymanagement.model.enums.CopyCondition;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
+import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationStatus;
 import com.arobs.internship.librarymanagement.model.enums.RentRequestStatus;
 import com.arobs.internship.librarymanagement.service.*;
 import org.slf4j.Logger;
@@ -20,7 +21,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -56,12 +56,31 @@ public class RentRequestConfirmationScheduler {
     @Autowired
     RentRequestService rentRequestService;
 
-
     @Scheduled(fixedRate = 15000)
+    public void checkEmailDateIsPassed() {
+        List<RentRequestConfirmation> rentRequestConfirmations = rentRequestConfirmationService.orderByConfirmationDate();
+
+        rentRequestConfirmations.forEach(rentRequestConfirmation -> {
+            RentRequest rentRequest = rentRequestService.retrieveById(rentRequestConfirmation.getRentRequestId().getId());
+            if (rentRequestConfirmation.getConfirmation().plusDays(1).compareTo(LocalDateTime.now()) > 0 && rentRequest.getRentRequestStatus().equals(RentRequestStatus.WAITING_CONFIRMATION)) {
+
+                rentRequest.setRentRequestStatus(RentRequestStatus.DECLINE);
+                rentRequestService.update(rentRequest);
+
+                RentRequestConfirmation rentRequestConfirmation1 = rentRequestConfirmationService.retrieveById(rentRequestConfirmation.getId());
+                rentRequestConfirmation1.setRentRequestConfirmationStatus(RentRequestConfirmationStatus.INACTIVE);
+                rentRequestConfirmationService.update(rentRequestConfirmation);
+
+                //TODO nu face update la statusul din rentRequestConfirmation
+            }
+        });
+    }
+
+    //@Scheduled(fixedRate = 15000)
     public void checkCopyAvailableAndSendMailForConfirmation() {
 
         Set<Copy> copies = copyService.retreiveAllByStatus(CopyStatus.AVAILABLE);
-        Set<RentRequest> rentRequests = rentRequestService.getBookRentsOrderedByDate();
+        Set<RentRequest> rentRequests = rentRequestService.getRentRequestsOrderByDate();
 
 
         rentRequests.forEach(rentRequest -> {
@@ -74,6 +93,7 @@ public class RentRequestConfirmationScheduler {
                         rentRequestConfirmation.setRentRequestId(rentRequest);
                         rentRequestConfirmation.setCopyId(copy);
                         rentRequestConfirmation.setConfirmation(LocalDateTime.now());
+                        rentRequestConfirmation.setRentRequestConfirmationStatus(RentRequestConfirmationStatus.ACTIVE);
 
                         rentRequestConfirmationService.save(rentRequestConfirmation);
 

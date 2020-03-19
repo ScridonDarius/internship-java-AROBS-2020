@@ -19,7 +19,7 @@ public interface RentRequestService {
 
     Set<RentRequest> retrieveByStatus(RentRequestStatus bookRequestStatus);
 
-    Set<RentRequest> getBookRentsOrderedByDate();
+    Set<RentRequest> getRentRequestsOrderByDate();
 
     void update(RentRequest rentRequest);
 }

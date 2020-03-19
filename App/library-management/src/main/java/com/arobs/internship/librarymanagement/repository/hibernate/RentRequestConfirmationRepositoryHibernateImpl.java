@@ -49,6 +49,12 @@ getSessionFactory().getCurrentSession().update(rentRequestConfirmation);
         return getSessionFactory().getCurrentSession().createQuery("FROM RentRequestConfirmation ORDER BY confirmation_date",RentRequestConfirmation.class).getResultList();
     }
 
+    @Override
+    public void updateStatus(String rentRequestConfirmationStatus, int rentConfirmationId) {
+        getSessionFactory().getCurrentSession().createQuery("UPDATE RentRequestConfirmation SET Status = :rentRequestConfirmationStatus WHERE rent_request_id = :rentConfirmationId").setParameter("rentRequestConfirmationStatus", rentRequestConfirmationStatus).setParameter("rentConfirmationId", rentConfirmationId).executeUpdate();
+
+    }
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }

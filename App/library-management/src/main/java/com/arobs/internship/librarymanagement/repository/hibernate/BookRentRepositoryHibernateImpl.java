@@ -2,6 +2,7 @@ package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.BookRent;
 import com.arobs.internship.librarymanagement.repository.BookRentRepository;
+import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,16 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
     }
 
     @Override
+    public boolean findByBookIdAndEmployeeId(int bookId, int employeeId) {
+        List<BookRent> bookRents = getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE book_id = :bookId AND employee_id = :employeeId").setParameter("bookId", bookId).setParameter("employeeId", employeeId).getResultList();
+        if (bookRents.size() == 1 && bookRents.size() >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public List<BookRent> findByStatus(String bookRentStatus) {
         return getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE Status = :bookRentStatus").setParameter("bookRentStatus", bookRentStatus).getResultList();
     }
@@ -34,7 +45,7 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
 
     @Override
     public void delete(BookRent book) {
-       getSessionFactory().getCurrentSession().delete(book);
+        getSessionFactory().getCurrentSession().delete(book);
     }
 
     @Override
@@ -44,12 +55,12 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
 
     @Override
     public List<BookRent> orderByRentDate() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent ORDER BY  rental_date",BookRent.class).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent ORDER BY  rental_date", BookRent.class).getResultList();
     }
 
     @Override
     public void update(BookRent book) {
-       getSessionFactory().getCurrentSession().update(book);
+        getSessionFactory().getCurrentSession().update(book);
     }
 
     public SessionFactory getSessionFactory() {
