@@ -1,15 +1,13 @@
 package com.arobs.internship.librarymanagement.scheduler;
 
+import com.arobs.internship.librarymanagement.controller.api.request.BookRentRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.MailResponseDTO;
 import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.model.Employee;
 import com.arobs.internship.librarymanagement.model.RentRequest;
 import com.arobs.internship.librarymanagement.model.RentRequestConfirmation;
-import com.arobs.internship.librarymanagement.model.enums.CopyCondition;
-import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
-import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationStatus;
-import com.arobs.internship.librarymanagement.model.enums.RentRequestStatus;
+import com.arobs.internship.librarymanagement.model.enums.*;
 import com.arobs.internship.librarymanagement.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,39 +54,58 @@ public class RentRequestConfirmationScheduler {
     @Autowired
     RentRequestService rentRequestService;
 
-    @Scheduled(fixedRate = 15000)
+   // @Scheduled(fixedRate = 15000)
     public void checkEmailDateIsPassed() {
         List<RentRequestConfirmation> rentRequestConfirmations = rentRequestConfirmationService.orderByConfirmationDate();
 
         rentRequestConfirmations.forEach(rentRequestConfirmation -> {
             RentRequest rentRequest = rentRequestService.retrieveById(rentRequestConfirmation.getRentRequestId().getId());
-            if (rentRequestConfirmation.getConfirmation().plusDays(1).compareTo(LocalDateTime.now()) > 0 && rentRequest.getRentRequestStatus().equals(RentRequestStatus.WAITING_CONFIRMATION)) {
+
+            if (rentRequest.getRentRequestStatus().equals(RentRequestStatus.DECLINE)) {
+            }
+
+            if ((LocalDateTime.now().compareTo(rentRequestConfirmation.getConfirmation().plusDays(1)) > 0) && rentRequest.getRentRequestStatus().equals(RentRequestStatus.WAITING_CONFIRMATION)) {
 
                 rentRequest.setRentRequestStatus(RentRequestStatus.DECLINE);
                 rentRequestService.update(rentRequest);
 
                 RentRequestConfirmation rentRequestConfirmation1 = rentRequestConfirmationService.retrieveById(rentRequestConfirmation.getId());
                 rentRequestConfirmation1.setRentRequestConfirmationStatus(RentRequestConfirmationStatus.INACTIVE);
-                rentRequestConfirmationService.update(rentRequestConfirmation);
+                rentRequestConfirmationService.update(rentRequestConfirmation1);
+            }
 
-                //TODO nu face update la statusul din rentRequestConfirmation
+            if (LocalDateTime.now().compareTo(rentRequestConfirmation.getConfirmation().plusDays(1)) < 0 && rentRequest.getRentRequestStatus().equals(RentRequestStatus.GRANTED) && rentRequestConfirmation.getRentRequestConfirmationStatus().equals(RentRequestConfirmationStatus.ACTIVE) && CollectionUtils.isEmpty( getBookRentService().retrieveByBookIdAndEmployeeId(rentRequest.getBook().getId(), rentRequest.getEmployee().getId()))) {
+
+                BookRentRegistrationDTO bookRentRegistrationDTO = new BookRentRegistrationDTO();
+                bookRentRegistrationDTO.setBookRentStatus(BookRentStatus.ON_GOING);
+                bookRentRegistrationDTO.setCopyId(rentRequestConfirmation.getCopyId().getId());
+                bookRentRegistrationDTO.setRentalDate(LocalDateTime.now());
+                bookRentRegistrationDTO.setReturnDate(LocalDateTime.now().plusMonths(1));
+                bookRentRegistrationDTO.setBookId(rentRequest.getBook().getId());
+                bookRentRegistrationDTO.setEmployeeId(rentRequest.getEmployee().getId());
+                bookRentRegistrationDTO.setNote("");
+
+                CopyUpdateDTO copyUpdateDTO = new CopyUpdateDTO();
+                copyUpdateDTO.setCopyStatus(CopyStatus.RENT);
+                copyUpdateDTO.setCopyCondition(CopyCondition.GOOD);
+
+                bookRentService.saveBookRent(bookRentRegistrationDTO);
+                copyService.update(copyUpdateDTO, rentRequestConfirmation.getCopyId().getId());
+                rentRequestConfirmationService.updateStatus(RentRequestConfirmationStatus.INACTIVE, rentRequestConfirmation.getId());
             }
         });
     }
 
+
     //@Scheduled(fixedRate = 15000)
     public void checkCopyAvailableAndSendMailForConfirmation() {
-
-        Set<Copy> copies = copyService.retreiveAllByStatus(CopyStatus.AVAILABLE);
         Set<RentRequest> rentRequests = rentRequestService.getRentRequestsOrderByDate();
-
 
         rentRequests.forEach(rentRequest -> {
                     Set<Copy> copiesByStatus = copyService.retrieveByStatusAndBookId(rentRequest.getBook().getId(), CopyStatus.AVAILABLE);
                     if (!CollectionUtils.isEmpty(copiesByStatus)) {
                         Copy copy = copiesByStatus.iterator().next();
 
-                        // Insert in intermediat table
                         RentRequestConfirmation rentRequestConfirmation = new RentRequestConfirmation();
                         rentRequestConfirmation.setRentRequestId(rentRequest);
                         rentRequestConfirmation.setCopyId(copy);
@@ -109,7 +126,6 @@ public class RentRequestConfirmationScheduler {
                         sendEmail(rentRequest);
                     }
                 }
-
         );
     }
 
@@ -124,7 +140,7 @@ public class RentRequestConfirmationScheduler {
         mailService.sendEmail(mail);
     }
 
-    public BookRentService getBookRentService() {
+    protected BookRentService getBookRentService() {
         return bookRentService;
     }
 }

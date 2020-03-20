@@ -6,6 +6,8 @@ import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.BookRent;
 import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 
 public interface BookRentService {
@@ -13,6 +15,9 @@ public interface BookRentService {
     BookRent save(BookRentRegistrationDTO bookRentRegistration) throws FoundException;
 
     BookRent retrieveById(int rentId);
+
+    @Transactional
+    BookRent saveBookRent(BookRentRegistrationDTO bookRentRegistration);
 
     boolean delete(int bookRentId);
 
@@ -23,5 +28,9 @@ public interface BookRentService {
     BookRent update(BookRentUpdateDTO bookRentUpdateDTO, int bookRentId)throws FoundException;
 
     Set<BookRent> getBookRentsOrderedByDate();
+
+    BookRent termExtension(int bookRentId);
+
+    List<BookRent> retrieveByBookIdAndEmployeeId(int bookId, int employeeId);
 
 }

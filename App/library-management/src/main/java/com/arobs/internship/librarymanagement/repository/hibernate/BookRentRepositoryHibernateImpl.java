@@ -2,7 +2,6 @@ package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.BookRent;
 import com.arobs.internship.librarymanagement.repository.BookRentRepository;
-import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -24,13 +23,9 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
     }
 
     @Override
-    public boolean findByBookIdAndEmployeeId(int bookId, int employeeId) {
-        List<BookRent> bookRents = getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE book_id = :bookId AND employee_id = :employeeId").setParameter("bookId", bookId).setParameter("employeeId", employeeId).getResultList();
-        if (bookRents.size() == 1 && bookRents.size() >= 1) {
-            return true;
-        } else {
-            return false;
-        }
+    public List<BookRent> findByBookIdAndEmployeeId(int bookId, int employeeId) {
+         return  getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE book_id = :bookId AND employee_id = :employeeId").setParameter("bookId", bookId).setParameter("employeeId", employeeId).getResultList();
+
     }
 
     @Override

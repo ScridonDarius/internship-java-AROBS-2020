@@ -42,17 +42,17 @@ public class BookRentController {
         } catch (FoundException e) {
             throw new ResponseStatusException(HttpStatus.FOUND, "Book already exist in DataBase", e);
         } catch (ValidationException e) {
-            if(e.getMessage().equals("Please make a request, someone is waiting for same book")) {
+            if (e.getMessage().equals("Please make a request, someone is waiting for same book")) {
                 throw new ResponseStatusException(HttpStatus.FOUND, "Processing fail.Someone is waiting for same book please male a rent request");
             }
-            if(e.getMessage().equals("No copies avaliable")){
-                throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Process fail.No copy Available for rent, please make a request");
+            if (e.getMessage().equals("No copies avaliable")) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Process fail.No copy Available for rent, please make a request");
             }
-            if(e.getMessage().equals("You have another rent for this book.")){
-                throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Process fail.You are in DB with rent for this book");
+            if (e.getMessage().equals("You have another rent for this book.")) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Process fail.You are in DB with rent for this book");
             }
-            if(e.getMessage().equals("you are suspended")){
-                throw  new ResponseStatusException(HttpStatus.FORBIDDEN,"Process fail.You dont have permission, because you are suspended");
+            if (e.getMessage().equals("you are suspended")) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Process fail.You dont have permission, because you are suspended");
             }
         }
 
@@ -120,7 +120,7 @@ public class BookRentController {
         BookRentUpdateDTO bookRequestUpdateDTO;
 
         try {
-            bookRequestUpdateDTO = BookRentMapperConverter.generateUpdateDTOFromEntity(getBookRentService().update(request,bookId));
+            bookRequestUpdateDTO = BookRentMapperConverter.generateUpdateDTOFromEntity(getBookRentService().update(request, bookId));
 
         } catch (FoundException e) {
             throw new ResponseStatusException(HttpStatus.FOUND, "Processing fail. this bookRent not exist!");
@@ -130,10 +130,19 @@ public class BookRentController {
 
     @RequestMapping(value = "/returnBook", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookRentResponseDTO> returnBook(@RequestParam Integer rentId)throws FoundException {
+    public ResponseEntity<BookRentResponseDTO> returnBook(@RequestParam Integer rentId) throws FoundException {
         BookRentResponseDTO bookRentResponseDTO;
 
-            bookRentResponseDTO = BookRentMapperConverter.generateResponseFromEntity(getBookRentService().renturnBook(rentId));
+        bookRentResponseDTO = BookRentMapperConverter.generateResponseFromEntity(getBookRentService().renturnBook(rentId));
+
+        return new ResponseEntity<>(bookRentResponseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/termExtension/{rentId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BookRentResponseDTO> termExtension(@PathVariable("rentId") Integer rentId) {
+        BookRentResponseDTO bookRentResponseDTO;
+        bookRentResponseDTO = BookRentMapperConverter.generateResponseFromEntity(getBookRentService().termExtension(rentId));
 
         return new ResponseEntity<>(bookRentResponseDTO, HttpStatus.OK);
     }

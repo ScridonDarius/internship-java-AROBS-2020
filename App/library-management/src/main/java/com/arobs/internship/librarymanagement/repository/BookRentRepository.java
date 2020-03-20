@@ -20,7 +20,7 @@ public interface BookRentRepository {
 
     List<BookRent> orderByRentDate();
 
-    boolean findByBookIdAndEmployeeId(int bookId, int employeeId);
+    List<BookRent> findByBookIdAndEmployeeId(int bookId, int employeeId);
 
 
 }

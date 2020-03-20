@@ -1,14 +1,20 @@
 package com.arobs.internship.librarymanagement.service.impl;
 
+import com.arobs.internship.librarymanagement.model.RentRequest;
 import com.arobs.internship.librarymanagement.model.RentRequestConfirmation;
+import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationResponse;
 import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationStatus;
+import com.arobs.internship.librarymanagement.model.enums.RentRequestStatus;
 import com.arobs.internship.librarymanagement.repository.RentRequestConfirmationRepository;
 import com.arobs.internship.librarymanagement.service.RentRequestConfirmationService;
+import com.arobs.internship.librarymanagement.service.RentRequestService;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.xml.bind.ValidationEventLocator;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,6 +22,9 @@ public class RentRequestConfirmationServiceImpl implements RentRequestConfirmati
 
     @Autowired
     private RentRequestConfirmationRepository rentRequestConfirmationRepository;
+
+    @Autowired
+    private RentRequestService rentRequestService;
 
     @Transactional
     @Override
@@ -58,6 +67,24 @@ public class RentRequestConfirmationServiceImpl implements RentRequestConfirmati
     public void update(RentRequestConfirmation rentRequest) {
         getRentRequestConfirmationRepository().update(rentRequest);
 
+    }
+
+    @Transactional
+    @Override
+    public RentRequestConfirmationResponse mailConfirmationReponse(RentRequestConfirmationResponse rentRequestConfirmationResponse, int rentRequetConfirmationId) {
+        RentRequestConfirmation rentRequestConfirmation = ValidationService.safeGetUniqueResult(getRentRequestConfirmationRepository().findById(rentRequetConfirmationId));
+        RentRequest rentRequest = rentRequestService.retrieveById(rentRequestConfirmation.getRentRequestId().getId());
+        if (rentRequestConfirmationResponse.equals(RentRequestConfirmationResponse.ACCEPT)) {
+
+            rentRequest.setRentRequestStatus(RentRequestStatus.GRANTED);
+            rentRequestService.update(rentRequest);
+
+            return rentRequestConfirmationResponse;
+        } else {
+
+            rentRequest.setRentRequestStatus((RentRequestStatus.DECLINE));
+            return rentRequestConfirmationResponse;
+        }
     }
 
     @Transactional

@@ -21,9 +21,11 @@ import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -53,7 +55,7 @@ public class BookRentServiceImpl implements BookRentService {
     public BookRent save(BookRentRegistrationDTO bookRentRegistration) throws FoundException {
         final Set<Copy> copies = copyService.retrieveByStatusAndBookId(bookRentRegistration.getBookId(), CopyStatus.AVAILABLE);
         Set<RentRequest> rentRequests = rentRequestService.getRentRequestsOrderByDate();
-        boolean checkIfExistBookRent = getBookRentRepository().findByBookIdAndEmployeeId(bookRentRegistration.getBookId(), bookRentRegistration.getEmployeeId());
+        BookRent searchBookRent = ValidationService.safeGetUniqueResult(getBookRentRepository().findByBookIdAndEmployeeId(bookRentRegistration.getBookId(), bookRentRegistration.getEmployeeId()));
 
         Employee employee = employeeService.retrieveById(bookRentRegistration.getEmployeeId());
 
@@ -65,7 +67,7 @@ public class BookRentServiceImpl implements BookRentService {
             throw new ValidationException("No copies avaliable");
         }
 
-        if (checkIfExistBookRent) {
+        if ((CollectionUtils.isEmpty(getBookRentRepository().findByBookIdAndEmployeeId(bookRentRegistration.getBookId(), bookRentRegistration.getEmployeeId()))) && (searchBookRent.getBookRentStatus().equals(BookRentStatus.RETURNED))) {
             throw new ValidationException("You have another rent for this book.");
         }
 
@@ -98,6 +100,13 @@ public class BookRentServiceImpl implements BookRentService {
 
     @Transactional
     @Override
+    public BookRent saveBookRent(BookRentRegistrationDTO bookRentRegistration) {
+        BookRent bookRent = getBookRentRepository().save(BookRentMapperConverter.generateEntityFromRegistration(bookRentRegistration));
+        return bookRent;
+    }
+
+    @Transactional
+    @Override
     public boolean delete(int rentId) {
         final BookRent bookRent = retrieveById(rentId);
         if (!Objects.isNull(bookRent)) {
@@ -111,6 +120,34 @@ public class BookRentServiceImpl implements BookRentService {
     @Override
     public Set<BookRent> retrieveAll() {
         return ListToSetConverter.convertListToSet(getBookRentRepository().findAll());
+    }
+
+    @Transactional
+    @Override
+    public BookRent termExtension(int bookRentId) {
+        return checkTermExtension(bookRentId);
+    }
+
+    private BookRent checkTermExtension(int bookRentId) {
+        BookRent bookRent = ValidationService.safeGetUniqueResult(getBookRentRepository().findById(bookRentId));
+
+        Duration durationExtension = Duration.between(LocalDateTime.now(), bookRent.getReturnDate());
+
+        if (durationExtension.toDays() > 5 || durationExtension.toDays() < 0) {
+            throw new ValidationException("You cant make a extension just in lest 5 days");
+        }
+
+        if (bookRent.getReturnDate().plusDays(15).compareTo(bookRent.getRentalDate().plusMonths(2)) < 0) {
+            bookRent.setReturnDate(bookRent.getReturnDate().plusDays(15));
+            getBookRentRepository().update(bookRent);
+        }
+
+        if (bookRent.getRentalDate().plusMonths(2).compareTo(bookRent.getReturnDate().plusDays(15)) < 0) {
+            Duration duration = Duration.between(bookRent.getRentalDate().plusMonths(2), bookRent.getReturnDate().plusDays(15));
+            bookRent.setReturnDate(bookRent.getReturnDate().plusDays(15 - duration.toDays()));
+            getBookRentRepository().update(bookRent);
+        }
+        return bookRent;
     }
 
     @Transactional
@@ -129,6 +166,12 @@ public class BookRentServiceImpl implements BookRentService {
         } else throw new FoundException();
 
         return bookRent;
+    }
+
+    @Transactional
+    @Override
+    public List<BookRent> retrieveByBookIdAndEmployeeId(int bookId, int employeeId) {
+        return getBookRentRepository().findByBookIdAndEmployeeId(bookId, employeeId);
     }
 
     @Transactional
