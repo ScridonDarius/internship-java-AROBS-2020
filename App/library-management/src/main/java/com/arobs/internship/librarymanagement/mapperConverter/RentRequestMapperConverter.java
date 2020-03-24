@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 public class RentRequestMapperConverter {
     private static ModelMapper modelMapper = new ModelMapper();
 
-
     public static RentRequestRegistrationDTO generateRegistrationDTOFromEntity(RentRequest rentRequest) {
         return modelMapper.map(rentRequest, RentRequestRegistrationDTO.class);
     }
@@ -20,5 +19,4 @@ public class RentRequestMapperConverter {
     public static RentRequestResponseDTO generateResponseDTOFromEntity(RentRequest rentRequest) {
         return modelMapper.map(rentRequest, RentRequestResponseDTO.class);
     }
-
 }

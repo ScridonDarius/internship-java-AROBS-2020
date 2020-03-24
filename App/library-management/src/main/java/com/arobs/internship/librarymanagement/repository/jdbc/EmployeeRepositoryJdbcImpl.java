@@ -31,20 +31,6 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     }
 
     @Override
-    public void updateStatus(String employeeStatus, int employeeId) {
-
-    }
-
-    @Override
-    public void update(String userName, Employee employee) {
-    }
-
-    @Override
-    public void updateRemovalSuspended(LocalDateTime removalSuspended, int employeeId) {
-
-    }
-
-    @Override
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM tag WHERE employee_id = ?", id);
     }
@@ -68,6 +54,20 @@ public class EmployeeRepositoryJdbcImpl implements EmployeeRepository {
     @Override
     public Employee updatePassword(String userName, String password) {
         return null;
+    }
+
+    @Override
+    public void updateStatus(String employeeStatus, int employeeId) {
+
+    }
+
+    @Override
+    public void update(String userName, Employee employee) {
+    }
+
+    @Override
+    public void updateRemovalSuspended(LocalDateTime removalSuspended, int employeeId) {
+
     }
 }
 

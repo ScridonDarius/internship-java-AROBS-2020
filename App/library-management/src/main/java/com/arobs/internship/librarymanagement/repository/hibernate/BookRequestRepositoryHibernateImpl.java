@@ -60,7 +60,7 @@ public class BookRequestRepositoryHibernateImpl implements BookRequestRepository
         return getSessionFactory().getCurrentSession().createQuery("FROM BookRequest WHERE Status = :bookRequestStatus", BookRequest.class).setParameter("bookRequestStatus", bookRequestStatus).getResultList();
     }
 
-    public SessionFactory getSessionFactory() {
+    protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }

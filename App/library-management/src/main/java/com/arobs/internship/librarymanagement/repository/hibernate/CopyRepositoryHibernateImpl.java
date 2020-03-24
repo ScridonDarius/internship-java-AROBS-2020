@@ -1,7 +1,6 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.Copy;
-import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 import com.arobs.internship.librarymanagement.repository.CopyRepository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -33,8 +32,8 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
     }
 
     @Override
-    public List<Copy> findByStatusAndByBookId(int id, String copyStatus){
-        return  getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE book_id = :id AND Status = :copyStatus",Copy.class).setParameter("id", id).setParameter("copyStatus", copyStatus).getResultList();
+    public List<Copy> findByStatusAndByBookId(int id, String copyStatus) {
+        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE book_id = :id AND Status = :copyStatus", Copy.class).setParameter("id", id).setParameter("copyStatus", copyStatus).getResultList();
     }
 
     @Override

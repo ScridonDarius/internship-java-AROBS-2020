@@ -1,6 +1,5 @@
 package com.arobs.internship.librarymanagement.controller.api;
 
-import com.arobs.internship.librarymanagement.model.RentRequestConfirmation;
 import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationResponse;
 import com.arobs.internship.librarymanagement.service.RentRequestConfirmationService;
 import org.springframework.beans.factory.annotation.Autowired;

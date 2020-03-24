@@ -4,7 +4,6 @@ import com.arobs.internship.librarymanagement.model.RentRequestConfirmation;
 import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationResponse;
 import com.arobs.internship.librarymanagement.model.enums.RentRequestConfirmationStatus;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface RentRequestConfirmationService {
@@ -19,7 +18,6 @@ public interface RentRequestConfirmationService {
 
     void update(RentRequestConfirmation rentRequest);
 
-    @Transactional
     RentRequestConfirmationResponse mailConfirmationReponse(RentRequestConfirmationResponse rentRequestConfirmationResponse, int rentRequestId);
 
     List<RentRequestConfirmation> orderByConfirmationDate();

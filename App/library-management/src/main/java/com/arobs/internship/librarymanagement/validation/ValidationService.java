@@ -11,7 +11,6 @@ public class ValidationService {
         if (resultList.size() > 1) {
             throw new PersistenceException("Too many results :(");
         }
-
         return (T) resultList.get(0);
     }
 }

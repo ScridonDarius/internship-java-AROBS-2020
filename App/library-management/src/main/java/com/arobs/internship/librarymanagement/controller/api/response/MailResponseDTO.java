@@ -1,9 +1,12 @@
 package com.arobs.internship.librarymanagement.controller.api.response;
 
+import io.swagger.annotations.ApiModel;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@ApiModel
 public class MailResponseDTO {
 
     private String mailFrom;

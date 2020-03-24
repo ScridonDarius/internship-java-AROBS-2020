@@ -18,7 +18,6 @@ public class RentRequestRegistrationDTO {
     @Enumerated
     private RentRequestStatus rentRequestStatus;
 
-
     @ApiModelProperty(required = true)
     @NotNull
     private int employeeId;

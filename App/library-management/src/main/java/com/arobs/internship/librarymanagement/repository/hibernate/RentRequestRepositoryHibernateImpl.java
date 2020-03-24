@@ -1,11 +1,9 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
-import com.arobs.internship.librarymanagement.model.BookRent;
 import com.arobs.internship.librarymanagement.model.RentRequest;
 import com.arobs.internship.librarymanagement.repository.RentRequestRepository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -41,21 +39,20 @@ public class RentRequestRepositoryHibernateImpl implements RentRequestRepository
 
     @Override
     public List<RentRequest> findAll() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequest",RentRequest.class).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequest", RentRequest.class).getResultList();
     }
 
     @Override
     public void update(String rentRequestStatus, int rentRequestId) {
-        getSessionFactory().getCurrentSession().createQuery("UPDATE RentRequest SET Status = :rentRequestStatus WHERE rent_request_id = :rentRequestId ").setParameter("rentRequestStatus",rentRequestStatus).setParameter("rentRequestId",rentRequestId).executeUpdate();
+        getSessionFactory().getCurrentSession().createQuery("UPDATE RentRequest SET Status = :rentRequestStatus WHERE rent_request_id = :rentRequestId ").setParameter("rentRequestStatus", rentRequestStatus).setParameter("rentRequestId", rentRequestId).executeUpdate();
     }
 
     @Override
     public List<RentRequest> orderByRentDate() {
         return getSessionFactory().getCurrentSession().createQuery("FROM RentRequest ORDER BY  request_date", RentRequest.class).getResultList();
-
     }
 
-    public SessionFactory getSessionFactory() {
+    protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }

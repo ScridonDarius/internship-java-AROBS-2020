@@ -26,7 +26,6 @@ public class CopyResponseDTO {
     @Enumerated(EnumType.STRING)
     private CopyCondition copyCondition;
 
-
     @ApiModelProperty(required = true)
     @NotNull
     @Enumerated(EnumType.STRING)

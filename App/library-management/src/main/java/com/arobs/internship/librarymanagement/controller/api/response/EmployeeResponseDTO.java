@@ -58,17 +58,6 @@ public class EmployeeResponseDTO {
     public EmployeeResponseDTO() {
     }
 
-    public EmployeeResponseDTO(@NotNull @Size(max = 20) String userName, @NotNull @Size(max = 20) String firstName, @NotNull @Size(max = 20) String lastName, @NotNull @Size(max = 20) String password, @NotNull @Size(max = 50) String email, @NotNull EmployeeRole employeeRole, @NotNull EmployeeStatus employeeStatus, @NotNull LocalDateTime createDate) {
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.email = email;
-        this.employeeRole = employeeRole;
-        this.employeeStatus = employeeStatus;
-        this.createDate = createDate;
-    }
-
     public EmployeeResponseDTO(int id, @NotNull @Size(max = 20) String userName, @NotNull @Size(max = 20) String firstName, @NotNull @Size(max = 20) String lastName, @NotNull @Size(max = 50) String email, @NotNull EmployeeRole employeeRole, @NotNull EmployeeStatus employeeStatus, @NotNull LocalDateTime createDate) {
         this.id = id;
         this.userName = userName;

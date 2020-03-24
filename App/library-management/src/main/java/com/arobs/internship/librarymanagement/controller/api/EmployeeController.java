@@ -38,7 +38,6 @@ public class EmployeeController {
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.OK, "Processing fail. This email doesn't exist!", e);
         }
-
         return new ResponseEntity<>(employeeResponse, HttpStatus.CREATED);
     }
 

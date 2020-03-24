@@ -4,10 +4,10 @@ import com.arobs.internship.librarymanagement.controller.api.request.BookRequest
 import com.arobs.internship.librarymanagement.controller.api.request.BookRequestUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookRequestResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
-import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
-import com.arobs.internship.librarymanagement.service.impl.BookRequestServiceImpl;
 import com.arobs.internship.librarymanagement.mapperConverter.BookRequestMapperConverter;
 import com.arobs.internship.librarymanagement.mapperConverter.EmployeeMapperConverter;
+import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
+import com.arobs.internship.librarymanagement.service.impl.BookRequestServiceImpl;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,7 +38,6 @@ public class BookRequestController {
         } catch (FoundException e) {
             throw new ResponseStatusException(HttpStatus.FOUND, "BookRequest already exist in process, or book already exist in library", e);
         }
-
         return new ResponseEntity<>(bookRequestResponseDTO, HttpStatus.CREATED);
     }
 
@@ -88,7 +87,6 @@ public class BookRequestController {
         boolean result;
         try {
             result = getBookRequestService().delete(id);
-
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This bookRequest doesn't exist!");
         }
@@ -132,7 +130,6 @@ public class BookRequestController {
 
         try {
             bookRequestUpdateDTO = BookRequestMapperConverter.generateDTOUpdateFromEntity(getBookRequestService().update(request, bookId));
-
         } catch (FoundException e) {
             throw new ResponseStatusException(HttpStatus.FOUND, "Processing fail. this book not exist!");
         }

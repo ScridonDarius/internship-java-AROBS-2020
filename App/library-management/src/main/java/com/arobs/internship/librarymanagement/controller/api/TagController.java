@@ -3,8 +3,8 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.request.TagRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
-import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
 import com.arobs.internship.librarymanagement.mapperConverter.TagMapperConverter;
+import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,7 +57,6 @@ public class TagController {
 
         try {
             tag = TagMapperConverter.generateDTOUpdateFromEntity(getTagService().update(tagName, newTag));
-
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
         }
@@ -71,7 +70,6 @@ public class TagController {
 
         try {
             result = getTagService().delete(tagName);
-
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Processing fail. This tag doesn't exist!");
         }

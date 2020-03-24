@@ -1,7 +1,6 @@
 package com.arobs.internship.librarymanagement.service;
 
 import com.arobs.internship.librarymanagement.controller.api.request.RentRequestRegistrationDTO;
-import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.model.RentRequest;
 import com.arobs.internship.librarymanagement.model.enums.RentRequestStatus;
 

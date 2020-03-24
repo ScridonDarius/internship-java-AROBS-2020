@@ -45,8 +45,7 @@ public class BookRentScheduler {
     @Autowired
     public JavaMailSender emailSender;
 
-
-//    @Scheduled(fixedRate = MINUTE * MILLIS_PER_MINUTE)
+    //    @Scheduled(fixedRate = MINUTE * MILLIS_PER_MINUTE)
     public void checkRentTime() throws FoundException {
         final Set<BookRent> bookRents = getBookRentService().getBookRentsOrderedByDate();
 
@@ -62,14 +61,8 @@ public class BookRentScheduler {
                 bookRentUpdateDTO.setBookRentStatus(BookRentStatus.LATE);
 
                 Employee employee = employeeService.retrieveById(bookRent.getEmployee().getId());
-                MailResponseDTO mail = new MailResponseDTO();
 
-                mail.setMailFrom(SENDER);
-                mail.setMailTo(employee.getEmail());
-                mail.setMailSubject(MAIL_SUBJECT);
-                mail.setMailContent(MAIL_CONTENT);
-                mailService.sendEmail(mail);
-                //TODO : uncomment all is good
+                sendEmail(employee.getEmail());
 
                 try {
                     getBookRentService().update(bookRentUpdateDTO, bookRent.getId());
@@ -80,7 +73,17 @@ public class BookRentScheduler {
         });
     }
 
-    public BookRentService getBookRentService() {
+    private void sendEmail(String employeeEmail) {
+        MailResponseDTO mail = new MailResponseDTO();
+
+        mail.setMailFrom(SENDER);
+        mail.setMailTo(employeeEmail);
+        mail.setMailSubject(MAIL_SUBJECT);
+        mail.setMailContent(MAIL_CONTENT);
+        mailService.sendEmail(mail);
+    }
+
+    protected BookRentService getBookRentService() {
         return bookRentService;
     }
 }

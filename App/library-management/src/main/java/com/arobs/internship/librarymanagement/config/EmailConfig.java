@@ -11,6 +11,7 @@ import java.util.Properties;
 @Configuration
 @EnableAutoConfiguration
 public class EmailConfig {
+
     @Bean
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -20,11 +21,6 @@ public class EmailConfig {
         mailSender.setUsername("scridondarius255@gmail.com");
         mailSender.setPassword("h7idxxusr");
 
-//        props.put("mail.smtp.host", "smtp.gmail.com");
-//        props.put("mail.smtp.auth", "true");
-//        props.put("mail.smtp.port", "587");
-//        props.put("mail.smtp.starttls.enable", "true");
-//        props.put("mail.smtp.ssl.trust", "*");
         Properties javaMailProperties = new Properties();
         javaMailProperties.put("mail.smtp.port", "587");
         javaMailProperties.put("mail.smtp.host", "smtp.gmail.com");
@@ -34,8 +30,7 @@ public class EmailConfig {
         javaMailProperties.put("mail.debug", "true");
 
         mailSender.setJavaMailProperties(javaMailProperties);
+
         return mailSender;
-
     }
-
 }

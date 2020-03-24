@@ -1,5 +1,8 @@
 package com.arobs.internship.librarymanagement.model;
 
+import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
+import com.arobs.internship.librarymanagement.model.enums.BookStatus;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +25,10 @@ public class Book {
     @Column(nullable = false, length = 100)
     private String description;
 
+    @Column(nullable = false, length = 50, name = "Status")
+    @Enumerated(EnumType.STRING)
+    private BookStatus bookStatus;
+
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "book_tag",
@@ -42,7 +49,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String author, String description, Set<Tag> tags, Set<Copy> copies, Set<BookRent> bookRents, Set<RentRequest> rentRequests) {
+    public Book(String title, String author, String description, Set<Tag> tags, Set<Copy> copies, Set<BookRent> bookRents, Set<RentRequest> rentRequests, BookStatus bookStatus) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -50,6 +57,7 @@ public class Book {
         this.copies = copies;
         this.bookRents = bookRents;
         this.rentRequests = rentRequests;
+        this.bookStatus = bookStatus;
     }
 
     public Book(String title, String author, String description) {
@@ -71,6 +79,14 @@ public class Book {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public BookStatus getBookStatus() {
+        return bookStatus;
+    }
+
+    public void setBookStatus(BookStatus bookStatus) {
+        this.bookStatus = bookStatus;
     }
 
     public String getTitle() {

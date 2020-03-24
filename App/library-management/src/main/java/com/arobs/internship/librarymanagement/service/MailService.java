@@ -4,5 +4,5 @@ import com.arobs.internship.librarymanagement.controller.api.response.MailRespon
 
 public interface MailService {
 
-    public void sendEmail(MailResponseDTO mail);
+    void sendEmail(MailResponseDTO mail);
 }

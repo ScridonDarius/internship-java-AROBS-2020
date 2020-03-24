@@ -58,7 +58,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus,LocalDateTime removalSuspended, LocalDateTime createDate) {
+    public Employee(int id, String userName, String firstName, String lastName, String password, String email, EmployeeRole employeeRole, EmployeeStatus employeeStatus, LocalDateTime removalSuspended, LocalDateTime createDate) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;

@@ -175,6 +175,7 @@ public class BookRentServiceImpl implements BookRentService {
     }
 
     @Transactional
+    @Override
     public BookRent renturnBook(int bookRentId) throws FoundException {
 
         BookRent bookRent = ValidationService.safeGetUniqueResult(getBookRentRepository().findById(bookRentId));
@@ -183,7 +184,6 @@ public class BookRentServiceImpl implements BookRentService {
             long days = ChronoUnit.DAYS.between(bookRent.getReturnDate(), LocalDateTime.now());
             employeeService.updateRemovalSuspendedDate(LocalDateTime.now().plusDays(days * 2), bookRent.getEmployee().getId());
         }
-
         update(new BookRentUpdateDTO(BookRentStatus.RETURNED), bookRentId);
         Copy copy = copyService.retrieveById(bookRent.getCopy().getId());
         changeCopyStatus(copy.getId(), CopyStatus.AVAILABLE);
@@ -197,7 +197,7 @@ public class BookRentServiceImpl implements BookRentService {
         return ListToSetConverter.convertListToSet(getBookRentRepository().orderByRentDate());
     }
 
-    public BookRentRepository getBookRentRepository() {
+    protected BookRentRepository getBookRentRepository() {
         return bookRentRepository;
     }
 }

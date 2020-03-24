@@ -5,7 +5,6 @@ import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateD
 import com.arobs.internship.librarymanagement.model.Copy;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 
-import javax.transaction.Transactional;
 import java.util.Set;
 
 public interface CopyService {

@@ -4,7 +4,7 @@ import com.arobs.internship.librarymanagement.model.enums.RentRequestStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.*;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -26,7 +26,6 @@ public class RentRequestResponseDTO {
     @ApiModelProperty(required = true)
     @NotNull
     private EmployeeDTO employee;
-
 
     @ApiModelProperty(required = true)
     @NotNull

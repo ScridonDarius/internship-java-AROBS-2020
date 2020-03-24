@@ -1,10 +1,12 @@
 package com.arobs.internship.librarymanagement.controller.api.response;
 
 import com.arobs.internship.librarymanagement.model.Tag;
+import com.arobs.internship.librarymanagement.model.enums.BookStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -35,15 +37,30 @@ public class BookResponseDTO {
     @NotNull
     private Set<Tag> tags;
 
+    @ApiModelProperty(required = true)
+    @NotNull
+    @Enumerated
+    private BookStatus bookStatus;
+
+
     public BookResponseDTO() {
     }
 
-    public BookResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<Tag> tags) {
+    public BookResponseDTO(int id, @NotNull @Size(max = 50) String title, @NotNull @Size(max = 50) String author, @NotNull @Size(max = 100) String description, @NotNull Set<Tag> tags, @NotNull BookStatus bookStatus) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
         this.tags = tags;
+        this.bookStatus = bookStatus;
+    }
+
+    public BookStatus getBookStatus() {
+        return bookStatus;
+    }
+
+    public void setBookStatus(BookStatus bookStatus) {
+        this.bookStatus = bookStatus;
     }
 
     public int getId() {

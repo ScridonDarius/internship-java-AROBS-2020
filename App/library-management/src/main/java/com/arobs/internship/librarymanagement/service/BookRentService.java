@@ -25,11 +25,13 @@ public interface BookRentService {
 
     Set<BookRent> retrieveByStatus(BookRentStatus bookRequestStatus);
 
-    BookRent update(BookRentUpdateDTO bookRentUpdateDTO, int bookRentId)throws FoundException;
+    BookRent update(BookRentUpdateDTO bookRentUpdateDTO, int bookRentId) throws FoundException;
 
     Set<BookRent> getBookRentsOrderedByDate();
 
     BookRent termExtension(int bookRentId);
+
+    BookRent renturnBook(int bookRentId) throws FoundException;
 
     List<BookRent> retrieveByBookIdAndEmployeeId(int bookId, int employeeId);
 

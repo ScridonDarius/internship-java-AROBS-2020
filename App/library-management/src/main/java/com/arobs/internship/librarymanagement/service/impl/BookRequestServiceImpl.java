@@ -95,7 +95,7 @@ public class BookRequestServiceImpl implements BookRequestService {
         return bookRequest;
     }
 
-    public BookRequestRepository getBookRequestRepository() {
+    protected BookRequestRepository getBookRequestRepository() {
         return bookRequestRepository;
     }
 }

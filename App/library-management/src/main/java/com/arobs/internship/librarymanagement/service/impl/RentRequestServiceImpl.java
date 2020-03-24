@@ -46,19 +46,19 @@ public class RentRequestServiceImpl implements RentRequestService {
         // TODO : if employee and book is registrated for request throw a message(Allready exist in dataBase)
 
         Set<Copy> copies = getCopyService().retrieveByStatusAndBookId(rentRequestRegistration.getBookId(), CopyStatus.AVAILABLE);
-        if (CollectionUtils.isEmpty(copies)) {
-            RentRequest rentRequest = new RentRequest();
 
-            rentRequest.setBook(bookService.retrieveById(rentRequestRegistration.getBookId()));
-            rentRequest.setEmployee(employeeService.retrieveById(rentRequestRegistration.getEmployeeId()));
-            rentRequest.setRentRequestStatus(RentRequestStatus.WAITING_AVAILABLE);
-            rentRequest.setRequestDate(LocalDateTime.now());
-
-            return getRentRequestRepository().save(rentRequest);
-
-        } else
+        if (!CollectionUtils.isEmpty(copies)) {
             throw new ValidationException("This book is available, please rent, dont make request for rent if is disponible");
+        }
 
+        RentRequest rentRequest = new RentRequest();
+
+        rentRequest.setBook(bookService.retrieveById(rentRequestRegistration.getBookId()));
+        rentRequest.setEmployee(employeeService.retrieveById(rentRequestRegistration.getEmployeeId()));
+        rentRequest.setRentRequestStatus(RentRequestStatus.WAITING_AVAILABLE);
+        rentRequest.setRequestDate(LocalDateTime.now());
+
+        return getRentRequestRepository().save(rentRequest);
     }
 
     @Transactional
@@ -103,11 +103,11 @@ public class RentRequestServiceImpl implements RentRequestService {
         return ListToSetConverter.convertListToSet(getRentRequestRepository().orderByRentDate());
     }
 
-    public CopyService getCopyService() {
+    protected CopyService getCopyService() {
         return copyService;
     }
 
-    public RentRequestRepository getRentRequestRepository() {
+    protected RentRequestRepository getRentRequestRepository() {
         return rentRequestRepository;
     }
 }

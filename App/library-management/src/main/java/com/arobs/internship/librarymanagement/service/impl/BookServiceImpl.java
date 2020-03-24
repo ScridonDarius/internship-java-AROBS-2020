@@ -4,14 +4,15 @@ import com.arobs.internship.librarymanagement.controller.api.request.BookRegistr
 import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagBookResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
+import com.arobs.internship.librarymanagement.mapperConverter.BookMapperConverter;
+import com.arobs.internship.librarymanagement.mapperConverter.TagMapperConverter;
 import com.arobs.internship.librarymanagement.model.Book;
 import com.arobs.internship.librarymanagement.model.Tag;
+import com.arobs.internship.librarymanagement.model.enums.BookStatus;
 import com.arobs.internship.librarymanagement.repository.BookRepository;
 import com.arobs.internship.librarymanagement.service.BookService;
 import com.arobs.internship.librarymanagement.service.TagService;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
-import com.arobs.internship.librarymanagement.mapperConverter.BookMapperConverter;
-import com.arobs.internship.librarymanagement.mapperConverter.TagMapperConverter;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,6 @@ import org.springframework.util.CollectionUtils;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,6 +42,7 @@ public class BookServiceImpl implements BookService {
             if (!CollectionUtils.isEmpty(bookRegistrationDTO.getTags())) {
                 book.setTags(addTags(bookRegistrationDTO.getTags()));
             }
+            book.setBookStatus(BookStatus.ACTIVE);
             book = getBookRepository().save(book);
         } else {
             throw new FoundException();
@@ -65,13 +66,15 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public boolean delete(int id) {
         final Book book = retrieveById(id);
+        book.setBookStatus(BookStatus.DELETED);
 
-        if (!Objects.isNull(book)) {
-            getBookRepository().delete(book);
-            return true;
-        } else {
+        if (book == null) {
             return false;
         }
+        getBookRepository().update(book);
+
+        return true;
+        //TODO : check if exist copy, and is AVAILABLE,RENT,PENDING, you can't make delete
     }
 
     @Override

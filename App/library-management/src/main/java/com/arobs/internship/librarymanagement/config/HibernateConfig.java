@@ -44,6 +44,7 @@ public class HibernateConfig {
         driverManagerDataSource.setUsername(environment.getProperty(USER));
         driverManagerDataSource.setPassword(environment.getProperty(PASSWORD));
         driverManagerDataSource.setDriverClassName(environment.getProperty(DRIVER));
+
         return driverManagerDataSource;
     }
 
@@ -65,6 +66,7 @@ public class HibernateConfig {
     public HibernateTransactionManager transactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(sessionFactory().getObject());
+
         return transactionManager;
     }
 }

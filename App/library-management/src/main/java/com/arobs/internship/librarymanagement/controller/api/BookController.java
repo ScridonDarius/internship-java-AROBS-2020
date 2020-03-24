@@ -4,8 +4,8 @@ import com.arobs.internship.librarymanagement.controller.api.request.BookRegistr
 import com.arobs.internship.librarymanagement.controller.api.request.BookUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.BookResponseDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
-import com.arobs.internship.librarymanagement.service.impl.BookServiceImpl;
 import com.arobs.internship.librarymanagement.mapperConverter.BookMapperConverter;
+import com.arobs.internship.librarymanagement.service.impl.BookServiceImpl;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -96,7 +96,7 @@ public class BookController {
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<BookResponseDTO>> retrieveAll() {
-        Set<BookResponseDTO> books = getBookService().getAll().stream().map(book -> new BookResponseDTO(book.getId(), book.getTitle(), book.getAuthor(), book.getDescription(), book.getTags())).collect(Collectors.toSet());
+        Set<BookResponseDTO> books = getBookService().getAll().stream().map(book -> new BookResponseDTO(book.getId(), book.getTitle(), book.getAuthor(), book.getDescription(), book.getTags(), book.getBookStatus())).collect(Collectors.toSet());
 
         return books != null
                 ? new ResponseEntity<>(books, HttpStatus.OK)

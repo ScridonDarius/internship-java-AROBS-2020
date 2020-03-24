@@ -4,7 +4,6 @@ import com.arobs.internship.librarymanagement.model.RentRequestConfirmation;
 import com.arobs.internship.librarymanagement.repository.RentRequestConfirmationRepository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -20,8 +19,8 @@ public class RentRequestConfirmationRepositoryHibernateImpl implements RentReque
     @Override
     public RentRequestConfirmation save(RentRequestConfirmation rentRequestConfirmation) {
         getSessionFactory().getCurrentSession().save(rentRequestConfirmation);
-        return getSessionFactory().getCurrentSession().get(RentRequestConfirmation.class, rentRequestConfirmation.getId());
 
+        return getSessionFactory().getCurrentSession().get(RentRequestConfirmation.class, rentRequestConfirmation.getId());
     }
 
     @Override
@@ -41,21 +40,20 @@ public class RentRequestConfirmationRepositoryHibernateImpl implements RentReque
 
     @Override
     public void update(RentRequestConfirmation rentRequestConfirmation) {
-getSessionFactory().getCurrentSession().update(rentRequestConfirmation);
+        getSessionFactory().getCurrentSession().update(rentRequestConfirmation);
     }
 
     @Override
     public List<RentRequestConfirmation> orderByConfirmationDate() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequestConfirmation ORDER BY confirmation_date",RentRequestConfirmation.class).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequestConfirmation ORDER BY confirmation_date", RentRequestConfirmation.class).getResultList();
     }
 
     @Override
     public void updateStatus(String rentRequestConfirmationStatus, int rentConfirmationId) {
         getSessionFactory().getCurrentSession().createQuery("UPDATE RentRequestConfirmation SET Status = :rentRequestConfirmationStatus WHERE rent_request_id = :rentConfirmationId").setParameter("rentRequestConfirmationStatus", rentRequestConfirmationStatus).setParameter("rentConfirmationId", rentConfirmationId).executeUpdate();
-
     }
 
-    public SessionFactory getSessionFactory() {
+    protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }

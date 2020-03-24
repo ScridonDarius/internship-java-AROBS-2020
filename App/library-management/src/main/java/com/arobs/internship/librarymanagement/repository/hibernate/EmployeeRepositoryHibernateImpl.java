@@ -1,7 +1,6 @@
 package com.arobs.internship.librarymanagement.repository.hibernate;
 
 import com.arobs.internship.librarymanagement.model.Employee;
-import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import com.arobs.internship.librarymanagement.repository.EmployeeRepository;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
 import org.hibernate.SessionFactory;
@@ -64,12 +63,11 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
     @Override
     public void updateRemovalSuspended(LocalDateTime removalSuspended, int employeeId) {
         getSessionFactory().getCurrentSession().createQuery("UPDATE Employee SET removal_Suspended = :removalSuspended WHERE employee_id = :employeeId").setParameter("removalSuspended", removalSuspended).setParameter("employeeId", employeeId).executeUpdate();
-
     }
 
     @Override
     public List<Employee> findById(int id) {
-       return getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE employee_id = :id").setParameter("id", id).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE employee_id = :id").setParameter("id", id).getResultList();
     }
 
     protected SessionFactory getSessionFactory() {

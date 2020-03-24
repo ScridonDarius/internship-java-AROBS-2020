@@ -66,7 +66,6 @@ public class RentRequestConfirmationServiceImpl implements RentRequestConfirmati
     @Override
     public void update(RentRequestConfirmation rentRequest) {
         getRentRequestConfirmationRepository().update(rentRequest);
-
     }
 
     @Transactional

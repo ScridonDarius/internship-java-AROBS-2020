@@ -24,7 +24,7 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
 
     @Override
     public List<BookRent> findByBookIdAndEmployeeId(int bookId, int employeeId) {
-         return  getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE book_id = :bookId AND employee_id = :employeeId").setParameter("bookId", bookId).setParameter("employeeId", employeeId).getResultList();
+        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE book_id = :bookId AND employee_id = :employeeId").setParameter("bookId", bookId).setParameter("employeeId", employeeId).getResultList();
 
     }
 
@@ -58,7 +58,7 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
         getSessionFactory().getCurrentSession().update(book);
     }
 
-    public SessionFactory getSessionFactory() {
+    protected SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }
