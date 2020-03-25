@@ -29,7 +29,9 @@ public class TagRepositoryHibernateImpl implements TagRepository {
 
     @Override
     public Tag findByTagName(String tagName) {
-        return (Tag) getSessionFactory().getCurrentSession().createQuery("FROM Tag WHERE tag_name = :tagName").setParameter("tagName", tagName).getSingleResult();
+        return (Tag) getSessionFactory().getCurrentSession().createQuery("FROM Tag WHERE tag_name = :tagName")
+                .setParameter("tagName", tagName)
+                .getSingleResult();
     }
 
     public Tag findById(int tagId) {

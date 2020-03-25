@@ -3,6 +3,7 @@ package com.arobs.internship.librarymanagement.controller.api;
 import com.arobs.internship.librarymanagement.controller.api.response.EmployeeResponseDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.StatisticsBookDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.StatisticsEmployeeDTO;
+import com.arobs.internship.librarymanagement.service.StatisticsService;
 import com.arobs.internship.librarymanagement.service.impl.StatisticsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,30 +21,36 @@ import java.util.stream.Collectors;
 public class StatisticsController {
 
     @Autowired
-    private StatisticsServiceImpl statisticsService;
+    private StatisticsService statisticsService;
 
     @RequestMapping(value = "/topBooks", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<StatisticsBookDTO> topBooks(@RequestParam  String startDate,
-                                            @RequestParam  String endTime,
+    public List<StatisticsBookDTO> topBooks(@RequestParam String startDate,
+                                            @RequestParam String endTime,
                                             @RequestParam Integer limit) {
-        return statisticsService.topBooksRentedInASpecifiedPeriod(startDate,endTime, limit);
+        return getStatisticsService().topBooksRentedInASpecifiedPeriod(startDate, endTime, limit);
     }
 
     @RequestMapping(value = "/lateEmployees", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<EmployeeResponseDTO>> retrieveEmployeesThatAreLate() {
-        Set<EmployeeResponseDTO> employees = statisticsService.employeesThatAreLate().stream()
-                .map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
+        Set<EmployeeResponseDTO> employees = getStatisticsService().employeesThatAreLate()
+                .stream()
+                .map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(),
+                        employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate()))
+                .collect(Collectors.toSet());
 
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/topEmployees", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<StatisticsEmployeeDTO> topEmployees(@RequestParam  String startDate,
-                                                    @RequestParam  String endTime) {
-        return statisticsService.topEmployeesByBooksRead(startDate, endTime);
+    public List<StatisticsEmployeeDTO> topEmployees(@RequestParam String startDate,
+                                                    @RequestParam String endTime) {
+        return getStatisticsService().topEmployeesByBooksRead(startDate, endTime);
     }
 
+    protected StatisticsService getStatisticsService() {
+        return statisticsService;
+    }
 }

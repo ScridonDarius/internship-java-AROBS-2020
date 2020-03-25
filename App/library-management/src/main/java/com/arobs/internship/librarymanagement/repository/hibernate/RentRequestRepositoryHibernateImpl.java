@@ -24,12 +24,18 @@ public class RentRequestRepositoryHibernateImpl implements RentRequestRepository
 
     @Override
     public List<RentRequest> findByStatus(String rentRequestStatus) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequest WHERE Status = :rentRequestStatus").setParameter("rentRequestStatus", rentRequestStatus).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM RentRequest WHERE Status = :rentRequestStatus")
+                .setParameter("rentRequestStatus", rentRequestStatus)
+                .getResultList();
     }
 
     @Override
     public List<RentRequest> findById(int rentId) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequest WHERE  rent_request_id = :id").setParameter("id", rentId).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM RentRequest WHERE  rent_request_id = :id")
+                .setParameter("id", rentId)
+                .getResultList();
     }
 
     @Override
@@ -44,12 +50,18 @@ public class RentRequestRepositoryHibernateImpl implements RentRequestRepository
 
     @Override
     public void update(String rentRequestStatus, int rentRequestId) {
-        getSessionFactory().getCurrentSession().createQuery("UPDATE RentRequest SET Status = :rentRequestStatus WHERE rent_request_id = :rentRequestId ").setParameter("rentRequestStatus", rentRequestStatus).setParameter("rentRequestId", rentRequestId).executeUpdate();
+        getSessionFactory().getCurrentSession()
+                .createQuery("UPDATE RentRequest SET Status = :rentRequestStatus WHERE rent_request_id = :rentRequestId ")
+                .setParameter("rentRequestStatus", rentRequestStatus)
+                .setParameter("rentRequestId", rentRequestId)
+                .executeUpdate();
     }
 
     @Override
     public List<RentRequest> orderByRentDate() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequest ORDER BY  request_date", RentRequest.class).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM RentRequest ORDER BY  request_date", RentRequest.class)
+                .getResultList();
     }
 
     protected SessionFactory getSessionFactory() {

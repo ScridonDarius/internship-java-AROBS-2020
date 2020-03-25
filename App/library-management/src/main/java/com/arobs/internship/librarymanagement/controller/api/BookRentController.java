@@ -9,6 +9,7 @@ import com.arobs.internship.librarymanagement.mapperConverter.BookRentMapperConv
 import com.arobs.internship.librarymanagement.mapperConverter.CopyMapperConverter;
 import com.arobs.internship.librarymanagement.mapperConverter.EmployeeMapperConverter;
 import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
+import com.arobs.internship.librarymanagement.service.BookRentService;
 import com.arobs.internship.librarymanagement.service.impl.BookRentServiceImpl;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,9 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/bookRent", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class BookRentController {
 
-    private final BookRentServiceImpl bookRentService;
+    private final BookRentService bookRentService;
 
-    public BookRentController(BookRentServiceImpl bookRentService) {
+    public BookRentController(BookRentService bookRentService) {
         this.bookRentService = bookRentService;
     }
 
@@ -62,6 +63,7 @@ public class BookRentController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookRentResponseDTO> retrieveById(@PathVariable("rentId") Integer rentId) {
         BookRentResponseDTO bookRentResponseDTO;
+
         try {
             bookRentResponseDTO = BookRentMapperConverter.generateResponseFromEntity(getBookRentService().retrieveById(rentId));
         } catch (EmptyResultDataAccessException e) {
@@ -74,11 +76,14 @@ public class BookRentController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<BookRentResponseDTO>> retrieveAll() {
 
-        Set<BookRentResponseDTO> books = getBookRentService().retrieveAll().stream()
+        Set<BookRentResponseDTO> books = getBookRentService()
+                .retrieveAll()
+                .stream()
                 .map(book -> new BookRentResponseDTO(book.getId(), book.getRentalDate(), book.getReturnDate(),
                         book.getBookRentStatus(), book.getNote(), BookMapperConverter.generateDTOFromEntity(book.getBook()),
                         EmployeeMapperConverter.generateBookRequestEmployeeFromEntity(book.getEmployee()),
-                        CopyMapperConverter.generateDTOFromEntity(book.getCopy()))).collect(Collectors.toSet());
+                        CopyMapperConverter.generateDTOFromEntity(book.getCopy())))
+                .collect(Collectors.toSet());
 
         return books != null
                 ? new ResponseEntity<>(books, HttpStatus.OK)
@@ -106,7 +111,8 @@ public class BookRentController {
                 .map(book -> new BookRentResponseDTO(book.getId(), book.getRentalDate(), book.getReturnDate(),
                         book.getBookRentStatus(), book.getNote(), BookMapperConverter.generateDTOFromEntity(book.getBook()),
                         EmployeeMapperConverter.generateBookRequestEmployeeFromEntity(book.getEmployee()),
-                        CopyMapperConverter.generateDTOFromEntity(book.getCopy()))).collect(Collectors.toSet());
+                        CopyMapperConverter.generateDTOFromEntity(book.getCopy())))
+                .collect(Collectors.toSet());
 
         return books != null
                 ? new ResponseEntity<>(books, HttpStatus.OK)
@@ -142,7 +148,7 @@ public class BookRentController {
         return new ResponseEntity<>(bookRentResponseDTO, HttpStatus.OK);
     }
 
-    public BookRentServiceImpl getBookRentService() {
+    public BookRentService getBookRentService() {
         return bookRentService;
     }
 }

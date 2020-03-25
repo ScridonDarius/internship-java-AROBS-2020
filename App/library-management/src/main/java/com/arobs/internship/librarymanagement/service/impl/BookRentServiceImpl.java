@@ -2,19 +2,19 @@ package com.arobs.internship.librarymanagement.service.impl;
 
 import com.arobs.internship.librarymanagement.controller.api.request.BookRentRegistrationDTO;
 import com.arobs.internship.librarymanagement.controller.api.request.BookRentUpdateDTO;
-import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
 import com.arobs.internship.librarymanagement.exception.FoundException;
-import com.arobs.internship.librarymanagement.model.*;
+import com.arobs.internship.librarymanagement.mapperConverter.BookRentMapperConverter;
+import com.arobs.internship.librarymanagement.model.BookRent;
+import com.arobs.internship.librarymanagement.model.Copy;
+import com.arobs.internship.librarymanagement.model.Employee;
+import com.arobs.internship.librarymanagement.model.RentRequest;
 import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
 import com.arobs.internship.librarymanagement.model.enums.EmployeeStatus;
 import com.arobs.internship.librarymanagement.repository.BookRentRepository;
 import com.arobs.internship.librarymanagement.service.*;
 import com.arobs.internship.librarymanagement.service.converter.ListToSetConverter;
-import com.arobs.internship.librarymanagement.mapperConverter.BookRentMapperConverter;
-import com.arobs.internship.librarymanagement.mapperConverter.CopyMapperConverter;
 import com.arobs.internship.librarymanagement.validation.ValidationService;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,7 +22,6 @@ import org.springframework.util.CollectionUtils;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -67,7 +66,7 @@ public class BookRentServiceImpl implements BookRentService {
             throw new ValidationException("No copies avaliable");
         }
 
-        if ((CollectionUtils.isEmpty(getBookRentRepository().findByBookIdAndEmployeeId(bookRentRegistration.getBookId(), bookRentRegistration.getEmployeeId()))) && (searchBookRent.getBookRentStatus().equals(BookRentStatus.RETURNED))) {
+        if ((Objects.isNull(searchBookRent)) && (searchBookRent.getBookRentStatus().equals(BookRentStatus.RETURNED))) {
             throw new ValidationException("You have another rent for this book.");
         }
 
@@ -82,14 +81,8 @@ public class BookRentServiceImpl implements BookRentService {
         bookRentRegistration.setCopyId(copy.getId());
 
         BookRent bookRent = getBookRentRepository().save(BookRentMapperConverter.generateEntityFromRegistration(bookRentRegistration));
-        changeCopyStatus(copy.getId(), CopyStatus.RENT);
+        copy.setCopyStatus(CopyStatus.RENT);
         return bookRent;
-    }
-
-    private void changeCopyStatus(int copyId, CopyStatus copyStatus) {
-        CopyUpdateDTO copyUpdateDTO = CopyMapperConverter.generateUpdateDTOeFromEntity(copyService.retrieveById(copyId));
-        copyUpdateDTO.setCopyStatus(copyStatus);
-        copyService.update(copyUpdateDTO, copyId);
     }
 
     @Transactional
@@ -161,9 +154,10 @@ public class BookRentServiceImpl implements BookRentService {
     public BookRent update(BookRentUpdateDTO bookRentUpdateDTO, int rentId) throws FoundException {
         BookRent bookRent = retrieveById(rentId);
 
-        if (!Objects.isNull(rentId)) {
-            bookRent.setBookRentStatus(bookRentUpdateDTO.getBookRentStatus());
-        } else throw new FoundException();
+        if (Objects.isNull(rentId)) {
+            throw new FoundException();
+        }
+        bookRent.setBookRentStatus(bookRentUpdateDTO.getBookRentStatus());
 
         return bookRent;
     }
@@ -186,7 +180,7 @@ public class BookRentServiceImpl implements BookRentService {
         }
         update(new BookRentUpdateDTO(BookRentStatus.RETURNED), bookRentId);
         Copy copy = copyService.retrieveById(bookRent.getCopy().getId());
-        changeCopyStatus(copy.getId(), CopyStatus.AVAILABLE);
+        copy.setCopyStatus(CopyStatus.AVAILABLE);
 
         return bookRent;
     }

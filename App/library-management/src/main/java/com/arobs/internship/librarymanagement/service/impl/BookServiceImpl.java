@@ -71,8 +71,6 @@ public class BookServiceImpl implements BookService {
         if (book == null) {
             return false;
         }
-        getBookRepository().update(book);
-
         return true;
         //TODO : check if exist copy, and is AVAILABLE,RENT,PENDING, you can't make delete
     }
@@ -83,6 +81,7 @@ public class BookServiceImpl implements BookService {
         final Book book = retrieveById(bookId);
         final Set<TagBookResponseDTO> requestTags = bookUpdateDTO.getTags();
         final Set<TagBookResponseDTO> booksTag = book.getTags().stream().map(tag -> new TagBookResponseDTO(tag.getTagName())).collect(Collectors.toSet());
+
         requestTags.addAll(booksTag);
 
         if (bookUpdateDTO.getDescription().isEmpty()) {
@@ -92,11 +91,8 @@ public class BookServiceImpl implements BookService {
         if (bookUpdateDTO.getTags().isEmpty()) {
             bookUpdateDTO.setTags(booksTag);
         }
-
         book.setTags(addTags(requestTags));
-
         book.setDescription(bookUpdateDTO.getDescription());
-        getBookRepository().update(book);
 
         return book;
     }

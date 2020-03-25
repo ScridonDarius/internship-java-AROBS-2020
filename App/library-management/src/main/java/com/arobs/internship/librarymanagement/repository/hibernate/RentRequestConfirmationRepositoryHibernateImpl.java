@@ -25,7 +25,10 @@ public class RentRequestConfirmationRepositoryHibernateImpl implements RentReque
 
     @Override
     public List<RentRequestConfirmation> findById(int rentConfirmationId) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequestConfirmation WHERE confirmation_id = :rentConfirmationId").setParameter("rentConfirmationId", rentConfirmationId).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM RentRequestConfirmation WHERE confirmation_id = :rentConfirmationId")
+                .setParameter("rentConfirmationId", rentConfirmationId)
+                .getResultList();
     }
 
     @Override
@@ -45,12 +48,18 @@ public class RentRequestConfirmationRepositoryHibernateImpl implements RentReque
 
     @Override
     public List<RentRequestConfirmation> orderByConfirmationDate() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM RentRequestConfirmation ORDER BY confirmation_date", RentRequestConfirmation.class).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM RentRequestConfirmation ORDER BY confirmation_date", RentRequestConfirmation.class)
+                .getResultList();
     }
 
     @Override
     public void updateStatus(String rentRequestConfirmationStatus, int rentConfirmationId) {
-        getSessionFactory().getCurrentSession().createQuery("UPDATE RentRequestConfirmation SET Status = :rentRequestConfirmationStatus WHERE rent_request_id = :rentConfirmationId").setParameter("rentRequestConfirmationStatus", rentRequestConfirmationStatus).setParameter("rentConfirmationId", rentConfirmationId).executeUpdate();
+        getSessionFactory().getCurrentSession()
+                .createQuery("UPDATE RentRequestConfirmation SET Status = :rentRequestConfirmationStatus WHERE rent_request_id = :rentConfirmationId")
+                .setParameter("rentRequestConfirmationStatus", rentRequestConfirmationStatus)
+                .setParameter("rentConfirmationId", rentConfirmationId)
+                .executeUpdate();
     }
 
     protected SessionFactory getSessionFactory() {

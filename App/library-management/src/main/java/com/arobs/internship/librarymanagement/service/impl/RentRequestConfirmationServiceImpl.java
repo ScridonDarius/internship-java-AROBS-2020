@@ -73,17 +73,17 @@ public class RentRequestConfirmationServiceImpl implements RentRequestConfirmati
     public RentRequestConfirmationResponse mailConfirmationReponse(RentRequestConfirmationResponse rentRequestConfirmationResponse, int rentRequetConfirmationId) {
         RentRequestConfirmation rentRequestConfirmation = ValidationService.safeGetUniqueResult(getRentRequestConfirmationRepository().findById(rentRequetConfirmationId));
         RentRequest rentRequest = rentRequestService.retrieveById(rentRequestConfirmation.getRentRequestId().getId());
+        
         if (rentRequestConfirmationResponse.equals(RentRequestConfirmationResponse.ACCEPT)) {
 
             rentRequest.setRentRequestStatus(RentRequestStatus.GRANTED);
             rentRequestService.update(rentRequest);
 
             return rentRequestConfirmationResponse;
-        } else {
-
-            rentRequest.setRentRequestStatus((RentRequestStatus.DECLINE));
-            return rentRequestConfirmationResponse;
         }
+        rentRequest.setRentRequestStatus((RentRequestStatus.DECLINE));
+
+        return rentRequestConfirmationResponse;
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.TagRegistra
 import com.arobs.internship.librarymanagement.controller.api.request.TagUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.TagResponseDTO;
 import com.arobs.internship.librarymanagement.mapperConverter.TagMapperConverter;
+import com.arobs.internship.librarymanagement.service.TagService;
 import com.arobs.internship.librarymanagement.service.impl.TagServiceImpl;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,9 @@ import java.util.stream.Collectors;
         produces = {MediaType.APPLICATION_JSON_VALUE})
 public class TagController {
 
-    private final TagServiceImpl tagService;
+    private final TagService tagService;
 
-    public TagController(TagServiceImpl tagService) {
+    public TagController(TagService tagService) {
         this.tagService = tagService;
     }
 
@@ -52,7 +53,8 @@ public class TagController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<TagUpdateDTO> update(@RequestParam String tagName, @RequestParam String newTag) {
+    public ResponseEntity<TagUpdateDTO> update(@RequestParam String tagName,
+                                               @RequestParam String newTag) {
         TagUpdateDTO tag;
 
         try {
@@ -79,14 +81,17 @@ public class TagController {
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<TagResponseDTO>> retrieveAll() {
-        Set<TagResponseDTO> tags = getTagService().getAll().stream().map(tag -> new TagResponseDTO(tag.getId(), tag.getTagName())).collect(Collectors.toSet());
+        Set<TagResponseDTO> tags = getTagService().getAll()
+                .stream()
+                .map(tag -> new TagResponseDTO(tag.getId(), tag.getTagName()))
+                .collect(Collectors.toSet());
 
         return tags != null
                 ? new ResponseEntity<>(tags, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public TagServiceImpl getTagService() {
+    public TagService getTagService() {
         return tagService;
     }
 }

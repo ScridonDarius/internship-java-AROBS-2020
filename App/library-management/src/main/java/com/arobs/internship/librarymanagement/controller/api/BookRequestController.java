@@ -7,6 +7,7 @@ import com.arobs.internship.librarymanagement.exception.FoundException;
 import com.arobs.internship.librarymanagement.mapperConverter.BookRequestMapperConverter;
 import com.arobs.internship.librarymanagement.mapperConverter.EmployeeMapperConverter;
 import com.arobs.internship.librarymanagement.model.enums.BookRequestStatus;
+import com.arobs.internship.librarymanagement.service.BookRequestService;
 import com.arobs.internship.librarymanagement.service.impl.BookRequestServiceImpl;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,9 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/bookRequest", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class BookRequestController {
 
-    final BookRequestServiceImpl bookRequestService;
+    final BookRequestService bookRequestService;
 
-    public BookRequestController(BookRequestServiceImpl bookRequestService) {
+    public BookRequestController(BookRequestService bookRequestService) {
         this.bookRequestService = bookRequestService;
     }
 
@@ -101,7 +102,8 @@ public class BookRequestController {
                 .stream()
                 .map(book -> new BookRequestResponseDTO(book.getId(), book.getTitle(), book.getAuthor(),
                         book.getPublishingCompany(), book.getCopyNumber(), book.getTotalCost(), book.getBookRequestStatus(),
-                        EmployeeMapperConverter.generateBookRequestEmployeeFromEntity(book.getEmployee()))).collect(Collectors.toSet());
+                        EmployeeMapperConverter.generateBookRequestEmployeeFromEntity(book.getEmployee())))
+                .collect(Collectors.toSet());
 
         return books != null
                 ? new ResponseEntity<>(books, HttpStatus.OK)
@@ -116,7 +118,8 @@ public class BookRequestController {
                 .stream()
                 .map(book -> new BookRequestResponseDTO(book.getId(), book.getTitle(), book.getAuthor(),
                         book.getPublishingCompany(), book.getCopyNumber(), book.getTotalCost(), book.getBookRequestStatus(),
-                        EmployeeMapperConverter.generateBookRequestEmployeeFromEntity(book.getEmployee()))).collect(Collectors.toSet());
+                        EmployeeMapperConverter.generateBookRequestEmployeeFromEntity(book.getEmployee())))
+                .collect(Collectors.toSet());
 
         return books != null
                 ? new ResponseEntity<>(books, HttpStatus.OK)
@@ -136,7 +139,7 @@ public class BookRequestController {
         return new ResponseEntity<>(bookRequestUpdateDTO, HttpStatus.OK);
     }
 
-    public BookRequestServiceImpl getBookRequestService() {
+    public BookRequestService getBookRequestService() {
         return bookRequestService;
     }
 }

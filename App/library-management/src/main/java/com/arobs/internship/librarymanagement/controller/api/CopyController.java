@@ -4,6 +4,7 @@ import com.arobs.internship.librarymanagement.controller.api.request.CopyRegistr
 import com.arobs.internship.librarymanagement.controller.api.request.CopyUpdateDTO;
 import com.arobs.internship.librarymanagement.controller.api.response.CopyResponseDTO;
 import com.arobs.internship.librarymanagement.model.enums.CopyStatus;
+import com.arobs.internship.librarymanagement.service.CopyService;
 import com.arobs.internship.librarymanagement.service.impl.CopyServiceImpl;
 import com.arobs.internship.librarymanagement.mapperConverter.CopyMapperConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,15 +22,17 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/copy", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CopyController {
 
-    private final CopyServiceImpl copyService;
+    private final CopyService copyService;
 
-    public CopyController(CopyServiceImpl copyService) {
+    public CopyController(CopyService copyService) {
         this.copyService = copyService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CopyResponseDTO> createCopyByAuthorAndTitle(@RequestParam String title, @RequestParam String author, @RequestBody CopyRegistrationDTO request) {
+    public ResponseEntity<CopyResponseDTO> createCopyByAuthorAndTitle(@RequestParam String title,
+                                                                      @RequestParam String author,
+                                                                      @RequestBody CopyRegistrationDTO request) {
         CopyResponseDTO copyResponseDTO = CopyMapperConverter.generateDTOResponseFromEntity(getCopyService().saveByAuthorAndTitle(request, title, author));
 
         return new ResponseEntity<>(copyResponseDTO, HttpStatus.CREATED);
@@ -37,7 +40,8 @@ public class CopyController {
 
     @RequestMapping(value = "/create/{bookId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CopyResponseDTO> createCopyByBookId(@PathVariable("bookId") int bookId, @RequestBody CopyRegistrationDTO request) {
+    public ResponseEntity<CopyResponseDTO> createCopyByBookId(@PathVariable("bookId") int bookId,
+                                                              @RequestBody CopyRegistrationDTO request) {
         CopyResponseDTO copyResponseDTO = CopyMapperConverter.generateDTOResponseFromEntity(getCopyService().saveByBookId(request, bookId));
 
         return new ResponseEntity<>(copyResponseDTO, HttpStatus.CREATED);
@@ -45,7 +49,8 @@ public class CopyController {
 
     @RequestMapping(value = "/retrieveByAuthorAndTitle", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Set<CopyResponseDTO>> retrieveByAuthorAndTitle(@RequestParam String author, @RequestParam String title) {
+    public ResponseEntity<Set<CopyResponseDTO>> retrieveByAuthorAndTitle(@RequestParam String author,
+                                                                         @RequestParam String title) {
         Set<CopyResponseDTO> copyResponseDTO = getCopyService().retrieveByAuthorAndTitle(author, title).stream().
                 map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
 
@@ -68,7 +73,11 @@ public class CopyController {
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<CopyResponseDTO>> retrieveAll() {
-        Set<CopyResponseDTO> copys = getCopyService().retrieveAll().stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
+        Set<CopyResponseDTO> copys = getCopyService()
+                .retrieveAll()
+                .stream()
+                .map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook())))
+                .collect(Collectors.toSet());
 
         return copys != null
                 ? new ResponseEntity<>(copys, HttpStatus.OK)
@@ -77,8 +86,12 @@ public class CopyController {
 
     @RequestMapping(value = "/retrieveByStatusAndBookId", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Set<CopyResponseDTO>> retrieveByStatusAndBookId(@RequestParam int bookId, @RequestParam CopyStatus copyStatus) {
-        Set<CopyResponseDTO> copies = getCopyService().retrieveByStatusAndBookId(bookId, copyStatus).stream().map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook()))).collect(Collectors.toSet());
+    public ResponseEntity<Set<CopyResponseDTO>> retrieveByStatusAndBookId(@RequestParam int bookId,
+                                                                          @RequestParam CopyStatus copyStatus) {
+        Set<CopyResponseDTO> copies = getCopyService().retrieveByStatusAndBookId(bookId, copyStatus)
+                .stream()
+                .map(copy -> new CopyResponseDTO(copy.getId(), copy.getIsbn(), copy.getCopyCondition(), copy.getCopyStatus(), CopyMapperConverter.generateBookCopyFromCopy(copy.getBook())))
+                .collect(Collectors.toSet());
 
         return copies != null
                 ? new ResponseEntity<>(copies, HttpStatus.OK)
@@ -113,7 +126,8 @@ public class CopyController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CopyUpdateDTO> update(@RequestParam Integer copyId, @RequestBody @Valid CopyUpdateDTO request) {
+    public ResponseEntity<CopyUpdateDTO> update(@RequestParam Integer copyId,
+                                                @RequestBody @Valid CopyUpdateDTO request) {
         CopyUpdateDTO copyUpdateDTO;
 
         try {
@@ -132,7 +146,7 @@ public class CopyController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public CopyServiceImpl getCopyService() {
+    public CopyService getCopyService() {
         return copyService;
     }
 }

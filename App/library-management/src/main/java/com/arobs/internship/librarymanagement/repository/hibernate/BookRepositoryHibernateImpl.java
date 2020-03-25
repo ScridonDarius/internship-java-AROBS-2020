@@ -24,23 +24,36 @@ public class BookRepositoryHibernateImpl implements BookRepository {
 
     @Override
     public List<Book> findByAuthorAndTitle(String author, String title) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH  b.tags WHERE b.author = :author AND b.title = :title", Book.class).setMaxResults(1)
-                .setParameter("author", author).setParameter("title", title).list();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM Book b LEFT JOIN FETCH  b.tags WHERE b.author = :author AND b.title = :title", Book.class)
+                .setMaxResults(1)
+                .setParameter("author", author)
+                .setParameter("title", title)
+                .list();
     }
 
     @Override
     public List<Book> findById(int id) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.id = :id", Book.class).setMaxResults(1).setParameter("id", id).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM Book b LEFT JOIN FETCH b.tags WHERE b.id = :id", Book.class)
+                .setMaxResults(1)
+                .setParameter("id", id)
+                .getResultList();
     }
 
     @Override
     public void delete(Book book) {
-        getSessionFactory().getCurrentSession().createQuery("DELETE FROM Book WHERE id = :id").setParameter("id", book.getId()).executeUpdate();
+        getSessionFactory().getCurrentSession()
+                .createQuery("DELETE FROM Book WHERE id = :id")
+                .setParameter("id", book.getId())
+                .executeUpdate();
     }
 
     @Override
     public List<Book> getAll() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Book b LEFT JOIN FETCH b.tags", Book.class).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM Book b LEFT JOIN FETCH b.tags", Book.class)
+                .getResultList();
     }
 
     @Override

@@ -25,7 +25,10 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
 
     @Override
     public List<Employee> findByUserName(String userName) {
-        return (List<Employee>) getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE user_name = :userName").setParameter("userName", userName).list();
+        return (List<Employee>) getSessionFactory().getCurrentSession()
+                .createQuery("FROM Employee WHERE user_name = :userName")
+                .setParameter("userName", userName)
+                .list();
     }
 
     @Override
@@ -35,7 +38,9 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
 
     @Override
     public void delete(int id) {
-        getSessionFactory().getCurrentSession().createQuery("DELETE FROM Employee WHERE employee_id = :id").setParameter("id", id);
+        getSessionFactory().getCurrentSession()
+                .createQuery("DELETE FROM Employee WHERE employee_id = :id")
+                .setParameter("id", id);
     }
 
     @Override
@@ -45,7 +50,9 @@ public class EmployeeRepositoryHibernateImpl implements EmployeeRepository {
 
     @Override
     public List<Employee> findByEmail(String email) {
-        return (List<Employee>) getSessionFactory().getCurrentSession().createQuery("FROM Employee WHERE email = :email").setParameter("email", email).list();
+        return (List<Employee>) getSessionFactory().getCurrentSession()
+                .createQuery("FROM Employee WHERE email = :email")
+                .setParameter("email", email).list();
     }
 
     @Override

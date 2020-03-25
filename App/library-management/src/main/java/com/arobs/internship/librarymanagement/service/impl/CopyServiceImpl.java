@@ -88,7 +88,7 @@ public class CopyServiceImpl implements CopyService {
         if (copy == null) {
             return false;
         }
-        getCopyRepository().delete(copy);
+        copy.setCopyStatus(CopyStatus.UNAVAILABLE);
 
         return true;
     }

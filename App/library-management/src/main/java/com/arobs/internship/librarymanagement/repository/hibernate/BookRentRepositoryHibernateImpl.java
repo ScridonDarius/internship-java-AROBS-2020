@@ -24,18 +24,27 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
 
     @Override
     public List<BookRent> findByBookIdAndEmployeeId(int bookId, int employeeId) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE book_id = :bookId AND employee_id = :employeeId").setParameter("bookId", bookId).setParameter("employeeId", employeeId).getResultList();
-
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM BookRent WHERE book_id = :bookId AND employee_id = :employeeId")
+                .setParameter("bookId", bookId)
+                .setParameter("employeeId", employeeId)
+                .getResultList();
     }
 
     @Override
     public List<BookRent> findByStatus(String bookRentStatus) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE Status = :bookRentStatus").setParameter("bookRentStatus", bookRentStatus).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM BookRent WHERE Status = :bookRentStatus")
+                .setParameter("bookRentStatus", bookRentStatus)
+                .getResultList();
     }
 
     @Override
     public List<BookRent> findById(int id) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent WHERE  book_rent_id = :id").setParameter("id", id).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM BookRent WHERE  book_rent_id = :id")
+                .setParameter("id", id)
+                .getResultList();
     }
 
     @Override
@@ -45,12 +54,16 @@ public class BookRentRepositoryHibernateImpl implements BookRentRepository {
 
     @Override
     public List<BookRent> findAll() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent", BookRent.class).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM BookRent", BookRent.class)
+                .getResultList();
     }
 
     @Override
     public List<BookRent> orderByRentDate() {
-        return getSessionFactory().getCurrentSession().createQuery("FROM BookRent ORDER BY  rental_date", BookRent.class).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM BookRent ORDER BY  rental_date", BookRent.class)
+                .getResultList();
     }
 
     @Override

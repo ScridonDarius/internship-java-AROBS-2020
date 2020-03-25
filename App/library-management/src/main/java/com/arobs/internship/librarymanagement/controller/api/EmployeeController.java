@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/employee", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class EmployeeController {
+    
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
@@ -84,7 +85,8 @@ public class EmployeeController {
 
     @RequestMapping(value = "updatePassword", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EmployeeResponseDTO> updatePassword(@RequestParam String userName, @RequestParam String password) {
+    public ResponseEntity<EmployeeResponseDTO> updatePassword(@RequestParam String userName,
+                                                              @RequestParam String password) {
         this.employeeService.changePassword(password, userName);
         EmployeeResponseDTO employeeResponseDTO = EmployeeMapperConverter.generateDTOResponseFromEntity(getEmployeeService().changePassword(password, userName));
 
@@ -95,7 +97,8 @@ public class EmployeeController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EmployeeUpdateDTO> update(@RequestParam String userName, @RequestBody @Valid EmployeeUpdateDTO request) {
+    public ResponseEntity<EmployeeUpdateDTO> update(@RequestParam String userName,
+                                                    @RequestBody @Valid EmployeeUpdateDTO request) {
 
         if (Objects.isNull(request)) {
             try {
@@ -118,8 +121,13 @@ public class EmployeeController {
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<EmployeeResponseDTO>> retrieveAll() {
-        Set<EmployeeResponseDTO> employees = getEmployeeService().retrieveAll().stream()
-                .map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(), employee.getEmployeeStatus(), employee.getCreateDate())).collect(Collectors.toSet());
+        Set<EmployeeResponseDTO> employees = getEmployeeService()
+                .retrieveAll()
+                .stream()
+                .map(employee -> new EmployeeResponseDTO(employee.getId(), employee.getUserName(), employee.getFirstName(),
+                        employee.getLastName(), employee.getEmail(), employee.getEmployeeRole(),
+                        employee.getEmployeeStatus(), employee.getCreateDate()))
+                .collect(Collectors.toSet());
 
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }

@@ -9,6 +9,7 @@ import com.arobs.internship.librarymanagement.mapperConverter.EmployeeMapperConv
 import com.arobs.internship.librarymanagement.model.RentRequest;
 import com.arobs.internship.librarymanagement.model.enums.BookRentStatus;
 import com.arobs.internship.librarymanagement.model.enums.RentRequestStatus;
+import com.arobs.internship.librarymanagement.service.RentRequestService;
 import com.arobs.internship.librarymanagement.service.impl.RentRequestServiceImpl;
 import com.arobs.internship.librarymanagement.mapperConverter.RentRequestMapperConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 public class RentRequestController {
 
     @Autowired
-    private RentRequestServiceImpl bookRentService;
+    private RentRequestService bookRentService;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -41,6 +42,7 @@ public class RentRequestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RentRequestResponseDTO> retrieveById(@PathVariable("rentRequestId") Integer rentRequestId) {
         RentRequestResponseDTO rentRequestResponseDTO;
+
         try {
             rentRequestResponseDTO = RentRequestMapperConverter.generateResponseDTOFromEntity(getBookRentService().retrieveById(rentRequestId));
         } catch (EmptyResultDataAccessException e) {
@@ -52,10 +54,14 @@ public class RentRequestController {
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<RentRequestResponseDTO>> retrieveAll() {
-        Set<RentRequestResponseDTO> rentRequests = getBookRentService().retrieveAll().stream()
+
+        Set<RentRequestResponseDTO> rentRequests = getBookRentService()
+                .retrieveAll()
+                .stream()
                 .map(book -> new RentRequestResponseDTO(book.getId(), book.getRequestDate(),book.getRentRequestStatus()
                         ,EmployeeMapperConverter.generateBookRequestEmployeeFromEntity(book.getEmployee()),
-                        BookMapperConverter.generateDTOFromEntity(book.getBook()))).collect(Collectors.toSet());
+                        BookMapperConverter.generateDTOFromEntity(book.getBook())))
+                .collect(Collectors.toSet());
 
         return rentRequests != null
                 ? new ResponseEntity<>(rentRequests, HttpStatus.OK)
@@ -65,17 +71,20 @@ public class RentRequestController {
     @RequestMapping(value = "/retrieveByStatus", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<RentRequestResponseDTO>> retrieveByStatus(@RequestParam RentRequestStatus rentRequestStatus) {
-        Set<RentRequestResponseDTO> rentRequests = getBookRentService().retrieveByStatus(rentRequestStatus).stream()
+
+        Set<RentRequestResponseDTO> rentRequests = getBookRentService().retrieveByStatus(rentRequestStatus)
+                .stream()
                 .map(book -> new RentRequestResponseDTO(book.getId(), book.getRequestDate(),book.getRentRequestStatus()
                         ,EmployeeMapperConverter.generateBookRequestEmployeeFromEntity(book.getEmployee()),
-                        BookMapperConverter.generateDTOFromEntity(book.getBook()))).collect(Collectors.toSet());
+                        BookMapperConverter.generateDTOFromEntity(book.getBook())))
+                .collect(Collectors.toSet());
 
         return rentRequests != null
                 ? new ResponseEntity<>(rentRequests, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public RentRequestServiceImpl getBookRentService() {
+    public RentRequestService getBookRentService() {
         return bookRentService;
     }
 }

@@ -33,12 +33,19 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
 
     @Override
     public List<Copy> findByStatusAndByBookId(int id, String copyStatus) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE book_id = :id AND Status = :copyStatus", Copy.class).setParameter("id", id).setParameter("copyStatus", copyStatus).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM Copy WHERE book_id = :id AND Status = :copyStatus", Copy.class)
+                .setParameter("id", id)
+                .setParameter("copyStatus", copyStatus)
+                .getResultList();
     }
 
     @Override
     public List<Copy> findByBookId(int id) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE book_id = :id", Copy.class).setParameter("id", id).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM Copy WHERE book_id = :id", Copy.class)
+                .setParameter("id", id)
+                .getResultList();
     }
 
     @Override
@@ -59,7 +66,10 @@ public class CopyRepositoryHibernateImpl implements CopyRepository {
 
     @Override
     public List<Copy> findAllByStatus(String copyStatus) {
-        return getSessionFactory().getCurrentSession().createQuery("FROM Copy WHERE Status = :copyStatus").setParameter("copyStatus", copyStatus).getResultList();
+        return getSessionFactory().getCurrentSession()
+                .createQuery("FROM Copy WHERE Status = :copyStatus")
+                .setParameter("copyStatus", copyStatus)
+                .getResultList();
     }
 
     protected SessionFactory getSessionFactory() {

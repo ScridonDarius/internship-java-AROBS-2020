@@ -31,6 +31,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookResponseDTO> create(@RequestBody BookRegistrationDTO request) {
         BookResponseDTO bookResponseDTO;
+
         try {
             bookResponseDTO = BookMapperConverter.generateDTOResponseFromEntity(getBookService().save(request));
         } catch (FoundException e) {
@@ -41,9 +42,8 @@ public class BookController {
 
     @RequestMapping(value = "/retrieveByAuthorAndTitle", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookResponseDTO> retrieveByAuthorAndTitle(
-            @RequestParam String author,
-            @RequestParam String title) {
+    public ResponseEntity<BookResponseDTO> retrieveByAuthorAndTitle(@RequestParam String author,
+                                                                    @RequestParam String title) {
         BookResponseDTO bookResponseDTO;
 
         try {
@@ -56,8 +56,7 @@ public class BookController {
 
     @RequestMapping(value = "/retrieveById/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookResponseDTO> retrieveById(
-            @PathVariable("id") Integer id) {
+    public ResponseEntity<BookResponseDTO> retrieveById(@PathVariable("id") Integer id) {
         BookResponseDTO bookResponseDTO;
 
         try {
@@ -70,9 +69,8 @@ public class BookController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookUpdateDTO> update(
-            @RequestParam int bookId,
-            @RequestBody @Valid BookUpdateDTO request) {
+    public ResponseEntity<BookUpdateDTO> update(@RequestParam int bookId,
+                                                @RequestBody @Valid BookUpdateDTO request) {
         BookUpdateDTO bookUpdateDTO;
 
         try {
@@ -96,7 +94,11 @@ public class BookController {
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Set<BookResponseDTO>> retrieveAll() {
-        Set<BookResponseDTO> books = getBookService().getAll().stream().map(book -> new BookResponseDTO(book.getId(), book.getTitle(), book.getAuthor(), book.getDescription(), book.getTags(), book.getBookStatus())).collect(Collectors.toSet());
+        Set<BookResponseDTO> books = getBookService()
+                .getAll()
+                .stream()
+                .map(book -> new BookResponseDTO(book.getId(), book.getTitle(), book.getAuthor(), book.getDescription(), book.getTags(), book.getBookStatus()))
+                .collect(Collectors.toSet());
 
         return books != null
                 ? new ResponseEntity<>(books, HttpStatus.OK)
